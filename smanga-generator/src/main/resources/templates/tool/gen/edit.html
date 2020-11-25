@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<th:block th:include="include :: header('Modify build information')" />
+	<th:block th:include="include :: select2-css" />
+	<style type="text/css">
+		.select-table table {
+			table-layout: fixed;
+		}
+
+		.table>thead>tr>th {
+			text-align: center;
+		}
+
+		.select-table .table td {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.form-control {
+			padding: 3px 6px 4px;
+			height: 30px;
+		}
+
+		.icheckbox-blue {
+			top: 0px;
+			left: 6px;
+		}
+
+		.form-control.select2-hidden-accessible {
+			position: static !important;
+		}
+
+		.select-table table label.error {
+			position: inherit;
+		}
+
+		select+label.error {
+			z-index: 1;
+			right: 40px;
+		}
+	</style>
+</head>
+
+<body class="gray-bg"
+	style="font: 14px Helvetica Neue, Helvetica, PingFang SC, Microsoft Yahei, Tahoma, Arial, sans-serif !important;">
+	<section class="section-content">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-content" style="border-style:none;">
+						<div class="nav-tabs-custom">
+							<ul class="nav nav-tabs">
+								<li><a href="#tab-basic" data-toggle="tab" aria-expanded="false">Basic information</a>
+								</li>
+								<li class="active"><a href="#tab-field" data-toggle="tab" aria-expanded="true">Field
+										information</a>
+								</li>
+								<li><a href="#tab-gen" data-toggle="tab" aria-expanded="false">Generate information</a>
+								</li>
+								<li class="pull-right header">
+									<i class="fa fa-code"></i> Generate configuration
+								</li>
+							</ul>
+							<form id="form-gen-edit" class="form-horizontal" th:object="${table}">
+								<input name="tableId" type="hidden" th:field="*{tableId}" />
+								<div class="tab-content">
+									<!-- Basic information -->
+									<div class="tab-pane" id="tab-basic">
+										<div class="row mt20">
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label class="col-sm-4 control-label is-required">Table
+														name:</label>
+													<div class="col-sm-8">
+														<input name="tableName" class="form-control" type="text"
+															placeholder="Please enter the table name" maxlength="200"
+															th:field="*{tableName}" required>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label class="col-sm-4 control-label is-required">Table
+														description:</label>
+													<div class="col-sm-8">
+														<input name="tableComment" class="form-control" type="text"
+															placeholder="Please enter a table description"
+															maxlength="500" th:field="*{tableComment}" required>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label class="col-sm-4 control-label is-required">Entity class
+														name:</label>
+													<div class="col-sm-8">
+														<input name="className" class="form-control" type="text"
+															placeholder="Please enter the entity class name"
+															maxlength="100" th:field="*{className}" required>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label class="col-sm-4 control-label is-required">Author: </ label>
+														<div class="col-sm-8">
+															<input name="functionAuthor" class="form-control"
+																type="text" placeholder="Please enter the author"
+																maxlength="50" th:field="*{functionAuthor}" required>
+														</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="form-group">
+													<label class="col-xs-2 control-label">Remarks:</label>
+													<div class="col-xs-10">
+														<textarea name="remark" maxlength="500" class="form-control"
+															rows="3"></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- Field information -->
+									<div class="tab-pane active" id="tab-field">
+										<div class="select-table table-striped"
+											style="margin-top: 0px;padding-top: 0px;padding-bottom: 0px;">
+											<table id="bootstrap-table" data-use-row-attr-func="true"
+												data-reorderable-rows="true"></table>
+										</div>
+									</div>
+
+									<!-- Generate information -->
+									<div class="tab-pane" id="tab-gen">
+										<div class="row mt20">
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label class="col-sm-4 control-label is-required">Generate
+														template:</label>
+													<div class="col-sm-8">
+														<select class='form-control' id="tplCategory" name='tplCategory'
+															style="width: 100%">
+															<option value="crud" th:field="*{tplCategory}">Single table
+																(addition, deletion, modification and check)
+															</option>
+															<option value="tree" th:field="*{tplCategory}">Tree table
+																(addition, deletion, modification and check)
+															</option>
+															<option value="sub" th:field="*{tplCategory}">Main and
+																sub-table (addition, deletion, modification and check)
+															</option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label class="col-sm-4 control-label is-required"
+														title="Under which java package is generated, for example, com.smanga.project.system">Generate
+														package path: <i class="fa fa-question-circle-o"></i></label>
+													<div class="col-sm-8">
+														<input name="packageName" class="form-control" type="text"
+															placeholder="Please enter the path of the generated package"
+															maxlength="100" th:field="*{packageName}" required>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label class="col-sm-4 control-label is-required"
+														title="Can be understood as the name of the subsystem, such as system">Generate
+														module name: <i class="fa fa-question-circle-o"></i></label>
+													<div class="col-sm-8">
+														<input name="moduleName" class="form-control" type="text"
+															placeholder="Please enter the name of the generated module"
+															maxlength="30" th:field="*{moduleName}" required>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label class="col-sm-4 control-label is-required"
+														title="can be understood as the English name of the function, such as user">Generate
+														business name:<i class="fa fa-question-circle-o"></i></label>
+													<div class="col-sm-8">
+														<input name="businessName" class="form-control" type="text"
+															placeholder="Please enter the name of the generated business"
+															maxlength="50" th:field="*{businessName}" required>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label class="col-sm-4 control-label is-required"
+														title="used as a class description, for example, user">generated
+														function name:<i class="fa fa-question-circle-o"></i></label>
+													<div class="col-sm-8">
+														<input name="functionName" class="form-control" type="text"
+															placeholder="Please enter the name of the generated function"
+															maxlength="50" th:field="*{functionName}" required>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label class="col-sm-4 control-label is-required"
+														title="Assigned to the designated menu, such as System Management">Upper
+														menu: <i class="fa fa-question-circle-o"></i></label>
+													<div class="col-sm-8">
+														<input id="parentMenuId" name="params[parentMenuId]"
+															type="hidden" th:value="*{parentMenuId}" />
+														<div class="input-group">
+															<input id="parentMenuName" name="params[parentMenuName]"
+																class="form-control" type="text"
+																onclick="selectMenuTree()"
+																placeholder="Please select the upper menu"
+																maxlength="50" th:value="*{parentMenuName}" required>
+															<span class="input-group-addon"><i
+																	class="fa fa-search"></i></span>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-6">
+												<div class="form-group">
+													<label class="col-sm-4 control-label"
+														title="The default is zip compression package download, you can also customize the generation path">Generate
+														code method:<i class="fa fa-question-circle-o"></i></label>
+													<div class="col-sm-8">
+														<label class="radio-box"> <input type="radio" name="genType"
+																value="0" th:field="*{genType}" /> zip compressed
+															package </label>
+														<label class="radio-box"> <input type="radio" name="genType"
+																value="1" th:field="*{genType}" /> Custom path</label>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="hidden row" id="pathinfo">
+											<div class="col-sm-12">
+												<div class="form-group">
+													<label class="col-xs-2 control-label"
+														title="Fill in the absolute path of the disk. If not, it will be generated under the current Web project ">Generate
+														the basic path:<i class="fa fa-question-circle-o"></i></label>
+													<div class="col-xs-10">
+														<div class="input-group input-group-sm">
+															<input id="genPath" name="genPath" class="form-control"
+																type="text" th:field="*{genPath}"
+																placeholder="Please enter the project path"
+																maxlength="200">
+															<div class="input-group-btn">
+																<button type="button"
+																	class="btn btn-default dropdown-toggle"
+																	data-toggle="dropdown">Quickly select the nearest
+																	path <span class="caret"></span></button>
+																<ul class="dropdown-menu dropdown-menu-right"
+																	role="menu">
+																	<li><a href="javascript:$('#genPath').val('/')"><i
+																				class="fa fa-refresh"></i>Restore the
+																			default generation base path</a>
+																	</li>
+																</ul>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="hidden" id="subInfo">
+											<h4 class="form-header h4">Related information</h4>
+											<div class="row">
+												<div class="col-sm-6">
+													<div class="form-group">
+														<label class="col-sm-4 control-label is-required"
+															title="The table name of the associated child table, such as: sys_user">The
+															table name of the associated child table: <i
+																class="fa fa-question-circle-o"></i></label>
+														<div class="col-sm-8">
+															<select class='type form-control' id="subTableName"
+																name='subTableName' th:attr='data-value=*{subTableName}'
+																style="width: 100%">
+																<option value="">---Please select---</option>
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-6">
+													<div class="form-group">
+														<label class="col-sm-4 control-label is-required"
+															title="The name of the foreign key associated with the child table, such as: user_id">The
+															name of the foreign key associated with the child table:<i
+																class="fa fa-question-circle-o"></i></label>
+														<div class="col-sm-8">
+															<select class='router form-control' id="subTableFkName"
+																name='subTableFkName'
+																th:attr='data-value=*{subTableFkName}'
+																style="width: 100%">
+																<option value="">---Please select---</option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="hidden" id="otherInfo">
+											<h4 class="form-header h4">Other information</h4>
+											<div class="row">
+												<div class="col-sm-6">
+													<div class="form-group">
+														<label class="col-sm-4 control-label is-required"
+															title="The name of the coding field displayed by the tree, such as: dept_id">Tree
+															coding field: <i
+																class="fa fa-question-circle-o"></i></label>
+														<div class="col-sm-8">
+															<select class='form-control' id="treeCode"
+																name='params[treeCode]' style="width: 100%">
+																<option value="">---Please select---</option>
+																<option th:each="column : ${table.columns}"
+																	th:text="${column.columnName + '：' + column.columnComment}"
+																	th:value="${column.columnName}"
+																	th:field="*{treeCode}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="col-sm-6">
+													<div class="form-group">
+														<label class="col-sm-4 control-label is-required"
+															title="The name of the parent code field displayed in the tree, such as: parent_Id">The
+															parent code field of the tree: <i
+																class="fa fa-question-circle-o"></i></label>
+														<div class="col-sm-8">
+															<select class='form-control' id="treeParentCode"
+																name='params[treeParentCode]' style="width: 100%">
+																<option value="">---Please select---</option>
+																<option th:each="column: ${table.columns}"
+																	th:text="${column.columnName +':' + column.columnComment}"
+																	th:value="${column.columnName}"
+																	th:field="*{treeParentCode}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-6">
+													<div class="form-group">
+														<label class="col-sm-4 control-label is-required"
+															title="The display name field name of the tree node, such as: dept_name">The
+															tree name field: <i
+																class="fa fa-question-circle-o"></i></label>
+														<div class="col-sm-8">
+															<select class='form-control' id="treeName"
+																name='params[treeName]' style="width: 100%">
+																<option value="">---Please select---</option>
+																<option th:each="column : ${table.columns}"
+																	th:text="${column.columnName + '：' + column.columnComment}"
+																	th:value="${column.columnName}"
+																	th:field="*{treeName}"></option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="box-footer">
+						<div class="col-sm-offset-5 col-sm-6">
+							<button type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i
+									class="fa fa-check"></i>Save</button>&nbsp;
+							<button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i
+									class="fa fa-reply-all"></i>Shut down</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<th:block th:include="include :: footer" />
+	<th:block th:include="include :: select2-js" />
+	<th:block th:include="include :: bootstrap-table-reorder-js" />
+	<script th:src="@{/js/jquery.tmpl.js}"></script>
+	<th:block th:include="include :: jquery-cxselect-js" />
+	<script th:inline="javascript">
+		/* User Information-Modify */
+		$("#form-table-edit").validate({
+			rules: {
+				tableName: {
+					required: true,
+				},
+			},
+			focusCleanup: true
+		});
+
+		/* Table cascade information */
+		var data = [[${ data }]];
+		$('#subInfo').cxSelect({
+			selects: ['type', 'router'],
+			jsonValue: 'v',
+			data: data
+		});
+
+		function submitHandler() {
+			if ($.validate.form()) {
+				$.operate.saveTab(prefix + "/edit", $("#form-gen-edit").serializeArray());
+			}
+		}
+
+		var prefix = ctx + "tool/gen";
+		$(function () {
+			var options = {
+				url: prefix + "/column/list",
+				sortName: "sort",
+				sortOrder: "desc",
+				height: $(window).height() - 166,
+				pagination: false,
+				showSearch: false,
+				showRefresh: false,
+				showToggle: false,
+				showColumns: false,
+				onLoadSuccess: onLoadSuccess,
+				onReorderRow: onReorderRow,
+				columns: [{
+					title: "Serial number",
+					width: "5%",
+					formatter: function (value, row, index) {
+						// number hidden field
+						var columnIdHtml = $.common.sprintf("<input type='hidden' name='columns[%s].columnId' value='%s'>", index, row.columnId);
+						// Sort hidden fields
+						var sortHtml = $.common.sprintf("<input type='hidden' name='columns[%s].sort' value='%s' id='columns_sort_%s'>", index, row.sort, row.columnId);
+						return columnIdHtml + sortHtml + $.table.serialNumber(index);
+					},
+					cellStyle: function (value, row, index) {
+						return { css: { "cursor": "move" } };
+					}
+				},
+				{
+					field: 'columnName',
+					title: 'Field column name',
+					width: "10%",
+					class: "nodrag",
+					cellStyle: function (value, row, index) {
+						return { css: { "cursor": "default" } };
+					}
+				},
+				{
+					field: 'columnComment',
+					title: 'Field description',
+					width: "10%",
+					formatter: function (value, row, index) {
+						var html = $.common.sprintf("<input class='form-control' type='text' name='columns[%s].columnComment' value='%s'>", index, value);
+						return html;
+					}
+				},
+				{
+					field: 'columnType',
+					title: 'Physical type',
+					width: "10%",
+					class: "nodrag",
+					cellStyle: function (value, row, index) {
+						return { css: { "cursor": "default" } };
+					}
+				},
+				{
+					field: 'javaType',
+					title: 'Java type',
+					width: "10%",
+					formatter: function (value, row, index) {
+						var data = [{ index: index, javaType: value }];
+						return $("#javaTypeTpl").tmpl(data).html();
+					}
+				},
+				{
+					field: 'javaField',
+					title: 'Java properties',
+					width: "10%",
+					formatter: function (value, row, index) {
+						var html = $.common.sprintf("<input class='form-control' type='text' name='columns[%s].javaField' value='%s' required>", index, value);
+						return html;
+					}
+				},
+				{
+					field: 'isInsert',
+					title: 'Insert',
+					width: "5%",
+					formatter: function (value, row, index) {
+						var isCheck = value == 1 ? 'checked' : '';
+						var html = $.common.sprintf("<label class='check-box'><input type='checkbox' name='columns[%s].isInsert' value='1' %s></label> ", index, isCheck);
+						return html;
+					}
+				},
+				{
+					field: 'isEdit',
+					title: 'Edit',
+					width: "5%",
+					formatter: function (value, row, index) {
+						var isCheck = value == 1 ? 'checked' : '';
+						var html = $.common.sprintf("<label class='check-box'><input type='checkbox' name='columns[%s].isEdit' value='1' %s></label> ", index, isCheck);
+						return html;
+					}
+				},
+				{
+					field: 'isList',
+					title: 'List',
+					width: "5%",
+					formatter: function (value, row, index) {
+						var isCheck = value == 1 ? 'checked' : '';
+						var html = $.common.sprintf("<label class='check-box'><input type='checkbox' name='columns[%s].isList' value='1' %s></label>", index, isCheck);
+						return html;
+					}
+				},
+				{
+					field: 'isQuery',
+					title: 'Inquire',
+					width: "5%",
+					formatter: function (value, row, index) {
+						var isCheck = value == 1 ? 'checked' : '';
+						var html = $.common.sprintf("<label class='check-box'><input type='checkbox' name='columns[%s].isQuery' value='1' %s></label> ", index, isCheck);
+						return html;
+					}
+				},
+				{
+					field: 'queryType',
+					title: 'Query Method',
+					width: "10%",
+					formatter: function (value, row, index) {
+						var data = [{ index: index, queryType: value }];
+						return $("#queryTypeTpl").tmpl(data).html();
+					}
+				},
+				{
+					field: 'isRequired',
+					title: 'Required',
+					width: "5%",
+					formatter: function (value, row, index) {
+						var isCheck = value == 1 ? 'checked' : '';
+						var html = $.common.sprintf("<label class='check-box'><input type='checkbox' name='columns[%s].isRequired' value='1' %s></label> ", index, isCheck);
+						return html;
+					}
+				},
+				{
+					field: 'htmlType',
+					title: 'Display Type',
+					width: "12%",
+					formatter: function (value, row, index) {
+						var data = [{ index: index, htmlType: value }];
+						return $("#htmlTypeTpl").tmpl(data).html();
+					}
+				},
+				{
+					field: 'dictType',
+					title: 'Dictionary type',
+					width: "13%",
+					formatter: function (value, row, index) {
+						var html = $.common.sprintf("<input class='form-control' type='text' name='columns[%s].dictType' value='%s' id='columns_dict_%s'>", index, value, row.columnId);
+						return "<div class='input-group'>" + html + "<span class='input-group-addon input-sm' onclick='selectDictTree(" + row.columnId + ", this)'><i class='fa fa-search'></i></span></div>";
+					},
+					cellStyle: function (value, row, index) {
+						return { css: { "cursor": "default" } };
+					}
+				}]
+			};
+			$.table.init(options);
+		});
+
+		// Trigger the processing function when all data is loaded
+		function onLoadSuccess(data) {
+			$.fn.select2.defaults.set("theme", "bootstrap");
+			$("select.form-control").each(function () {
+				$(this).select2().on("change", function () {
+					$(this).valid();
+				})
+			})
+			$(".check-box").each(function () {
+				$(this).iCheck({
+					checkboxClass: 'icheckbox-blue'
+				})
+			})
+		}
+
+		// Processing function when dragging ends
+		function onReorderRow(data) {
+			for (var i = 0; i < data.length; i++) {
+				$("#columns_sort_" + data[i].columnId).val(i + 1);
+			}
+		}
+
+		$(function () {
+			var tplCategory = $("#tplCategory option:selected").val();
+			tplCategoryVisible(tplCategory);
+			var genType = $('input[name="genType"]:checked').val();
+			pathInfoVisible(genType);
+		});
+
+		$('#tplCategory').on('select2:select', function (event) {
+			var tplCategory = $(event.target).val();
+			tplCategoryVisible(tplCategory);
+		});
+
+		function tplCategoryVisible(tplCategory) {
+			if ("crud" == tplCategory) {
+				$("#treeCode").select2("val", [""]);
+				$("#treeParentCode").select2("val", [""]);
+				$("#treeName").select2("val", [""]);
+				$("#otherInfo").addClass("hidden");
+				$("#subInfo").addClass("hidden");
+			} else if ("tree" == tplCategory) {
+				$("#otherInfo").removeClass("hidden");
+				$("#treeCode").attr("required", "true");
+				$("#treeParentCode").attr("required", "true");
+				$("#treeName").attr("required", "true");
+				$("#subInfo").addClass("hidden");
+			} else if ("sub" == tplCategory) {
+				$("#subInfo").removeClass("hidden");
+				$("#treeCode").select2("val", [""]);
+				$("#treeParentCode").select2("val", [""]);
+				$("#treeName").select2("val", [""]);
+				$("#otherInfo").addClass("hidden");
+			}
+		}
+
+		$('input').on('ifChecked', function (event) {
+			var genType = $(event.target).val();
+			pathInfoVisible(genType);
+		});
+
+		function pathInfoVisible(genType) {
+			if ("0" == genType) {
+				$("#genPath").val("/");
+				$("#pathinfo").addClass("hidden");
+			} else if ("1" == genType) {
+				$("#pathinfo").removeClass("hidden");
+			}
+		}
+
+		// Select dictionary processing function
+		function selectDictTree(columnId, obj) {
+			var dictType = $.common.nullToStr($(obj).parent().find("input").val());
+			var url = ctx + "system/dict/selectDictTree/" + columnId + "/" + dictType;
+			var options = {
+				title: 'Select dictionary type',
+				width: "380",
+				url: url,
+				callBack: doDictSubmit
+			};
+			$.modal.openOptions(options);
+		}
+
+		// Select menu processing function
+		function selectMenuTree() {
+			var parentMenuId = $("#parentMenuId").val();
+			var menuId = parentMenuId > 0 ? parentMenuId : 1;
+			var url = ctx + "system/menu/selectMenuTree/" + menuId;
+			var options = {
+				title: 'Menu selection',
+				width: "380",
+				url: url,
+				callBack: doMenuSubmit
+			};
+			$.modal.openOptions(options);
+		}
+
+		function doDictSubmit(index, layero) {
+			var body = layer.getChildFrame('body', index);
+			var columnId = body.find('#columnId').val();
+			var dictType = body.find('#dictType').val();
+			layer.close(index);
+			$("#columns_dict_" + columnId).val(dictType);
+		}
+
+		function doMenuSubmit(index, layero) {
+			var body = layer.getChildFrame('body', index);
+			$("#parentMenuId").val(body.find('#treeId').val());
+			$("#parentMenuName").val(body.find('#treeName').val());
+			layer.close(index);
+		}
+	</script>
+</body>
+
+</html>
+
+
+<!-- java type -->
+<script id="javaTypeTpl" type="text/x-jquery-tmpl">
+	<div>
+	<select class='form-control' name='columns[${index}].javaType'>
+		<option value="Long" {{if javaType==="Long"}}selected{{/if}}>Long</option>
+		<option value="String" {{if javaType==="String"}}selected{{/if}}>String</option>
+		<option value="Integer" {{if javaType==="Integer"}}selected{{/if}}>Integer</option>
+		<option value="Double" {{if javaType==="Double"}}selected{{/if}}>Double</option>
+		<option value="BigDecimal" {{if javaType==="BigDecimal"}}selected{{/if}}>BigDecimal</option>
+		<option value="Date" {{if javaType==="Date"}}selected{{/if}}>Date</option>
+	</select>
+	</div>
+	</script>
+
+<!-- Query method -->
+<script id="queryTypeTpl" type="text/x-jquery-tmpl">
+	<div>
+	<select class='form-control' name='columns[${index}].queryType'>
+		<option value="EQ" {{if queryType==="EQ"}}selected{{/if}}>=</option>
+		<option value="NE" {{if queryType==="NE"}}selected{{/if}}>!=</option>
+		<option value="GT" {{if queryType==="GT"}}selected{{/if}}>></option>
+		<option value="GTE" {{if queryType==="GTE"}}selected{{/if}}>>=</option>
+		<option value="LT" {{if queryType==="LT"}}selected{{/if}}><</option>
+		<option value="LTE" {{if queryType==="LTE"}}selected{{/if}}><=</option>
+		<option value="LIKE" {{if queryType==="LIKE"}}selected{{/if}}>Like</option>
+		<option value="BETWEEN" {{if queryType==="BETWEEN"}}selected{{/if}}>Between</option>
+	</select>
+	</div>
+	</script>
+
+<!-- Display type -->
+<script id="htmlTypeTpl" type="text/x-jquery-tmpl">
+<div>
+<select class='form-control' name='columns[${index}].htmlType'>
+    <option value="input" {{if htmlType==="input"}}selected{{/if}}>文本框</option>
+    <option value="textarea" {{if htmlType==="textarea"}}selected{{/if}}>文本域</option>
+    <option value="select" {{if htmlType==="select"}}selected{{/if}}>下拉框</option>
+    <option value="radio" {{if htmlType==="radio"}}selected{{/if}}>单选框</option>
+    <option value="checkbox" {{if htmlType==="checkbox"}}selected{{/if}}>复选框</option>
+    <option value="summernote" {{if htmlType==="summernote"}}selected{{/if}}>富文本</option>
+    <option value="datetime" {{if htmlType==="datetime"}}selected{{/if}}>日期控件</option>
+    <option value="upload" {{if htmlType==="upload"}}selected{{/if}}>上传控件</option>
+</select>
+</div>
+</script>

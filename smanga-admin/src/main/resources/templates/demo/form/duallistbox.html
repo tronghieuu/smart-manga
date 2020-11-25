@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <th:block th:include="include :: header('Mutual selection of components')" />
+    <th:block th:include="include :: bootstrap-duallistbox-css" />
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>Dual list box <small>https://github.com/istvan-ujjmeszaros/bootstrap-duallistbox</small>
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+                        <p>
+                            Bootstrap Dual Listbox is a responsive dual list box optimized for Twitter Bootstrap. It is
+                            suitable for all modern browsers and touch devices.
+                        </p>
+
+                        <form id="form" action="#" class="wizard-big">
+                            <select class="form-control dual_select" multiple>
+                                <option value="1">Smart Manga 1</option>
+                                <option value="2">Smart Manga 2</option>
+                                <option value="3">Smart Manga 3</option>
+                                <option selected value="4">Smart Manga 4</option>
+                                <option selected value="5">Smart Manga 5</option>
+                                <option value="6">Smart Manga 6</option>
+                                <option value="7">Smart Manga 7</option>
+                                <option value="8">Smart Manga 8</option>
+                                <option value="9">Smart Manga 9</option>
+                                <option value="10">Smart Manga 10</option>
+                                <option value="11">Smart Manga 11</option>
+                                <option value="12">Smart Manga 12</option>
+                            </select>
+                        </form>
+                        <hr>
+                        <div class="form-group">
+                            <label class="font-noraml">Related parameter details</label>
+                            <div><a href="http://doc.ruoyi.vip/ruoyi/document/zjwd.html#bootstrap-duallistbox"
+                                    target="_blank">http://doc.ruoyi.vip/ruoyi/document/zjwd.html#bootstrap-duallistbox</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: bootstrap-duallistbox-js" />
+    <script type="text/javascript">
+        $('.dual_select').bootstrapDualListbox({
+            nonSelectedListLabel: 'No user',
+            selectedListLabel: 'Existing user',
+            preserveSelectionOnMove: 'moved',
+            moveOnSelect: false, // A cutting head appears, indicating that you can select one at a time
+            filterTextClear: 'Show all',
+            moveSelectedLabel: "Add",
+            moveAllLabel: 'Add all',
+            removeSelectedLabel: "Remove",
+            removeAllLabel: 'Remove all',
+            infoText: 'Total {0} items',
+            showFilterInputs: false, // Whether with search
+            selectorMinimalHeight: 160
+        });
+    </script>
+</body>
+
+</html>

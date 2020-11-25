@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+	<th:block th:include="include :: header('The table refreshes automatically')" />
+</head>
+
+<body class="gray-bg">
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 select-table table-striped">
+				<!-- data-auto-refresh set true to enable the automatic refresh plugin
+					data-auto-refresh-interval is the time (in seconds) when each automatic refresh occurs. The default is 60.
+					Data-auto-refresh-silent is set to true to automatically and silently refresh. Default: true
+					data-auto-refresh-status set true to enable automatic refresh. This is the state that is automatically refreshed when the table is loaded. Click the button to toggle this attribute. This is just the default state of automatic refresh, because the user can always change it by clicking a button. Default: true -->
+				<table id="bootstrap-table" data-auto-refresh="true" data-auto-refresh-interval="30"></table>
+			</div>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<th:block th:include="include :: bootstrap-table-auto-refresh-js" />
+	<script th:inline="javascript">
+		var prefix = ctx + "demo/table";
+
+		$(function () {
+			var options = {
+				url: prefix + "/list",
+				showSearch: false,
+				showRefresh: false,
+				showToggle: false,
+				showColumns: false,
+				columns: [{
+					checkbox: true
+				},
+				{
+					field: 'userId',
+					title: 'User ID'
+				},
+				{
+					field: 'userCode',
+					title: 'User ID'
+				},
+				{
+					field: 'userName',
+					title: 'User name'
+				},
+				{
+					field: 'userPhone',
+					title: 'User mobile phone'
+				},
+				{
+					field: 'userEmail',
+					title: 'User mailbox'
+				},
+				{
+					field: 'userBalance',
+					title: 'User balance'
+				},
+				{
+					title: 'Operation',
+					align: 'center',
+					formatter: function (value, row, index) {
+						var actions = [];
+						actions.push('<a class="btn btn-danger btn-xs" href="javascript:;" onclick="remove(this)"><i class="fa fa-remove"></i> Delete </a>');
+						return actions.join('');
+					}
+				}]
+			};
+			$.table.init(options);
+		});
+
+		// Fake delete operation
+		function remove(obj) {
+			$.modal.confirm("Are you sure you want to delete?", function () {
+				$(obj).parents("tr").remove();
+				$.modal.msgSuccess('Deleted!');
+			});
+		}
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!--360 browser preferentially resolve with webkit kernel-->
+	<title>Smart manga introduction</title>
+	<link rel="shortcut icon" href="favicon.ico">
+	<link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+	<link href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}" rel="stylesheet" />
+	<link href="../static/css/main/animate.min.css" th:href="@{/css/main/animate.min.css}" rel="stylesheet" />
+	<link href="../static/css/main/style.min862f.css" th:href="@{/css/main/style.min862f.css}" rel="stylesheet" />
+</head>
+
+<body class="gray-bg">
+	<!-- <div class="row  border-bottom white-bg dashboard-header">
+		<div class="col-sm-12">
+			<blockquote class="text-warning" style="font-size:14px">
+				Receive Alibaba Cloud Universal Cloud Product 1888 Coupon
+				<br><a target="_blank"
+					href="https://www.aliyun.com/minisite/goods?userCode=brki8iof">https://www.aliyun.com/minisite/goods?userCode=brki8iof
+				</a><br>
+				Receive 2860 coupons for Tencent Cloud Universal Cloud products
+				<br><a target="_blank"
+					href="https://cloud.tencent.com/redirect.php?redirect=1025&cps_key=198c8df2ed259157187173bc7f4f32fd&from=console">https://cloud.tencent.com/redirect.php?
+					redirect=1025&cps_key=198c8df2ed259157187173bc7f4f32fd&from=console</a><br>
+				Alibaba Cloud Server Discount Zone<a target="_blank" href="http://aly.ruoyi.vip">☛☛Click me to
+					enter☚☚</a> &nbsp;&nbsp;&nbsp; Tencent Cloud Server seckill zone<a target="_blank"
+					href="http://txy.ruoyi.vip">☛☛click me to enter ☚☚</a><br>
+				<h4 class="text-danger">The general red envelope for cloud products can be used with regular
+					discounts on the official website. (For new users only)</h4>
+			</blockquote>
+
+			<hr>
+		</div>
+		<div class="col-sm-3">
+			<h2>Hello,Guest</h2>
+			<small>For mobile device access, please scan the following QR code:</small>
+			<br>
+			<br>
+			<img th:src="@{/img/qr_code.png}" width="100%" style="max-width:264px;">
+			<br>
+		</div>
+		<div class="col-sm-5">
+			<h2>Smart manga background management framework</h2>
+			<p>I have always wanted to build a back-end management system. I looked at many excellent open source
+				projects but found that there is no suitable one for me. So I started to write a back-end system in my
+				free time. So with Smart manga management system. , It can be used for all web applications, such as
+				<b>Website Management Backend</b>, <b>Website Member Center</b>, <b>CMS</b>, <b>CRM</b>, <b>OA</b> and
+				so on, of course, you can also customize her deeply to make a stronger system. All front-end and
+				back-end codes are packaged and easy to use, with low error probability. It also supports mobile client
+				access. The system will continue to update some useful functions.
+			</p>
+			<p>
+				<b>Current version:</b><span>v[[${version}]]</span>
+			</p>
+			<p>
+				<span class="label label-warning">&yen;free and open source</span>
+			</p>
+			<br>
+			<p>
+				<a class="btn btn-success btn-outline" href="https://gitee.com/y_project/RuoYi" target="_blank">
+					<i class="fa fa-cloud"> </i> Access Code Cloud
+				</a>
+				<a class="btn btn-white btn-bitbucket" href="http://ruoyi.vip" target="_blank">
+					<i class="fa fa-home"></i> Visit the homepage
+				</a>
+			</p>
+		</div>
+		<div class="col-sm-4">
+			<h4>Technology selection:</h4>
+			<ol>
+				<li>Core framework: Spring Boot. </li>
+				<li>Security framework: Apache Shiro. </li>
+				<li>Template engine: Thymeleaf. </li>
+				<li>Persistence layer framework: MyBatis. </li>
+				<li>Timing task: Quartz. </li>
+				<li>Database connection pool: Druid. </li>
+				<li>Tool category: Fastjson. </li>
+				<li>More...</li>
+			</ol>
+		</div>
+
+	</div>
+	<div class="wrapper wrapper-content">
+		<div class="row">
+			<div class="col-sm-4">
+
+				<div class="ibox float-e-margins">
+					<div class="ibox-title">
+						<h5>Contact information</h5>
+
+					</div>
+					<div class="ibox-content">
+						<p><i class="fa fa-send-o"></i> Official website: <a href="http://google.com"
+								target="_blank">http://google.com</a>
+						</p>
+						<p><i class="fa fa-qq"></i> QQ group: <s>full 1389287</s> <s>full 1679294</s> <s>full
+								1529866</s> <s>Over 1772718</s>
+							<s>1366522 full</s> <s>1382251 full</s> <s>1145125 full</s> <s>86752435</s> <s>134072510</s>
+							<s>210336300 full</s> <s>339522636 full</s> <a href="https://jq.qq.com/?_wv=1027&k=qPIKBb7s"
+								target="_blank">130035985</a>
+						</p>
+						<p><i class="fa fa-weixin"></i> WeChat: <a href="javascript:;">/ *若依</a>
+						</p>
+						<p><i class="fa fa-credit-card"></i> Alipay: <a href="javascript:;" class="Alipay Information">/
+								*Smanga</a>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="ibox float-e-margins">
+					<div class="ibox-title">
+						<h5>Update log</h5>
+					</div>
+					<div class="ibox-content no-padding">
+						<div class="panel-body">
+							<div class="panel-group" id="version">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version"
+												href="#v451">v4.5.1</a><code class="pull-right">2020.11.18</code>
+										</h5>
+									</div>
+									<div id="v451" class="panel-collapse collapse in">
+										<div class="panel-body">
+											<ol>
+												<li>Block arbitrary file download vulnerabilities</li>
+												<li>Upgrading shiro to the latest version 1.7.0 prevents permission
+													bypass vulnerability</li>
+												<li>Upgrade druid to the latest version v1.2.2</li>
+												<li>New table row trigger events (onCheck, onUncheck, onCheckAll,
+													onUncheckAll)</li>
+												<li>Fixed the problem that the non-current options of multi-tabs are
+													closed when they are blank</li>
+												<li>The code generation preview supports highlighting</li>
+												<li>MapperLocations configuration supports separators</li>
+												<li>Permission information adjustment</li>
+												<li>Add default picture for profile picture and upload picture</li>
+												<li>The global configuration class remains the same as other
+													applications.</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v45">v4.5.0</a><code
+												class="pull-right">2020.10.20</code>
+										</h5>
+									</div>
+									<div id="v45" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>New menu navigation display style (default is the left navigation
+													menu, topnav is the top navigation menu)</li>
+												<li>Added menu & data permissions (expand/collapse select all/unselect
+													all parent-child linkage)</li>
+												<li>Account and password support custom update cycle</li>
+												<li>The initial password supports custom modification strategies</li>
+												<li>Add verification user to modify the new password and the old
+													password cannot be the same</li>
+												<li>Add the special characters supported for checking the password range
+													including: ~!@#$%^&*()-=_+</li>
+												<li>The last update time of the default user name and password for the
+													registered account setting</li>
+												<li>Remove the required verification of the user’s mobile phone email
+													department</li>
+												<li>New date formatting method</li>
+												<li>Add bit type to code generation</li>
+												<li>Add callBack callback method to tree structure loading</li>
+												<li>Fix the failure of scrolling back to the top of the user management
+													page</li>
+												<li>Fixed the issue of missing ctx in the code generation template file
+													upload component</li>
+												<li>Restricted system built-in parameters are not allowed to be deleted
+												</li>
+												<li>New table column width dragging plugin</li>
+												<li>New Ajax partial refresh demo</li>
+												<li>Add whether to enable the footer function</li>
+												<li>Add table parameters (set headerStyle via custom function)</li>
+												<li>Add table parameters (set footerStyle through custom function)</li>
+												<li>Fix the problem that the floating prompt box fails after the size of
+													the form is changed</li>
+												<li>Generate code to add required styles</li>
+												<li>Do not ignore the remark attribute when generating the page</li>
+												<li>Add a close button to the dictionary data list page</li>
+												<li>Excel annotation supports automatic statistical data summation</li>
+												<li>Upgrade springboot to 2.1.17 to improve security</li>
+												<li>Upgrade pagehelper to the latest version 1.3.0</li>
+												<li>Upgrade druid to the latest version v1.2.1</li>
+												<li>Upgrade fastjson to the latest version 1.2.74</li>
+												<li>Upgrade bootstrap-fileinput to the latest version 5.1.2</li>
+												<li>Upgrade oshi to the latest version v5.2.5</li>
+												<li>The form wizard plug-in is replaced with jquery-smartwizard</li>
+												<li>Modify the main and sub-table to submit sample code to prevent
+													rendering failure</li>
+												<li>Add import data pop-up form to customize width and height</li>
+												<li>User information parameter returns ignore the password field</li>
+												<li>Optimized to close the form to add index parameters</li>
+												<li>Add null value judgment to echo data dictionary (string array)</li>
+												<li>Modify the front-end password length checksum error prompt
+													inconsistency problem</li>
+												<li>AjaxResult rewrites the put method to facilitate chain calling</li>
+												<li>Enhance the semantics of verification code verification, making it
+													easier to understand</li>
+												<li>Import excel shaping value verification optimization</li>
+												<li>Excel export type NUMERIC supports precision floating point type
+												</li>
+												<li>Export Excel to adjust the targetAttr obtaining value method to
+													prevent the get method from being irregular</li>
+												<li>Icon prompt color after validation error of input box group</li>
+												<li>Upload media type to add video format</li>
+												<li>Data permission judgment parameter type</li>
+												<li>Fix the database string type nvarchar</li>
+												<li>Optimize recursive child nodes</li>
+												<li>Fix the invalid formId for multi-table search</li>
+												<li>Other details optimization</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v44">v4.4.0</a><code
+												class="pull-right">2020.08.24</code>
+										</h5>
+									</div>
+									<div id="v44" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>Upgrade bootstrapTable to the latest version 1.17.1</li>
+												<li>Upgrading shiro to the latest version 1.6.0 prevents permission
+													bypass vulnerability</li>
+												<li>Upgrade fastjson to the latest version 1.2.73</li>
+												<li>Code generation supports synchronized database</li>
+												<li>Code generation supports rich text controls</li>
+												<li>User password supports custom configuration rules</li>
+												<li>New table automatic refresh plugin</li>
+												<li>Added form printing configuration plugin</li>
+												<li>Change the image cropping tool to cropper</li>
+												<li>Excel supports sort export and sorting</li>
+												<li>Code generation supports custom paths</li>
+												<li>Code generation supports selecting the superior menu</li>
+												<li>Code generation supports upload control</li>
+												<li>Add table parameters (customize loadingFontSize of loaded text)</li>
+												<li>Excel annotation supports setting BigDecimal precision & rounding
+													rules</li>
+												<li>Exclude sensitive attribute fields from operation log records</li>
+												<li>Fixed the problem of garbled Chinese names when downloading
+													attachments in different browsers</li>
+												<li>User assigned role is not allowed to select super administrator role
+												</li>
+												<li>Replace table freeze column plugin</li>
+												<li>Add a frozen column example on the right</li>
+												<li>Upgrade table row editing & mobile terminal adaptation plug-in</li>
+												<li>Fixed the problem that the instance configuration could not be set
+													after updating the form plugin</li>
+												<li>Fix the main and sub-table errors caused by updating the table
+													plug-in</li>
+												<li>Fixed the problem of multiple tables on the page and incorrect data
+													in the callback function res</li>
+												<li>Forced withdrawal & expiration to clear the login account cache
+													session</li>
+												<li>The title content of the table tree supports html semantic tags</li>
+												<li>Fix the duplicate problem of the home page tab of the access path of
+													the configuration application</li>
+												<li>Optimized to scroll to the current tab when openTab is opened</li>
+												<li>The form request method supports custom configuration</li>
+												<li>Optimized menu tab linkage</li>
+												<li>Modify the user mailbox length limit to 50</li>
+												<li>The case of adding date format to the master and child table example
+												</li>
+												<li>Modify the old value parameter of the editing example in the table
+													row</li>
+												<li>Adjustment of operation log query method</li>
+												<li>The only restriction condition only returns a single piece of data
+												</li>
+												<li>Modify the Excel setting STRING cell type</li>
+												<li>Add to get the current environment configuration method</li>
+												<li>Intercept the length of the returned parameter to prevent exceeding
+													the exception</li>
+												<li>Cron expression verification for timing tasks</li>
+												<li>Split the table plug-in and introduce it on demand</li>
+												<li>Multi-line text box fills in the required error prompt background
+												</li>
+												<li>Other details optimization</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version"
+												href="#v431">v4.3.1</a><code class="pull-right">2020.07.05</code>
+										</h5>
+									</div>
+									<div id="v431" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>National Information Security Vulnerability (Please keep the
+													uniqueness of cipherKey)</li>
+												<li>Upgrading shiro to the latest version 1.5.3 to prevent permission
+													bypass vulnerability</li>
+												<li>The modified verification code is cleared after use to prevent
+													multiple use</li>
+												<li>Check characters support decimal point & change downgrade to
+													abnormal reminder</li>
+												<li>Add a custom maxmin attribute to the openOptions function</li>
+												<li>Support openOptions method to maximize</li>
+												<li>Support openOptions method multiple button callbacks</li>
+												<li>Add isLinkage to support the linkage between tabs and menus</li>
+												<li>Modify the code to generate the import table structure and the
+													abnormal page does not remind the problem</li>
+												<li>If there is an error in optimizing the user avatar, a default avatar
+													will be displayed</li>
+												<li>Excel export supports dictionary type</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v43">v4.3.0</a><code
+												class="pull-right">2020.06.22</code>
+										</h5>
+									</div>
+									<div id="v43" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>Code generation template supports main and sub-tables</li>
+												<li>Code generation display type supports checkboxes</li>
+												<li>Modify the front-end form style to rounded corners</li>
+												<li>Newly added echo data dictionary (string array)</li>
+												<li>Fixed the problem that the menu cannot be adapted after the browser
+													is manually zoomed.</li>
+												<li>Restricted users are not allowed to select system administrator
+													roles</li>
+												<li>Add input box group icon for user information & display password
+													when the mouse is pressed</li>
+												<li>Upgrade fastjson to the latest version 1.2.70 to fix high-risk
+													security vulnerabilities</li>
+												<li>Upgrade Bootstrap version to v3.3.7</li>
+												<li>Fixed the issue that the selectColumns method gets invalid data for
+													sub-objects</li>
+												<li>Modify the priority of the data source type, first according to the
+													method, then according to the class</li>
+												<li>Modify the superior department (selection to exclude itself and
+													subordinates)</li>
+												<li>Home menu display adjustment</li>
+												<li>Add whether to enable swagger configuration</li>
+												<li>New example (submission of main and sub-form)</li>
+												<li>New example (multi-level linkage drop-down example)</li>
+												<li>New example (table attribute data loading)</li>
+												<li>Add table column parameters (whether the column option is visible
+													ignore)</li>
+												<li>Add table parameters (whether to enable the display of card view
+													cardView)</li>
+												<li>Add table parameters (whether to display the full screen button
+													showFullscreen)</li>
+												<li>Add table parameters (whether to enable the paginationLoop function
+													of the infinite loop of the paging bar)</li>
+												<li>Add table parameters (whether to show header showHeader)</li>
+												<li>Add the method to show/hide all columns in the table
+													showAllColumns/hideAllColumns</li>
+												<li>Fixed the problem of node not expanding in some cases</li>
+												<li>Fixed the problem of the last address after closing the tab page
+												</li>
+												<li>Fixed the problem that the menu arrow is displayed incorrectly when
+													the page is refreshed after selecting the menu</li>
+												<li>Fixed the problem that the check box is not selected when the jquery
+													form is serialized and will not be serialized into the object</li>
+												<li>Excel supports readConverterExp to read the contents of string
+													groups</li>
+												<li>Replace the IP address query interface</li>
+												<li>Obtaining ip address is disabled by default</li>
+												<li>Operation processing ajaxSuccess judgment and correction</li>
+												<li>HttpUtils.sendPost() method, parameters do not need to be spliced
+													​​to url</li>
+												<li>The general http sending method adds the parameter contentType
+													encoding type</li>
+												<li>HTML filter does not replace & entities</li>
+												<li>Use BigDecimal instead of code generation floating point</li>
+												<li>Fixed the rendering of single-select and multi-select boxes in form
+													construction</li>
+												<li>Code generation template adjustment, the field is String and if it
+													is required, add an empty string condition</li>
+												<li>The dictionary data query list is sorted in ascending order by
+													dictSort</li>
+												<li>Fixed the problem that the tree table is invalid for the imageView
+													and tooltip methods</li>
+												<li>Fix the adjustment of Long type comparison and equality issue</li>
+												<li>The sample demo page clears the html link to prevent 404 after
+													clicking it</li>
+												<li>Online user forced withdrawal method to merge</li>
+												<li>Add a verification department including sub-departments that have
+													not been deactivated</li>
+												<li>Cancel the carriage return and submit the form automatically</li>
+												<li>'A','I','BUTTON' tags ignore the clickToSelect event to prevent
+													selection when the operation button is clicked</li>
+												<li>The email display intercepts part of the string to prevent
+													low-resolution dislocation</li>
+												<li>Code generation column attributes are sorted according to sort</li>
+												<li>Fix more browser incompatibility in some operations</li>
+												<li>Image preview event property correction</li>
+												<li>Fixed the issue of invalid sorting style of frozen columns</li>
+												<li>Fixed the style problem caused by the refresh of the personal center
+													in the context-path situation</li>
+												<li>Full screen editFull opens the adaptation table tree</li>
+												<li>Other details optimization</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v42">v4.2.0</a><code
+												class="pull-right">2020.03.23</code>
+										</h5>
+									</div>
+									<div id="v42" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>User management add role assignment page</li>
+												<li>Add scheduling log button for scheduled tasks</li>
+												<li>Add whether to enable the user registration function</li>
+												<li>New page scrolling display back to top button</li>
+												<li>Add more operation buttons for users & roles & tasks</li>
+												<li>A timeout prompt pops up when the session expires on the iframe
+													frame page</li>
+												<li>Mobile login does not display the left menu</li>
+												<li>Add a dark blue theme to the sidebar</li>
+												<li>The homepage logo is fixed and does not scroll with the menu</li>
+												<li>Support mode configuration history (means removing the # in the
+													address bar)</li>
+												<li>Dictionary translation of task groups (detailed scheduling log)</li>
+												<li>Add cache reading to dictionary management</li>
+												<li>Dictionary data list label display style</li>
+												<li>Parameter management supports cache operation</li>
+												<li>The date control is cleared and the end time is set. The default
+													value is 2099-12-31.</li>
+												<li>Add table tree to respond to callback processing after obtaining
+													data</li>
+												<li>Batch replacement table prefix adjustment</li>
+												<li>Add other input controls to the pop-up form that supports the form
+													import template</li>
+												<li>Reset the form to refresh the table tree</li>
+												<li>Add support for sorting export data fields</li>
+												<li>Add table parameters (whether single-select checkbox)</li>
+												<li>Druid is not authorized to access it</li>
+												<li>The parent node of the table tree is compatible with 0,'0','',null
+												</li>
+												<li>Add asterisks to mandatory fields in the form</li>
+												<li>Fixed select2 not displaying verification error message</li>
+												<li>Add a custom HTML filter</li>
+												<li>Fixed an abnormal problem when the switch is turned off under
+													multiple data sources</li>
+												<li>Fixed the problem of remembering selection data when turning pages
+												</li>
+												<li>User mailbox length limit is 20</li>
+												<li>Modify the error page and return to the home page, there is a
+													nesting problem</li>
+												<li>Table floating prompt single and double quotation marks escape</li>
+												<li>Support configuration four-level menu</li>
+												<li>Upgrading shiro to the latest version 1.4.2 to prevent rememberMe
+													vulnerability attacks</li>
+												<li>Upgrade summernote to the latest version v0.8.12</li>
+												<li>Import Excel to process according to the dateFormat attribute format
+												</li>
+												<li>Fixed War deployment cannot shut down normally, ehcache memory leak
+												</li>
+												<li>Fix the problem that the short field cannot be recognized when the
+													code is generated</li>
+												<li>Fixed the serviceImpl template, the modified method judged the date
+													incorrectly</li>
+												<li>The code generation template adds the export function log record
+												</li>
+												<li>Adjust the code generation unique number to tableId</li>
+												<li>Ignore case when generating queries</li>
+												<li>Code generation supports turning pages to remember to select</li>
+												<li>The code generation form comment is not filled in and it is allowed
+													to import</li>
+												<li>Modify the Global global configuration class to annotations to
+													prevent reading problems in multi-environment configuration</li>
+												<li>In the case of multiple tables, firstLoad only takes effect on the
+													first table</li>
+												<li>Processing of warning issues in Maven packaging</li>
+												<li>Default theme style to prevent blank space under slow internet speed
+												</li>
+												<li>Fixed file upload multi-level directory identification problem</li>
+												<li>The anchor link decodes the url to prevent the page from being
+													unable to load in Chinese</li>
+												<li>Fixed the problem of repeated request for refresh event of
+													right-click Tab page</li>
+												<li>The role is disabled & the menu is hidden without querying
+													permissions</li>
+												<li>Other details optimization</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v41">v4.1.0</a><code
+												class="pull-right">2019.10.22</code>
+										</h5>
+									</div>
+									<div id="v41" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>Support multi-table instance operation</li>
+												<li>Floating prompt method tooltip supports pop-up windows</li>
+												<li>Code generation & dictionary data support fuzzy condition query</li>
+												<li>Add a full screen method for tabs</li>
+												<li>Added method of clearing form validation error information</li>
+												<li>Support iframe partial refresh page</li>
+												<li>Support online theme switching</li>
+												<li>The height and width parameters of the modified image preview
+													settings are reversed.</li>
+												<li>Operation log adds unlock account function</li>
+												<li>Administrator users & roles are not allowed to operate</li>
+												<li>Remove the jsoup package and call the custom escape tool</li>
+												<li>Add timeline example</li>
+												<li>Fixed the problem of obtaining the specified column value when
+													turning pages and remembering to select</li>
+												<li>Code generation sql script to add export button</li>
+												<li>Add table parent-child view example</li>
+												<li>Add a table row editing example</li>
+												<li>Upgrade fastjson to the latest version 1.2.60 to prevent
+													vulnerability attacks</li>
+												<li>Upgrade echarts to the latest version 4.2.1</li>
+												<li>Add return parameters to the operation log</li>
+												<li>Support mybatis wildcard to scan any number of packages</li>
+												<li>Many cases of authorization verification are handled</li>
+												<li>Fixed some of the necessary attributes generated by the tree type
+													code could not be displayed</li>
+												<li>Fixed an abnormal reset in the case of non-form plugins</li>
+												<li>Fixed Rich Text Editor ordered list conflict</li>
+												<li>The code generation table prefix configuration supports multiple
+												</li>
+												<li>Fixed the problem of invalid configuration of automatically removing
+													table prefix</li>
+												<li>The menu list button data is visible but not displayed (authority
+													identification control)</li>
+												<li>Fix the problem that setting the session timeout time is invalid
+												</li>
+												<li>New general download method for local resources</li>
+												<li>Operation log record new request method</li>
+												<li>Repair of duplicate name of code generation radio button attributes
+												</li>
+												<li>Optimize the select2 drop-down box width will not change with the
+													browser</li>
+												<li>Fix the code generation tree table exception</li>
+												<li>Other details optimization</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v40">v4.0.0</a><code
+												class="pull-right">2019.08.08</code>
+										</h5>
+									</div>
+									<div id="v40" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>Code generation supports previewing, editing, and saving schemes
+												</li>
+												<li>Add a comment to prevent repeated submission of forms</li>
+												<li>Added back-end verification (consistent with the front-end)</li>
+												<li>Add the control of the maximum number of sessions for the same user
+												</li>
+												<li>Excel export sub-object supports multiple fields</li>
+												<li>Timing tasks support static calls and multiple parameters</li>
+												<li>Add group condition query for scheduled tasks</li>
+												<li>Add task grouping data to dictionary type</li>
+												<li>Whether the new table loads data for the first time</li>
+												<li>New parentTab tab can be opened on the same tab</li>
+												<li>Multiple data sources support class annotations (allowing
+													inheritance of parent class annotations)</li>
+												<li>Department and the following data authority (adjusted to the
+													following and all child nodes)</li>
+												<li>Add role data permission configuration (only my data permission)
+												</li>
+												<li>Modify the menu permission display problem</li>
+												<li>Upload file modification path and return name</li>
+												<li>Add report plug-ins and examples</li>
+												<li>Add homepage statistics template</li>
+												<li>Add table drag and drop example</li>
+												<li>Example of adding a card list</li>
+												<li>Add a rich text editor example</li>
+												<li>An example of dynamic addition, deletion, and modification of adding
+													tables</li>
+												<li>Add user page post selection box prompt</li>
+												<li>Click the menu operation to add background highlighting</li>
+												<li>The table tree added showSearch whether to display search
+													information</li>
+												<li>Solve the problem that the sortName setting of the table column is
+													invalid</li>
+												<li>Table image preview supports custom setting of width and height</li>
+												<li>Add floating tips for table columns (click to copy text)</li>
+												<li>The PC side supports floating display after retracting the menu</li>
+												<li>Detailed operation style adjustment</li>
+												<li>Modify the user update description empty string not update problem
+												</li>
+												<li>Import and modify as template rendering</li>
+												<li>Edit menu and department sorting rules</li>
+												<li>Role export data range expression translation</li>
+												<li>Add summernote rich text font size</li>
+												<li>Optimize the bottom border of the table to prevent overlap & summary
+													pixel issues</li>
+												<li>The tree table supports multi-level access to attributes</li>
+												<li>Fix the white space problem on the right side of the IE browser user
+													management interface</li>
+												<li>Reset button to refresh table</li>
+												<li>Reset password and update user cache</li>
+												<li>Optimize the verification code attribute parameters</li>
+												<li>Support data monitoring configuration user name and password</li>
+												<li>File upload modify button background and loading animation</li>
+												<li>Support configuration of the first-level menu href jump</li>
+												<li>Add a light theme to the sidebar</li>
+												<li>Add a callback function to the tree table (check abnormal status)
+												</li>
+												<li>User personal center adapts to mobile phone display</li>
+												<li>Excel supports setting export types & changing styles</li>
+												<li>Check the attribute change and modify it to clone mode (to prevent
+													hot deployment and forced conversion abnormality)</li>
+												<li>Other details optimization</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v34">v3.4.0</a><code
+												class="pull-right">2019.06.03</code>
+										</h5>
+									</div>
+									<div id="v34" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>New example demo menu and demo</li>
+												<li>New tab right-click operation</li>
+												<li>New opening method for menu management</li>
+												<li>Add an event triggered by clicking on a row</li>
+												<li>New event triggered by double-clicking a row</li>
+												<li>Add a new event triggered by clicking a certain cell</li>
+												<li>Add an event triggered by double-clicking a cell</li>
+												<li>Add whether to enable the display detail view</li>
+												<li>Support uploading files in any format</li>
+												<li>Fix the invalidation of role permission annotations</li>
+												<li>Adjust the width of the menu bar on the left</li>
+												<li>Add a custom callback function after the response is complete</li>
+												<li>Support front-end and other modules to directly obtain user
+													information</li>
+												<li>Upgrade swagger to the latest version 2.9.2</li>
+												<li>Upgrade jquery.slimscroll to the latest version 1.3.8</li>
+												<li>Upgrade select2 to the latest version 4.0.7</li>
+												<li>Add new roles to configure data permissions for this department</li>
+												<li>Add role to configure data permissions for this department and below
+												</li>
+												<li>Optimize bottom operation to prevent jumping to the top of the page
+												</li>
+												<li>Modify the frozen column checkbox is invalid and the style problem
+												</li>
+												<li>Fixed the invalid problem of the department's four-level
+													modification of the ancestor level</li>
+												<li>Change the style of the switch button</li>
+												<li>Add select2-bootstrap to beautify the drop-down box</li>
+												<li>Add a preview method of pictures in the table</li>
+												<li>Fixed permission check failed to jump to page path error</li>
+												<li>Internationalization resource file adjustment</li>
+												<li>Notice announcement layout adjustment</li>
+												<li>Delete tab operation function</li>
+												<li>Added to query the specified column value in the table tree</li>
+												<li>Change the scanning method of the system interface and improve the
+													test case</li>
+												<li>Floating prompts for table columns and dictionary echoes default to
+													the background</li>
+												<li>Fixed the problem of enabling page turning to remember that the
+													previous selection check was not selected</li>
+												<li>Remove the ads at the bottom of the monitoring page</li>
+												<li>Date control function problem repair and data function enhancement
+												</li>
+												<li>Add visibility of role permissions (direct call from front-end)</li>
+												<li>Add a new method for obtaining the currently logged-in user (call
+													from the front end and sub-modules)</li>
+												<li>Fix the problem of missing menus caused by hot deployment restart
+												</li>
+												<li>Optimize the redirection page of common requests for business
+													verification failures</li>
+												<li>Added state condition query for operation log</li>
+												<li>The operation type supports multiple selection criteria query</li>
+												<li>Notification announcement to prevent scroll bottoming and rebound
+													optimization</li>
+												<li>Other details optimization</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v33">v3.3.0</a><code
+												class="pull-right">2019.04.01</code>
+										</h5>
+									</div>
+									<div id="v33" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>New thread pool unified management</li>
+												<li>Added support for left and right freeze columns</li>
+												<li>Add extra long floating prompt for table characters</li>
+												<li>Upgrade datepicker to expand and localize</li>
+												<li>Upgrade druid to the latest version v1.1.14</li>
+												<li>Fix the cross-domain problem that the personal avatar is a picture
+													server</li>
+												<li>Modified uploaded files are stored by date</li>
+												<li>Added table client pagination options</li>
+												<li>Add the height parameter of the table</li>
+												<li>New form destruction method</li>
+												<li>Add a new method to switch the form drop-down button</li>
+												<li>Added form page to jump to the specified page number</li>
+												<li>Add a table to enable the click to select the row parameter</li>
+												<li>Fixed that the reloading of table data did not trigger some button
+													disablement</li>
+												<li>Use jsonview to display operation log parameters</li>
+												<li>Add method (addTab, editTab)</li>
+												<li>Modify the user management interface to Tab open mode</li>
+												<li>Optimization of form verification code</li>
+												<li>Fix @Excel annotation prompt property usage error</li>
+												<li>Fix the compatibility problem of combo attribute Excel</li>
+												<li>Add @Excel import and export support for parent fields</li>
+												<li>Fixed the problem that scrolling cannot be activated after closing
+													the last tab</li>
+												<li>Add date control display type and echo format extension options</li>
+												<li>Fixed that the storage status is successful after the execution of
+													the scheduled task fails</li>
+												<li>Support timing task concurrent switch control</li>
+												<li>Optimization of the permission verification failed, the normal
+													request to jump to the page</li>
+												<li>Capture exceptions thrown by thread pool execution tasks</li>
+												<li>Fixed IE browser export function error report</li>
+												<li>Added role management and user assignment function</li>
+												<li>Turn the page of the new form to remember the previous choice</li>
+												<li>Adjust the user profile page</li>
+												<li>Fix some security issues in the interface</li>
+												<li>Other details optimization</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v32">v3.2.0</a><code
+												class="pull-right">2019.01.18</code>
+										</h5>
+									</div>
+									<div id="v32" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>The last node is not allowed to be selected when the department is
+													modified</li>
+												<li>Fixed the invalid order field of department menu</li>
+												<li>Repairing the CD-ROM disk caused abnormal service monitoring</li>
+												<li>Remove the check plugin from the login interface</li>
+												<li>Verification code text character spacing correction</li>
+												<li>Upgrade SpringBoot to the latest version 2.1.1</li>
+												<li>Upgrade MYSQL driver</li>
+												<li>Fix the offset of the required login items</li>
+												<li>Session session check optimization</li>
+												<li>Excel annotation supports multi-level acquisition</li>
+												<li>New serial number generation method</li>
+												<li>Fixed WAR deployment tomcat exit thread exception</li>
+												<li>Add default confirmation/close for full screen operation</li>
+												<li>Fixing personal information may lead to vulnerabilities</li>
+												<li>Dictionary data can be added according to the drop-down selection
+												</li>
+												<li>Upgrade Summernote to the latest version v0.8.11</li>
+												<li>New user data import</li>
+												<li>Homepage theme style change</li>
+												<li>Layer extension theme replacement</li>
+												<li>User management mobile terminal hides the left layout by default
+												</li>
+												<li>The detailed information pop-up layer is displayed on the top layer
+												</li>
+												<li>The table supports switching status (user/role/timed task)</li>
+												<li>Druid data source supports configuration inheritance</li>
+												<li>Fixed some iPhone mobile phone table adaptation issues</li>
+												<li>Add a new method to prevent repeated submission of forms</li>
+												<li>New table data statistical summary method</li>
+												<li>Support rich text uploading image files</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v31">v3.1.0</a><code
+												class="pull-right">2018.12.03</code>
+										</h5>
+									</div>
+									<div id="v31" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>The new intranet does not obtain an IP address</li>
+												<li>Add valid verification of cron expressions</li>
+												<li>Added detailed information for scheduled tasks</li>
+												<li>Modify the default strategy of scheduled tasks (not trigger
+													immediate execution)</li>
+												<li>Timed tasks show the next execution cycle</li>
+												<li>Support front-end arbitrary date format processing</li>
+												<li>Upload avatar to delete redundant submit button</li>
+												<li>Add row spacing color configuration item to the table</li>
+												<li>Added configuration items of escaped HTML string to the table</li>
+												<li>The table adds show/hide designated columns</li>
+												<li>Code generation optimization</li>
+												<li>Operation log parameter formatted display</li>
+												<li>Add a new full-screen display to the tab</li>
+												<li>New one-click packaging deployment</li>
+												<li>Add multiple parameters for Excel comments</li>
+												<li>New method for submitting silent update form</li>
+												<li>New service monitoring menu</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v30">v3.0.0</a><code
+												class="pull-right">2018.10.08</code>
+										</h5>
+									</div>
+									<div id="v30" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>Upgrade poi to the latest version 3.17</li>
+												<li>Export and modify the absolute path of the temporary directory</li>
+												<li>Upgrade laydate to the latest version 5.0.9</li>
+												<li>Upgrade SpringBoot to the latest version 2.0.5</li>
+												<li>Optimization start/end time verification limit</li>
+												<li>Get the default value in the reset password parameter table</li>
+												<li>Fix the display problem of avatar modification</li>
+												<li>Added data permission filter comment</li>
+												<li>Add a table search collapse button</li>
+												<li>Add clearing (login, operation, scheduling) log</li>
+												<li>Fixed button position (submit/close)</li>
+												<li>Department/Menu Support (Expand/Collapse)</li>
+												<li>Some details are adjusted and optimized</li>
+												<li>The project adopts sub-modules</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v24">v2.4.0</a><code
+												class="pull-right">2018.09.03</code>
+										</h5>
+									</div>
+									<div id="v24" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>Multi-level query by support department</li>
+												<li>Fix the invalid menu status query</li>
+												<li>Support IP address switch</li>
+												<li>Support XSS switch</li>
+												<li>Record log asynchronous processing</li>
+												<li>Change the dictionary echo style to a drop-down box</li>
+												<li>The menu type is required to verify</li>
+												<li>Fixed online user sorting error report</li>
+												<li>Add a reset button</li>
+												<li>Support annotation import data</li>
+												<li>Support to close the area outside the bomb layer</li>
+												<li>Remarks are replaced with text area</li>
+												<li>New role logical deletion</li>
+												<li>New department logical deletion</li>
+												<li>Support department data permissions</li>
+												<li>Administrators have all authorizations by default</li>
+												<li>Dictionary data is paginated</li>
+												<li>Some details are adjusted and optimized</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v23">v2.3.0</a><code
+												class="pull-right">2018.08.06</code>
+										</h5>
+									</div>
+									<div id="v23" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>Support table non-page switch control</li>
+												<li>Modify the dictionary type synchronously modify the dictionary data
+												</li>
+												<li>Add and modify suffix processing for code generation</li>
+												<li>New entity toString for code generation</li>
+												<li>Code generation non-string removal!=''</li>
+												<li>Load the mask layer before exporting the data</li>
+												<li>Department delete verification condition modification</li>
+												<li>Search query download optimization</li>
+												<li>The phone opens the pop-up layer adaptively</li>
+												<li>The role and post are disabled and grayed out</li>
+												<li>The role is disabled and the menu is not displayed</li>
+												<li>Add export permissions</li>
+												<li>Unique verification of role permissions</li>
+												<li>Unique verification of post name coding</li>
+												<li>TreeTable optimization</li>
+												<li>Support multiple data sources</li>
+												<li>Other details optimization</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v22">v2.2.0</a><code
+												class="pull-right">2018.07.23</code>
+										</h5>
+									</div>
+									<div id="v22" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>Fix the issue of batch generated code exception</li>
+												<li>Fix the problem of timer save failure</li>
+												<li>Fix the hot deployment conversion problem</li>
+												<li>Support query menu management, department management</li>
+												<li>Most functions support time query</li>
+												<li>Custom export annotations automatically match column</li>
+												<li>New task execution strategy</li>
+												<li>Detailed dynamic display type of operation</li>
+												<li>Support dynamic echo of dictionary data</li>
+												<li>Back-end code optimization and adjustment</li>
+												<li>Other details optimization</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v21">v2.1.0</a><code
+												class="pull-right">2018.07.10</code>
+										</h5>
+									</div>
+									<div id="v21" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>New login timeout reminder</li>
+												<li>Fix the problem of timer hot deployment conversion</li>
+												<li>Fixed the issue of invalid login verification code verification</li>
+												<li>Added scheduled tasks to be executed once immediately</li>
+												<li>Dictionary cannot be deleted if there is dictionary data</li>
+												<li>Dictionary data supports query by name</li>
+												<li>Add log comment & table optimization for code generation</li>
+												<li>Fix the problem that users can log in after logical deletion</li>
+												<li>The table supports multi-field dynamic sorting</li>
+												<li>Support three-level menu display</li>
+												<li>Add ry.sh launcher script</li>
+												<li>Other details optimization</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v20">v2.0.0</a><code
+												class="pull-right">2018.07.02</code>
+										</h5>
+									</div>
+									<div id="v20" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>Upgrade SpringBoot to the latest version 2.0.3</li>
+												<li>New announcement management</li>
+												<li>Experience optimization of form verification tips</li>
+												<li>Front-end general method package adjustment</li>
+												<li>The front end removes the js file and merges it into html</li>
+												<li>Operation to load the mask layer</li>
+												<li>Support full screen mode operation</li>
+												<li>Support annotation export data</li>
+												<li>The system supports multiple queries & downloads</li>
+												<li>System style adjustment</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v16">v1.1.6</a><code
+												class="pull-right">2018.06.04</code>
+										</h5>
+									</div>
+									<div id="v16" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>New user list department column</li>
+												<li>Add login location</li>
+												<li>Add swagger</li>
+												<li>Fix the sorting number verification</li>
+												<li>The file type of optimized avatar upload is limited to pictures</li>
+												<li>Add XSS filter</li>
+												<li>Add hot deployment to improve development efficiency</li>
+												<li>Fix the invalid centering of treegrid</li>
+												<li>Multi-condition query for roles</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v15">v1.1.5</a><code
+												class="pull-right">2018.05.28</code>
+										</h5>
+									</div>
+									<div id="v15" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>Optimize to refresh the verification code after login failure</li>
+												<li>Add user login address time</li>
+												<li>Fix the problem of ajax timeout and exit</li>
+												<li>Add html call data dictionary (Ruoyi first creation)</li>
+												<li>Adjust some styles of the system</li>
+												<li>New user logical deletion</li>
+												<li>Added administrators are not allowed to delete and modify</li>
+												<li>Upgrade bootstrapTable to the latest version 1.12.1</li>
+												<li>Upgrade layer to the latest version 3.1.1</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v14">v1.1.4</a><code
+												class="pull-right">2018.05.20</code>
+										</h5>
+									</div>
+									<div id="v14" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>New parameter management</li>
+												<li>Fix the avatar upload bug</li>
+												<li>Only verification of mobile phone mailbox</li>
+												<li>Support mobile email login</li>
+												<li>Code generation optimization</li>
+												<li>Support fuzzy query</li>
+												<li>Support to switch theme skins</li>
+												<li>Modify permissions take effect immediately</li>
+												<li>Fix the tab closing problem</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v13">v1.1.3</a><code
+												class="pull-right">2018.05.14</code>
+										</h5>
+									</div>
+									<div id="v13" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>Add verification code (array calculation, character verification)
+												</li>
+												<li>Add cookie to remember me</li>
+												<li>Add new avatar upload</li>
+												<li>User name and password length limit</li>
+												<li>General field extraction</li>
+												<li>Support custom query conditions</li>
+												<li>Department name is required, time format is adjusted</li>
+												<li>Other details optimization</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v12">v1.1.2</a><code
+												class="pull-right">2018.05.07</code>
+										</h5>
+									</div>
+									<div id="v12" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>Add personal information modification</li>
+												<li>The menu exists and the sub menu is not allowed to be deleted</li>
+												<li>The menu assignment role is not allowed to be deleted</li>
+												<li>The role assigner is not allowed to be deleted</li>
+												<li>Deletion is not allowed after the post is used</li>
+												<li>Ensure the user's data integrity and join things</li>
+												<li>Added environment manual and data modeling</li>
+												<li>Thymeleaf upgraded to 3.0</li>
+												<li>Support non-ROOT deployment</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v11">v1.1.1</a><code
+												class="pull-right">2018.04.23</code>
+										</h5>
+									</div>
+									<div id="v11" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>New form builder</li>
+												<li>Code generation optimization</li>
+												<li>Support to add a main department</li>
+												<li>Support selecting superior department and superior menu</li>
+												<li>New dictionary management single item delete</li>
+												<li>Optimize some other details</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v10">v1.1.0</a><code
+												class="pull-right">2018.04.20</code>
+										</h5>
+									</div>
+									<div id="v10" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>Support password salt</li>
+												<li>Support for adding a home directory</li>
+												<li>Support batch code generation</li>
+												<li>Support table export (csv, txt, doc, excel)</li>
+												<li>Automatically adapt to the width and height mode form</li>
+												<li>Repeat verification (role name, menu name, department name)</li>
+												<li>Optimize some other details</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v09">v1.0.9</a><code
+												class="pull-right">2018.04.14</code>
+										</h5>
+									</div>
+									<div id="v09" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>New code generation (generation includes java, html, js, xml, sql)
+												</li>
+												<li>Add button permission control hiding (if the first creation)</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v08">v1.0.8</a><code
+												class="pull-right">2018.04.08</code>
+										</h5>
+									</div>
+									<div id="v08" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>Add timed tasks (add, modify, delete, query, start/pause)</li>
+												<li>Add scheduling log (query, delete)</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v07">v1.0.7</a><code
+												class="pull-right">2018.04.04</code>
+										</h5>
+									</div>
+									<div id="v07" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>New job management (add, modify, delete, query)</li>
+												<li>Optimize user management, menu management details</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v06">v1.0.6</a><code
+												class="pull-right">2018.03.15</code>
+										</h5>
+									</div>
+									<div id="v06" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>New dictionary management (addition, deletion, modification, query,
+													data selection)</li>
+												<li>New user password reset</li>
+												<li>Optimize some other details</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v05">v1.0.5</a><code
+												class="pull-right">2018.03.12</code>
+										</h5>
+									</div>
+									<div id="v05" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>New menu management (add, delete, modify, query, icon selection)
+												</li>
+												<li>Optimization of department management (add responsible person,
+													contact phone number, email address, modifier)</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v04">v1.0.4</a><code
+												class="pull-right">2018.03.11</code>
+										</h5>
+									</div>
+									<div id="v04" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>New role management (add, delete, modify, query, menu selection)
+												</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v03">v1.0.3</a><code
+												class="pull-right">2018.03.08</code>
+										</h5>
+									</div>
+									<div id="v03" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>Add user management (add, delete, modify, query, department
+													selection)</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v02">v1.0.2</a><code
+												class="pull-right">2018.03.04</code>
+										</h5>
+									</div>
+									<div id="v02" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>Add department management (add, delete, modify, query)</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h5 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v01">v1.0.1</a><code
+												class="pull-right">2018.03.03</code>
+										</h5>
+									</div>
+									<div id="v01" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>New online users (batch forced withdrawal, single forced withdrawal,
+													query)</li>
+												<li>New login logs (batch delete, query)</li>
+												<li>New operation log (batch delete, query, detailed)</li>
+												<li>New data monitoring (monitor DB pool connection and SQL execution)
+												</li>
+											</ol>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<a data-toggle="collapse" data-parent="#version" href="#v00">v1.0.0</a><code
+												class="pull-right">2018.03.01</code>
+										</h4>
+									</div>
+									<div id="v00" class="panel-collapse collapse">
+										<div class="panel-body">
+											<ol>
+												<li>If the management system is officially released. </li>
+											</ol>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="ibox float-e-margins">
+					<div class="ibox-title">
+						<h5>Donation</h5>
+					</div>
+					<div class="ibox-content">
+						<div class="alert alert-warning">
+							Ask the author to have a cup of coffee
+						</div>
+						<p id="pay-qrcode">
+							<a href="javascript:;"><img th:src="@{/img/pay.png}" width="100%"
+									alt="Please use mobile Alipay or WeChat scan code to pay">
+							</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> -->
+	<script th:src="@{/js/jquery.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+	<script type="text/javascript">
+		// $('#pay-qrcode').click(function () {
+		// 	var html = $(this).html();
+		// 	parent.layer.open({
+		// 		title: false,
+		// 		type: 1,
+		// 		closeBtn: false,
+		// 		shadeClose: true,
+		// 		area: ['600px', '360px'],
+		// 		content: html
+		// 	});
+		// });
+	</script>
+</body>
+
+</html>

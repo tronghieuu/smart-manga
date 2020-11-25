@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<th:block th:include="include :: header('Multi-level linkage pull-down')" />
+</head>
+
+<body class="gray-bg">
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox float-e-margins">
+					<div class="ibox-title">
+						<h5>Multi-level linkage drop-down <small>https://github.com/ciaoca/cxSelect</small></h5>
+					</div>
+					<div class="ibox-content">
+						<p>Simple linkage example. </p>
+						<div id="element" class="row">
+							<div class="col-sm-2">
+								<select class="type form-control m-b" data-first-title="Please select">
+									<option value="">Please select</option>
+								</select>
+							</div>
+							<div class="col-sm-2">
+								<select class="router form-control m-b" data-first-title="Please select">
+									<option value="">Please select</option>
+								</select>
+							</div>
+						</div>
+						<hr>
+
+						<p>Interaction between domestic provinces and municipalities.</p>
+						<div id="element1" class="row">
+							<div class="col-sm-2">
+								<select class="province form-control m-b" data-first-title="Select province">
+									<option value="">Please select</option>
+									<option value="Guangdong Province" selected>Guangdong Province</option>
+								</select>
+							</div>
+							<div class="col-sm-2">
+								<select class="city form-control m-b" data-first-title="Select City">
+									<option value="">Please select</option>
+									<option value="Shenzhen" selected>Shenzhen</option>
+								</select>
+							</div>
+							<div class="col-sm-2">
+								<select class="area form-control m-b" data-first-title="select area">
+									<option value="">Please select</option>
+									<option value="Nanshan District" selected>Nanshan District</option>
+								</select>
+							</div>
+						</div>
+						<hr>
+
+						<p>Custom options.</p>
+						<div id="element2" class="row">
+							<div class="col-sm-2">
+								<select class="first form-control m-b"></select>
+							</div>
+							<div class="col-sm-2">
+								<select class="second form-control m-b"></select>
+							</div>
+							<div class="col-sm-2">
+								<select class="third form-control m-b"></select>
+							</div>
+							<div class="col-sm-2">
+								<select class="fourth form-control m-b"></select>
+							</div>
+							<div class="col-sm-2">
+								<select class="fifth form-control m-b"></select>
+							</div>
+						</div>
+						<hr>
+						<div class="form-group">
+							<label class="font-noraml">Related parameter details</label>
+							<div><a href="http://doc.ruoyi.vip/ruoyi/document/zjwd.html#jquery-cxselect"
+									target="_blank">http://doc.ruoyi.vip/ruoyi/document/zjwd.html#jquery-cxselect</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<th:block th:include="include :: footer" />
+	<th:block th:include="include :: jquery-cxselect-js" />
+	<script th:inline="javascript">
+		// Return directly to get
+		var data = [[${ data }]];
+		$('#element').cxSelect({
+			selects: ['type', 'router'],
+			jsonValue: 'v',
+			data: data
+		});
+
+		// Get through the default url
+		var urlChina = 'cityData';
+		$.cxSelect.defaults.url = urlChina;
+		$('#element1').cxSelect({
+			selects: ['province', 'city', 'area'],
+			nodata: 'none'
+		});
+
+		// fixed value acquisition
+		$('#element2').cxSelect({
+			selects: ['first', 'second', 'third', 'fourth', 'fifth'],
+			required: true,
+			jsonValue: 'v',
+			data: [
+				{
+					'v': '1', 'n': 'First level >', 's': [
+						{
+							'v': '2', 'n': 'second level >', 's': [
+								{
+									'v': '3', 'n': 'third level >', 's': [
+										{
+											'v': '4', 'n': 'fourth level >', 's': [
+												{
+													'v': '5', 'n': 'Fifth level >', 's': [
+														{ 'v': '6', 'n': 'Sixth level >' }
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					'v': 'test number', 'n': 'test number', 's': [
+						{
+							'v': 'text', 'n': 'text type', 's': [
+								{ 'v': '4', 'n': '4' },
+								{ 'v': '5', 'n': '5' },
+								{ 'v': '6', 'n': '6' },
+								{ 'v': '7', 'n': '7' },
+								{ 'v': '8', 'n': '8' },
+								{ 'v': '9', 'n': '9' },
+								{ 'v': '10', 'n': '10' }
+							]
+						},
+						{
+							'v': 'number', 'n': 'number type', 's': [
+								{ 'v': 11, 'n': 11 },
+								{ 'v': 12, 'n': 12 },
+								{ 'v': 13, 'n': 13 },
+								{ 'v': 14, 'n': 14 },
+								{ 'v': 15, 'n': 15 },
+								{ 'v': 16, 'n': 16 },
+								{ 'v': 17, 'n': 17 }
+							]
+						}
+					]
+				},
+				{
+					'v': 'test boolean', 'n': 'Test Boolean type', 's': [
+						{ 'v': true, 'n': true },
+						{ 'v': false, 'n': false }
+					]
+				},
+				{
+					v: 'test quotes', n: 'Test attributes are not quoted', s: [
+						{ v: 'quotes', n: 'quotes' }
+					]
+				},
+				{
+					v: 'test other', n: 'Test for strange values', s: [
+						{ v: '[]', n: 'Array (empty)' },
+						{ v: [1, 2, 3], n: 'Array (number)' },
+						{ v: ['a', 'b', 'c'], n: 'Array (text)' },
+						{ v: new Date(), n: 'Date' },
+						{ v: new RegExp('\\d+'), n: 'Regular Object' },
+						{ v: /\d+/, n: 'Regular direct quantity' },
+						{ v: {}, n: 'object' },
+						{ v: document.getElementById('custom_data'), n: 'DOM' },
+						{ v: null, n: 'Null' },
+						{ n: 'value not set' }
+					]
+				},
+				{ 'v': '', 'n': 'No children' }
+			]
+		});
+	</script>
+</body>
+
+</html>

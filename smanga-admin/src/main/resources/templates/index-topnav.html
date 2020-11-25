@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="renderer" content="webkit">
+	<title>Smanga System Home Page</title>
+	<!-- Avoid IE using compatibility mode -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link th:href="@{favicon.ico}" rel="shortcut icon" />
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+	<link th:href="@{/css/jquery.contextMenu.min.css}" rel="stylesheet" />
+	<link th:href="@{/css/font-awesome.min.css}" rel="stylesheet" />
+	<link th:href="@{/css/animate.css}" rel="stylesheet" />
+	<link th:href="@{/css/style.css}" rel="stylesheet" />
+	<link th:href="@{/css/skins.css?v=20200902}" rel="stylesheet" />
+	<link th:href="@{/smanga/css/smanga-ui.css?v=4.5.1}" rel="stylesheet" />
+</head>
+
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow: hidden">
+	<div id="wrapper">
+
+		<!--Start left navigation-->
+		<nav class="navbar-default navbar-static-side" role="navigation">
+			<div class="nav-close">
+				<i class="fa fa-times-circle"></i>
+			</div>
+			<a th:href="@{/index}">
+				<li class="logo hidden-xs">
+					<span class="logo-lg">Smart Manga</span>
+				</li>
+			</a>
+			<div class="sidebar-collapse tab-content" id="side-menu">
+				<div class="user-panel">
+					<a class="menuItem noactive" title="Personal center" th:href="@{/system/user/profile}">
+						<div class="hide">Personal center</div>
+						<div class="pull-left image">
+							<img th:src="(${#strings.isEmpty(user.avatar)}) ? @{/img/profile.jpg} : @{${user.avatar}}" th:onerror="this.src='img/profile.jpg'" class="img-circle" alt="User Image">
+					</div>
+				</a>
+				<div class="pull-left info">
+					<p>[[${user.loginName}]]</p>
+					<a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+					<a th:href="@{logout}" style="padding-left:5px;"><i class="fa fa-sign-out text-danger"></i> Sign out</a>
+				</div>
+			</div>
+			
+			<!-- Left menu -->
+			<th:block th:each="menu : ${menus}">
+				<div class="tab-pane fade height-full" th:id="|menu_${menu.menuId}|">
+					<ul class="nav">
+						<li th:each="cmenu : ${menu.children}">
+							<a class="menu-content" th:if="${#lists.isEmpty(cmenu.children)}" th:href="@{${cmenu.url}}" th:classappend="${#strings.isEmpty(cmenu.target)} ? |menuItem| : ${cmenu.target}">
+								<i th:class="${cmenu.icon} + ' fa-fw'"></i> <span class="nav-label">[[${cmenu.menuName}]]</span>
+							</a>
+							<a class="menu-content" th:if="${not #lists.isEmpty(cmenu.children)}" href="#">
+								<i th:class="${cmenu.icon} + ' fa-fw'"></i>
+								<span class="nav-label">[[${cmenu.menuName}]]</span>
+								<span class="fa arrow"></span>
+							</a>
+							<ul th:if="${not #lists.isEmpty(cmenu.children)}" class="nav nav-second-level collapse">
+								<li th:each="emenu : ${cmenu.children}">
+									<a th:if="${#lists.isEmpty(emenu.children)}" th:href="@{${emenu.url}}" th:class="${#strings.isEmpty(emenu.target)} ? |menuItem| : ${emenu.target}">
+										<i th:class="${emenu.icon} + ' fa-fw'"></i> 
+										[[${emenu.menuName}]]
+									</a>
+									<a th:if="${not #lists.isEmpty(emenu.children)}" href="#">
+										<i th:class="${emenu.icon} + ' fa-fw'"></i> 
+										[[${emenu.menuName}]]
+										<span class="fa arrow"></span>
+									</a>
+									<ul th:if="${not #lists.isEmpty(emenu.children)}" class="nav nav-third-level collapse">
+										<li th:each="fmenu : ${emenu.children}"><a th:if="${#lists.isEmpty(fmenu.children)}" th:class="${#strings.isEmpty(fmenu.target)} ? |menuItem| : ${fmenu.target}" th:href="@{${fmenu.url}}">[[${fmenu.menuName}]]</a></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</th:block>
+			<!-- Home menu -->
+			<div class="tab-pane fade height-full" id="index">
+				<ul class="nav">
+					<li>
+						<a class="menuItem" th:href="@{/system/main}">
+							<i class="fa fa-home"></i> <span class="nav-label">Home</span></a>
+					</li>
+				</ul>
+			</div>
+			
+            <!-- Example demo menu -->
+			<div class="tab-pane fade height-full" id="demo" th:if="${demoEnabled}">
+			<ul class="nav">
+				<li>
+					<a href="#"><i class="fa fa-edit"></i> <span class="nav-label">Form</span><span class="fa arrow"></span></a>
+					<ul class="nav nav-second-level collapse">
+						<li><a class="menuItem" th:href="@{/demo/form/button}">Button</a></li>
+						<li><a class="menuItem" th:href="@{/demo/form/grid}">Grid</a></li>
+						<li><a class="menuItem" th:href="@{/demo/form/select}">Dropdown box</a></li>
+						<li><a class="menuItem" th:href="@{/demo/form/timeline}">Timeline</a></li>
+						<li><a class="menuItem" th:href="@{/demo/form/basic}">Basic form</a></li>
+						<li><a class="menuItem" th:href="@{/demo/form/cards}">Card list</a></li>
+						<li><a class="menuItem" th:href="@{/demo/form/jasny}">Function extension</a></li>
+						<li><a class="menuItem" th:href="@{/demo/form/sortable}">Drag to sort</a></li>
+						<li><a class="menuItem" th:href="@{/demo/form/tabs_panels}">Tabs & panels</a></li>
+						<li><a class="menuItem" th:href="@{/demo/form/validate}">Form verification</a></li>
+						<li><a class="menuItem" th:href="@{/demo/form/wizard}">Form Wizard</a></li>
+						<li><a class="menuItem" th:href="@{/demo/form/upload}">File upload</a></li>
+						<li><a class="menuItem" th:href="@{/demo/form/datetime}">Date and time</a></li>
+						<li><a class="menuItem" th:href="@{/demo/form/summernote}">Rich text editor</a></li>
+						<li><a class="menuItem" th:href="@{/demo/form/duallistbox}">Select components from left and right</a></li>
+						<li><a class="menuItem" th:href="@{/demo/form/autocomplete}">Search autocomplete</a></li>
+						<li><a class="menuItem" th:href="@{/demo/form/cxselect}">Multi-level linkage drop-down</a></li>
+						<li><a class="menuItem" th:href="@{/demo/form/localrefresh}">Ajax partial refresh</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#"><i class="fa fa-table"></i> <span class="nav-label">Form</span><span class="fa arrow"></span></a>
+					<ul class="nav nav-second-level collapse">
+						<li><a class="menuItem" th:href="@{/demo/table/search}">Query conditions</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/footer}">Data summary</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/groupHeader}">Combination header</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/export}">Table export</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/remember}">Turn the page to remember the choice</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/pageGo}">Jump to the specified page</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/params}">Custom query parameters</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/multi}">Initial multi-table</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/button}">Click the button to load the table</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/data}">Load table data directly</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/fixedColumns}">Table frozen columns</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/event}">Custom Trigger event</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/headerStyle}">Table header formatting</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/detail}">Table detail view</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/child}">Table parent-child view</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/image}">Table image preview</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/curd}">Dynamic addition, deletion, modification and check</a>
+						</li>
+						<li><a class="menuItem" th:href="@{/demo/table/reorder}">Table drag operation</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/resizable}">Drag the table column width</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/editable}">In-line editing of the table</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/subdata}">Submit the main and sub-table</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/refresh}">Automatic table refresh</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/print}">Form printing configuration</a></li>
+						<li><a class="menuItem" th:href="@{/demo/table/other}">Other operations on the table</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#"><i class="fa fa-flask"></i> <span class="nav-label">Bullet frame</span><span
+							class="fa arrow"></span></a>
+					<ul class="nav nav-second-level collapse">
+						<li><a class="menuItem" th:href="@{/demo/modal/dialog}">Modal window</a></li>
+						<li><a class="menuItem" th:href="@{/demo/modal/layer}">Popular component</a></li>
+						<li><a class="menuItem" th:href="@{/demo/modal/table}"> Pop-up table</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#"><i class="fa fa-wpforms"></i> <span class="nav-label">Operation</span><span
+							class="fa arrow"></span></a>
+					<ul class="nav nav-second-level collapse">
+						<li><a class="menuItem" th:href="@{/demo/operate/table}">Table</a></li>
+						<li><a class="menuItem" th:href="@{/demo/operate/other}">Other</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Reporting</span><span
+							class="fa arrow"></span></a>
+					<ul class="nav nav-second-level collapse">
+						<li><a class="menuItem" th:href="@{/demo/report/echarts}">Baidu ECharts</a></li>
+						<li><a class="menuItem" th:href="@{/demo/report/peity}">peity</a></li>
+						<li><a class="menuItem" th:href="@{/demo/report/sparkline}">sparkline</a></li>
+						<li><a class="menuItem" th:href="@{/demo/report/metrics}">Chart combination</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#"><i class="fa fa-book"></i> <span class="nav-label">Icon</span><span class="fa arrow"></span></a>
+					<ul class="nav nav-second-level collapse">
+						<li><a class="menuItem" th:href="@{/demo/icon/fontawesome}">Font Awesome</a></li>
+						<li><a class="menuItem" th:href="@{/demo/icon/glyphicons}">Glyphicons</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#"><i class="fa fa-navicon"></i> <span class="nav-label">Four-tier menu</span><span
+							class="fa arrow"></span></a>
+					<ul class="nav nav-second-level collapse">
+						<li>
+							<a href="#" id="damian">Three-level menu 1<span class="fa arrow"></span></a>
+							<ul class="nav nav-third-level collapse">
+								<li>
+									<a href="#">Four-level menu 1</a>
+								</li>
+								<li>
+									<a href="#">Four-level menu 2</a>
+								</li>
+							</ul>
+						</li>
+						<li><a href="#">Three-level menu 2</a></li>
+					</ul>
+				</li>
+				</ul>
+			</div>
+		</div>
+    </nav>
+    <!--End of left navigation-->
+
+    <!--Start on the right part-->
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2" style="color:#FFF;" href="#" title="collapse menu">
+                    <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+                <!-- Top bar -->
+				<div id="navMenu">
+					<ul class="nav navbar-toolbar nav-tabs navbar-left hidden-xs">
+				
+						<!-- Top menu list -->
+						<th:block th:each="menu : ${menus}">
+							<li role="presentation" th:id="|tab_${menu.menuId}|">
+								<a data-toggle="tab"
+									th:class="@{${!#strings.isEmpty(menu.target) && menu.target == 'menuBlank'} ? 'menuBlank'}"
+									th:href="@{${!#strings.isEmpty(menu.target) && menu.target == 'menuBlank'} ? ${menu.url} : |#menu_${menu.menuId}|}">
+									<i th:class="${menu.icon}"></i> <span>[[${menu.menuName}]]</span>
+								</a>
+							</li>
+						</th:block>
+				
+						<li role="presentation" id="tab_index">
+							<a data-toggle="tab" href="#index">
+								<i class="fa fa-area-chart"></i> <span>Statistical report</span>
+							</a>
+						</li>
+				
+						<li role="presentation" id="tab_demo" th:if="${demoEnabled}">
+							<a data-toggle="tab" href="#demo">
+								<i class="fa fa-desktop"></i> <span>Example demonstration</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+                <!-- Right sidebar -->
+                <ul class="nav navbar-top-links navbar-right welcome-message">
+                    <!-- <li><a title="Video tutorial" href="http://doc.ruoyi.vip/ruoyi/document/spjc.html" target="_blank"><i class="fa fa-video-camera"></i> Video tutorial</a></li>
+                    <li><a title="Development Document" href="http://doc.ruoyi.vip" target="_blank"><i class="fa fa-question-circle"></i> Development Document</a></li>
+	                <li><a title="full-screen display" href="javascript:void(0)" id="fullScreen"><i class="fa fa-arrows-alt"></i> full-screen display</a></li> -->
+                    <li class="dropdown user-menu">
+						<a href="javascript:void(0)" class="dropdown-toggle" data-hover="dropdown">
+							<img th:src="(${#strings.isEmpty(user.avatar)}) ? @{/img/profile.jpg} : @{${user.avatar}}" th:onerror="this.src='img/profile.jpg'" class="user-image">
+							<span class="hidden-xs">[[${#strings.defaultString(user.userName, '-')}]]</span>
+						</a>
+						<ul class="dropdown-menu">
+							<li class="mt5">
+								<a th:href="@{/system/user/profile}" class="menuItem">
+									<i class="fa fa-user"></i> Personal Center</a>
+							</li>
+							<li>
+								<a onclick="resetPwd()">
+									<i class="fa fa-key"></i> Change password</a>
+							</li>
+							<li>
+								<a onclick="switchSkin()">
+									<i class="fa fa-dashboard"></i> Switch theme</a>
+							</li>
+							<li>
+								<a onclick="toggleMenu()">
+									<i class="fa fa-toggle-off"></i> left side menu</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a th:href="@{logout}">
+									<i class="fa fa-sign-out"></i> Sign out</a>
+							</li>
+						</ul>
+					</li>
+                </ul>
+            </nav>
+        </div>
+        <div class="row content-tabs">
+            <button class="roll-nav roll-left tabLeft">
+                <i class="fa fa-backward"></i>
+            </button>
+            <nav class="page-tabs menuTabs">
+                <div class="page-tabs-content">
+                    <a href="javascript:;" class="active menuTab" th:data-id="@{/system/main}">Home</a>
+                </div>
+            </nav>
+            <button class="roll-nav roll-right tabRight">
+                <i class="fa fa-forward"></i>
+            </button>
+            <a href="javascript:void(0);" class="roll-nav roll-right tabReload"><i class="fa fa-refresh"></i></a>
+        </div>
+
+        <a id="ax_close_max" class="ax_close_max" href="#" title="Close full screen"> <i class="fa fa-times-circle-o"></i> </a>
+
+        <div class="row mainContent" id="content-main" th:style="${#bools.isFalse(ignoreFooter)} ? |height: calc(100% - 91px)|">
+            <iframe class="RuoYi_iframe" name="iframe0" width="100%" height="100%" th:data-id="@{/system/main}"
+                    th:src="@{/system/main}" frameborder="0" seamless></iframe>
+        </div>
+        
+        <div th:if="${ignoreFooter}" class="footer">
+            <div class="pull-right">© [[${copyrightYear}]] Smart Manga Copyright </div>
+        </div>
+    </div>
+    <!--End of the right part-->
+</div>
+<!-- Global js -->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+<script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+<script th:src="@{/js/jquery.contextMenu.min.js}"></script>
+<script th:src="@{/ajax/libs/blockUI/jquery.blockUI.js}"></script>
+<script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+<script th:src="@{/smanga/js/smanga-ui.js?v=4.5.1}"></script>
+<script th:src="@{/smanga/js/common.js?v=4.5.1}"></script>
+<script th:src="@{/smanga/index.js?v=20200902}"></script>
+<script th:src="@{/ajax/libs/fullscreen/jquery.fullscreen.js}"></script>
+<script th:src="@{/js/resize-tabs.js}"></script>
+<script th:inline="javascript">
+	var ctx = [[@{/}]];
+	// Skin cache
+	var skin = storage.get("skin");
+	// history (remove the # of the address) otherwise the address is displayed in the form of "#"
+	var mode = "history";
+	// Historical access path cache
+	var historyPath = storage.get("historyPath");
+	// Whether the tab is linked with the menu
+	var isLinkage = true;
+
+	// The local theme takes precedence, and the system configuration is not set
+	if ($.common.isNotEmpty(skin)) {
+		$("body").addClass(skin.split('|')[0]);
+		$("body").addClass(skin.split('|')[1]);
+	} else {
+		$("body").addClass([[${ sideTheme }]]);
+		$("body").addClass([[${ skinName }]]);
+	}
+
+	/* User management-reset password */
+	function resetPwd() {
+		var url = ctx + 'system/user/profile/resetPwd';
+		$.modal.open("Reset Password", url, '770', '380');
+	}
+	/* Switch theme */
+	function switchSkin() {
+		layer.open({
+			type: 2,
+			shadeClose: true,
+			title: "Switch theme",
+			area: ["530px", "386px"],
+			content: [ctx + "system/switchSkin", 'no']
+		})
+	}
+
+	/* Switch menu */
+	function toggleMenu() {
+		$.modal.confirm("Are you sure you want to switch to the left menu?", function () {
+			$.get(ctx + 'system/menuStyle/default', function (result) {
+				window.location.reload();
+			});
+		})
+	}
+
+	/** Access path tab when refreshing */
+	function applyPath(url) {
+		var $dataObj = $('a[href$="' + decodeURI(url) + '"]');
+		$dataObj.click();
+		if (!$dataObj.hasClass("noactive")) {
+			$dataObj.parent("li").addClass("selected").parents("li").addClass("active").end().parents("ul").addClass("in");
+		}
+		// Top menu synchronization processing
+		var tabStr = $dataObj.parents(".tab-pane").attr("id");
+		if ($.common.isNotEmpty(tabStr)) {
+			var sepIndex = tabStr.lastIndexOf('_');
+			var menuId = tabStr.substring(sepIndex + 1, tabStr.length);
+			$("#tab_" + menuId + " a").click();
+		}
+	}
+
+	$(function () {
+		if ($.common.equals("history", mode) && window.performance.navigation.type == 1) {
+			var url = storage.get('publicPath');
+			if ($.common.isNotEmpty(url)) {
+				applyPath(url);
+			} else {
+				$(".navbar-toolbar li a").eq(0).click();
+			}
+		} else {
+			var hash = location.hash;
+			if ($.common.isNotEmpty(hash)) {
+				var url = hash.substring(1, hash.length);
+				applyPath(url);
+			} else {
+				if ($.common.equals("history", mode)) {
+					storage.set('publicPath', "");
+				}
+				$(".navbar-toolbar li a").eq(0).click();
+			}
+		}
+
+		/* Initial password prompt */
+		if ([[${ isDefaultModifyPwd }]]) {
+			layer.confirm("Your password is still the initial password, please change your password!", {
+				icon: 0,
+				title: "Safety Tips",
+				btn: ['Confirm', 'Cancel'],
+				offset: ['30%']
+			}, function (index) {
+				resetPwd();
+				layer.close(index);
+			});
+		}
+
+		/* Expired password prompt */
+		if ([[${ isPasswordExpired }]]) {
+			layer.confirm("Your password has expired, please change your password as soon as possible!", {
+				icon: 0,
+				title: "Safety Tips",
+				btn: ['Confirm', 'Cancel'],
+				offset: ['30%']
+			}, function (index) {
+				resetPwd();
+				layer.close(index);
+			});
+		}
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <th:block th:include="include :: header('Grid')" />
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Grid settings</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="#">Option 1</a>
+                                </li>
+                                <li><a href="#">Option 2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+
+                        <p>Through the table below, you can see in detail how Bootstrap's grid system works on a variety
+                            of screen devices. </p>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>
+                                            Ultra-small screen
+                                            <small>Mobile (&lt;768px)</small>
+                                        </th>
+                                        <th>
+                                            Small screen
+                                            <small>Plate (≥768px)</small>
+                                        </th>
+                                        <th>
+                                            Medium screen
+                                            <small>Desktop monitor (≥992px)</small>
+                                        </th>
+                                        <th>
+                                            big screen
+                                            <small>Large desktop display (≥1200px)</small>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th class="text-nowrap">Grid system behavior</th>
+                                        <td>Always arrange horizontally</td>
+                                        <td colspan="3">At first it is stacked together, when it is greater than these
+                                            thresholds, it will become horizontal arrangement C</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-nowrap"><code>.container</code> Maximum width</th>
+                                        <td>None (automatic)</td>
+                                        <td>750px</td>
+                                        <td>970px</td>
+                                        <td>1170px</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-nowrap">Class prefix</th>
+                                        <td><code>.col-xs-</code>
+                                        </td>
+                                        <td><code>.col-sm-</code>
+                                        </td>
+                                        <td><code>.col-md-</code>
+                                        </td>
+                                        <td><code>.col-lg-</code>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-nowrap">Number of columns</th>
+                                        <td colspan="4">12</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-nowrap">Maximum column (column) width</th>
+                                        <td class="text-muted">Automatic</td>
+                                        <td>~62px</td>
+                                        <td>~81px</td>
+                                        <td>~97px</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-nowrap">Gutter width</th>
+                                        <td colspan="4">30px (15px on the left and right in each column)</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-nowrap">Can be nested</th>
+                                        <td colspan="4">Yes</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-nowrap">Offsets</th>
+                                        <td colspan="4">Yes</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-nowrap">Column sorting</th>
+                                        <td colspan="4">Yes</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>From stacking to horizontal arrangement</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="#">Option 1</a>
+                                </li>
+                                <li><a href="#">Option 2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+
+                        <p>Use a single set of <code>.col-md-*</code>
+                            Grid class, you can create a basic grid system, which is initially stacked on mobile phones
+                            and tablet devices (from ultra-small screens to small screens), and becomes horizontal on
+                            desktop (medium) screen devices arrangement. All "column must be placed in "
+                            <code>.row</code>.</p>
+                        <div class="row show-grid">
+                            <div class="col-md-1">.col-md-1</div>
+                            <div class="col-md-1">.col-md-1</div>
+                            <div class="col-md-1">.col-md-1</div>
+                            <div class="col-md-1">.col-md-1</div>
+                            <div class="col-md-1">.col-md-1</div>
+                            <div class="col-md-1">.col-md-1</div>
+                            <div class="col-md-1">.col-md-1</div>
+                            <div class="col-md-1">.col-md-1</div>
+                            <div class="col-md-1">.col-md-1</div>
+                            <div class="col-md-1">.col-md-1</div>
+                            <div class="col-md-1">.col-md-1</div>
+                            <div class="col-md-1">.col-md-1</div>
+                        </div>
+                        <div class="row show-grid">
+                            <div class="col-md-8">.col-md-8</div>
+                            <div class="col-md-4">.col-md-4</div>
+                        </div>
+                        <div class="row show-grid">
+                            <div class="col-md-4">.col-md-4</div>
+                            <div class="col-md-4">.col-md-4</div>
+                            <div class="col-md-4">.col-md-4</div>
+                        </div>
+                        <div class="row show-grid">
+                            <div class="col-md-6">.col-md-6</div>
+                            <div class="col-md-6">.col-md-6</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Mobile devices and desktop screens</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="#">Option 1</a>
+                                </li>
+                                <li><a href="#">Option 2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+
+                        <p>Don’t you want all the columns to be stacked on top of a small screen device? Then use the
+                            classes defined for ultra-small and medium-screen devices, namely <code>.col-xs-*</code> and
+                            <code>.col-md-*</code>. Take a look at the examples below to study how these work.</p>
+                        <div class="row show-grid">
+                            <div class="col-xs-12 col-md-8">.col-xs-12 .col-md-8</div>
+                            <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
+                        </div>
+                        <div class="row show-grid">
+                            <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
+                            <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
+                            <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
+                        </div>
+                        <div class="row show-grid">
+                            <div class="col-xs-6">.col-xs-6</div>
+                            <div class="col-xs-6">.col-xs-6</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Mobile phone, tablet, desktop</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="#">Option 1</a>
+                                </li>
+                                <li><a href="#">Option 2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+
+                        <p>On the basis of the above case, by using the <code>.col-sm-*</code> class for tablet devices,
+                            let's create a more dynamic and powerful layout.</p>
+                        <div class="row show-grid">
+                            <div class="col-xs-12 col-sm-6 col-md-8">.col-xs-12 .col-sm-6 .col-md-8</div>
+                            <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
+                        </div>
+                        <div class="row show-grid">
+                            <div class="col-xs-6 col-sm-4">.col-xs-6 .col-sm-4</div>
+                            <div class="col-xs-6 col-sm-4">.col-xs-6 .col-sm-4</div>
+                            <!-- Optional: clear the XS cols if their content doesn't match in height -->
+                            <div class="clearfix visible-xs"></div>
+                            <div class="col-xs-6 col-sm-4">.col-xs-6 .col-sm-4</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>The extra columns will be arranged on a new line</h5>
+
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="#">Option 1</a>
+                                </li>
+                                <li><a href="#">Option 2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <p>In the 4 grids of equal width, the unequal height of the grid will encounter problems. To
+                            solve this problem, you can use <code>.clearfix</code>. <a
+                                href="#responsive-utilities">Responsive utility class</a>
+                        </p>
+                        <div class="row show-grid">
+                            <div class="col-xs-6 col-sm-3">
+                                .col-xs-6 .col-sm-3
+                                <br>Resize the window or view this example on your phone
+                            </div>
+                            <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
+
+                            <!-- Add the extra clearfix for only the required viewport -->
+                            <div class="clearfix visible-xs"></div>
+
+                            <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
+                            <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Column offset</h5>
+
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="#">Option 1</a>
+                                </li>
+                                <li><a href="#">Option 2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+
+                        <p>Use the <code>.col-md-offset-*</code> class to offset the column to the right. These classes
+                            are actually through the use of <code>*</code>
+                            The selector adds a left margin to the current element. For example, the
+                            <code>.col-md-offset-4</code> class will <code>.col-md-4</code>
+                            The element is shifted to the right by 4 columns (column) width.</p>
+                        <div class="row show-grid">
+                            <div class="col-md-4">.col-md-4</div>
+                            <div class="col-md-4 col-md-offset-4">.col-md-4 .col-md-offset-4</div>
+                        </div>
+                        <div class="row show-grid">
+                            <div class="col-md-3 col-md-offset-3">.col-md-3 .col-md-offset-3</div>
+                            <div class="col-md-3 col-md-offset-3">.col-md-3 .col-md-offset-3</div>
+                        </div>
+                        <div class="row show-grid">
+                            <div class="col-md-6 col-md-offset-3">.col-md-6 .col-md-offset-3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Nested column</h5>
+
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="#">Option 1</a>
+                                </li>
+                                <li><a href="#">Option 2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <p>In order to use the built-in grid system to nest content again, you can add a new
+                            <code>.row</code> element and a series of <code>.col-sm-*</code> elements to the existing
+                            <code>.col-sm-*</code> element. The number of columns contained in the nested row cannot
+                            exceed 12 (in fact, there is no requirement that you must occupy 12 columns). </p>
+                        <div class="row show-grid">
+                            <div class="col-md-9">
+                                First level: .col-md-9
+                                <div class="row show-grid">
+                                    <div class="col-md-6">
+                                        Second level: .col-md-6
+                                    </div>
+                                    <div class="col-md-6">
+                                        Second level: .col-md-6
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Column sorting</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="#">Option 1</a>
+                                </li>
+                                <li><a href="#">Option 2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <p>By using the <code>.col-md-push-*</code> and <code>.col-md-pull-*</code> classes, the order
+                            of the columns can be easily changed.</p>
+                        <div class="row show-grid">
+                            <div class="col-md-9 col-md-push-3">.col-md-9 .col-md-push-3</div>
+                            <div class="col-md-3 col-md-pull-9">.col-md-3 .col-md-pull-9</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer" />
+</body>
+
+</html>

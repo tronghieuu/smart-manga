@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Manga - 404</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/animate.css}" rel="stylesheet" />
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+
+<body class="gray-bg">
+    <div class="middle-box text-center animated fadeInDown">
+        <h1>404</h1>
+        <h3 class="font-bold">No page found!</h3>
+        <div class="error-desc">
+            Sorry, the page you are looking for does not exist. Try to check the URL for errors, then press the refresh
+            button on your browser or try to find other content in our app.
+            <a href="javascript:index()" class="btn btn-primary m-t">Home page</a>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        var ctx = [[@{/}]];
+        function index() {
+            window.parent.frames.location.href = ctx + "index";
+        }
+    </script>
+</body>
+
+</html>

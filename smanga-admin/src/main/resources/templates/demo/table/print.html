@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+	<th:block th:include="include :: header('Form printing configuration')" />
+</head>
+
+<body class="gray-bg">
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 select-table table-striped">
+				<!-- data-show-print is set to true to display the "print" button on the toolbar.
+					When data-print-as-filtered-and-sorted-on-ui is true-the table is printed according to the sorting and filtering conditions on the user interface. Note that if set to true and the explicit predefined print options for filtering and sorting (printFilter, printSortOrder, printSortColumn), they will be applied to the data that has been filtered and sorted by the UI controls. For printing data in the way of filtering and sorting on the UI-do not set the following 3 options: printFilter, printSortOrder, printSortColumn
+					data-print-page-builder receives the html <table> element as a string parameter, and returns the html string for printing. Used to style and add headers or footers.
+					data-print-sort-column set the column field name to sort the print table
+					Data-print-sort-order valid values: "asc", "desc". Only relevant when printSortColumn is set
+					data-print-filter Set the value to filter the printed data by this column.
+					data-print-formatter function (value, row, index)-returns a string. Format the cell value of this column in the printed table. The function behaves like the "formatter" column option
+					Set printIgnore to true to hide this column on the printed page. -->
+				<table id="bootstrap-table" data-show-print="true"></table>
+			</div>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<th:block th:include="include :: bootstrap-table-print-js" />
+	<script th:inline="javascript">
+		var prefix = ctx + "demo/table";
+
+		$(function () {
+			var options = {
+				url: prefix + "/list",
+				showSearch: false,
+				showRefresh: false,
+				showToggle: false,
+				showColumns: false,
+				columns: [{
+					checkbox: true
+				},
+				{
+					field: 'userId',
+					title: 'User ID'
+				},
+				{
+					field: 'userCode',
+					title: 'User ID'
+				},
+				{
+					field: 'userName',
+					title: 'User name'
+				},
+				{
+					field: 'userPhone',
+					title: 'User mobile phone'
+				},
+				{
+					field: 'userEmail',
+					title: 'User mailbox'
+				},
+				{
+					field: 'userBalance',
+					title: 'User balance'
+				},
+				{
+					title: 'Operation',
+					align: 'center',
+					formatter: function (value, row, index) {
+						var actions = [];
+						actions.push('<a class="btn btn-danger btn-xs" href="javascript:;" onclick="remove(this)"><i class="fa fa-remove"></i> Delete </a>');
+						return actions.join('');
+					}
+				}]
+			};
+			$.table.init(options);
+		});
+
+		// Fake delete operation
+		function remove(obj) {
+			$.modal.confirm("Are you sure you want to delete?", function () {
+				$(obj).parents("tr").remove();
+				$.modal.msgSuccess('Deleted!');
+			});
+		}
+	</script>
+</body>
+
+</html>
