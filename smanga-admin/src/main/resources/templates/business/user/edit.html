@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:include="include :: header('modify Business User Information Form')" />
+    <th:block th:include="include :: datetimepicker-css" />
+</head>
+
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-user-edit" th:object="${user}">
+            <input name="userId" id="userId" th:field="*{userId}" type="hidden">
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">Account name：</label>
+                <div class="col-sm-8">
+                    <input name="loginName" id="loginName" placeholder="Please enter the login account"
+                        class="form-control" type="text" maxlength="30" th:field="*{loginName}" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">User name：</label>
+                <div class="col-sm-8">
+                    <input name="userName" class="form-control" type="text" th:field="*{userName}" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">User type：</label>
+                <div class="col-sm-8">
+                    <div class="radio-box">
+                        <input type="radio" name="userType" value="R"
+                            th:checked="${user.userType == 'R' ? true : false}">
+                        <label th:for="userType" th:text="Reader"></label>
+                    </div>
+                    <div class="radio-box">
+                        <input type="radio" name="userType" value="P"
+                            th:checked="${user.userType == 'P' ? true : false}">
+                        <label th:for="userType" th:text="Publisher"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label is-required">Email：</label>
+                <div class="col-sm-8">
+                    <input name="email" id="email" class="form-control email" type="text" maxlength="50"
+                        placeholder="Please enter the email address" th:field="*{email}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Mobile phone number：</label>
+                <div class="col-sm-8">
+                    <input name="phonenumber" id="phonenumber" placeholder="Please enter your mobile phone number"
+                        class="form-control" type="text" maxlength="11" th:field="*{phonenumber}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">User gender：</label>
+                <div class="col-sm-8">
+                    <select name="sex" class="form-control m-b">
+                        <option value="0" th:selected="${user.sex == '0' ? true : false}">Male</option>
+                        <option value="1" th:selected="${user.sex == '1' ? true : false}">Female</option>
+                        <option value="2" th:selected="${user.sex == '2' ? true : false}">Unknown</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Account status：</label>
+                <div class="col-sm-8">
+                    <div class="radio-box">
+                        <input type="radio" name="status" value="0" th:checked="${user.status == '0' ? true : false}">
+                        <label th:for="status" th:text="Enable"></label>
+                    </div>
+                    <div class="radio-box">
+                        <input type="radio" name="status" value="1" th:checked="${user.status == '1' ? true : false}">
+                        <label th:for="status" th:text="Disable"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Remark：</label>
+                <div class="col-sm-8">
+                    <textarea name="remark" class="form-control" th:field="*{remark}"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: datetimepicker-js" />
+    <script th:inline="javascript">
+        var prefix = ctx + "business/user";
+        $("#form-user-edit").validate({
+            onkeyup: false,
+            rules: {
+                loginName: {
+                    minlength: 6,
+                    maxlength: 30,
+                    remote: {
+                        url: prefix + "/name/unique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "userId": function () {
+                                return $("#userId").val();
+                            },
+                            "loginName": function () {
+                                return $.common.trim($("#loginName").val());
+                            }
+                        },
+                        dataFilter: function (data, type) {
+                            return $.validate.unique(data);
+                        }
+                    }
+                },
+                password: {
+                    minlength: 6,
+                    maxlength: 20
+                },
+                email: {
+                    email: true,
+                    remote: {
+                        url: prefix + "/email/unique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "userId": function () {
+                                return $("#userId").val();
+                            },
+                            "email": function () {
+                                return $.common.trim($("#email").val());
+                            }
+                        },
+                        dataFilter: function (data, type) {
+                            return $.validate.unique(data);
+                        }
+                    }
+                },
+                phonenumber: {
+                    isPhone: true,
+                    remote: {
+                        url: prefix + "/phone/unique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "userId": function () {
+                                return $("#userId").val();
+                            },
+                            "phonenumber": function () {
+                                return $.common.trim($("#phonenumber").val());
+                            }
+                        },
+                        dataFilter: function (data, type) {
+                            return $.validate.unique(data);
+                        }
+                    }
+                },
+            },
+            messages: {
+                "loginName": {
+                    remote: "User already exists"
+                },
+                "email": {
+                    remote: "Email already exists"
+                },
+                "phonenumber": {
+                    remote: "Mobile phone number already exists"
+                }
+            },
+            focusCleanup: true
+        });
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-user-edit').serialize());
+            }
+        }
+
+        $("input[name='loginDate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+
+        $("input[name='pwdUpdateDate']").datetimepicker({
+            format: "yyyy-mm-dd",
+            minView: "month",
+            autoclose: true
+        });
+    </script>
+</body>
+
+</html>

@@ -137,5 +137,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{userId}
         </foreach>
     </delete>
+    
+    <select id="countBusinessUserAccount" parameterType="BusinessUser" resultType="int">
+    	select count(1) from business_user
+    	<where>
+    		<if test="userId != null">and user_id != #{userId}</if>
+    		<if test="loginName != null and loginName != ''">and login_name = #{loginName}</if>
+    		<if test="email != null and email != ''">and email = #{email}</if>
+            <if test="phonenumber != null and phonenumber != ''">and phonenumber = #{phonenumber}</if>
+    	</where>
+    </select>
 
 </mapper>
