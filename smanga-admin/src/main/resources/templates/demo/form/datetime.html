@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 
 <head>
     <th:block th:include="include :: header('Date and time')" />
@@ -136,8 +136,8 @@
     <th:block th:include="include :: datetimepicker-js" />
     <script type="text/javascript">
         $(function () {
-        	< !--datetimepicker example-- >
-                $("#datetimepicker-demo-1").datetimepicker();
+            // datetimepicker example
+            $("#datetimepicker-demo-1").datetimepicker();
 
             $("#datetimepicker-demo-2").datetimepicker({
                 format: "yyyy-mm-dd",
@@ -181,69 +181,69 @@
                 var endTime = event.date;
                 $("#datetimepicker-startTime").datetimepicker('setEndDate', endTime);
             });
-        	
-        	< !--laydate example-- >
-                layui.use('laydate', function () {
-                    var laydate = layui.laydate;
 
-                    laydate.render({
-                        elem: '#laydate-demo-1'
-                    });
+            // laydate example
+            layui.use('laydate', function () {
+                var laydate = layui.laydate;
 
-                    laydate.render({
-                        elem: '#laydate-demo-2',
-                        type: 'date'
-                    });
-
-                    laydate.render({
-                        elem: '#laydate-demo-3',
-                        type: 'datetime',
-                        trigger: 'click'
-                    });
-
-                    laydate.render({
-                        elem: '#laydate-demo-4',
-                        range: true
-                    });
-
-                    var startDate = laydate.render({
-                        elem: '#laydate-startTime',
-                        max: $('#laydate-endTime').val(),
-                        theme: 'molv',
-                        trigger: 'click',
-                        done: function (value, date) {
-                            // End time is greater than start time
-                            if (value !== '') {
-                                endDate.config.min.year = date.year;
-                                endDate.config.min.month = date.month - 1;
-                                endDate.config.min.date = date.date;
-                            } else {
-                                endDate.config.min.year = '';
-                                endDate.config.min.month = '';
-                                endDate.config.min.date = '';
-                            }
-                        }
-                    });
-
-                    var endDate = laydate.render({
-                        elem: '#laydate-endTime',
-                        min: $('#laydate-startTime').val(),
-                        theme: 'molv',
-                        trigger: 'click',
-                        done: function (value, date) {
-                            // Start time is less than end time
-                            if (value !== '') {
-                                startDate.config.max.year = date.year;
-                                startDate.config.max.month = date.month - 1;
-                                startDate.config.max.date = date.date;
-                            } else {
-                                startDate.config.max.year = '';
-                                startDate.config.max.month = '';
-                                startDate.config.max.date = '';
-                            }
-                        }
-                    });
+                laydate.render({
+                    elem: '#laydate-demo-1'
                 });
+
+                laydate.render({
+                    elem: '#laydate-demo-2',
+                    type: 'date'
+                });
+
+                laydate.render({
+                    elem: '#laydate-demo-3',
+                    type: 'datetime',
+                    trigger: 'click'
+                });
+
+                laydate.render({
+                    elem: '#laydate-demo-4',
+                    range: true
+                });
+
+                var startDate = laydate.render({
+                    elem: '#laydate-startTime',
+                    max: $('#laydate-endTime').val(),
+                    theme: 'molv',
+                    trigger: 'click',
+                    done: function (value, date) {
+                        // End time is greater than start time
+                        if (value !== '') {
+                            endDate.config.min.year = date.year;
+                            endDate.config.min.month = date.month - 1;
+                            endDate.config.min.date = date.date;
+                        } else {
+                            endDate.config.min.year = '';
+                            endDate.config.min.month = '';
+                            endDate.config.min.date = '';
+                        }
+                    }
+                });
+
+                var endDate = laydate.render({
+                    elem: '#laydate-endTime',
+                    min: $('#laydate-startTime').val(),
+                    theme: 'molv',
+                    trigger: 'click',
+                    done: function (value, date) {
+                        // Start time is less than end time
+                        if (value !== '') {
+                            startDate.config.max.year = date.year;
+                            startDate.config.max.month = date.month - 1;
+                            startDate.config.max.date = date.date;
+                        } else {
+                            startDate.config.max.year = '';
+                            startDate.config.max.month = '';
+                            startDate.config.max.date = '';
+                        }
+                    }
+                });
+            });
         });
     </script>
 </body>

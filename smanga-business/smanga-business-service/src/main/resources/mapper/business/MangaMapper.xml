@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smanga.business.mapper.MangaMapper">
+    
+    <resultMap type="Manga" id="MangaResult">
+        <result property="id"    column="id"    />
+        <result property="mangaName"    column="manga_name"    />
+        <result property="categories"    column="categories"    />
+        <result property="categoryIds"    column="category_ids"    />
+        <result property="author"    column="author"    />
+        <result property="authorId"    column="author_id"    />
+        <result property="favoriteCounter"    column="favorite_counter"    />
+        <result property="remark"    column="remark"    />
+        <result property="coverImage"    column="cover_image"    />
+        <result property="coverImageId"    column="cover_image_id"    />
+        <result property="slideImage"    column="slide_image"    />
+        <result property="slideImageId"    column="slide_image_id"    />
+        <result property="recommendedAge"    column="recommended_age"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectMangaVo">
+        select id, manga_name, categories, category_ids, author, author_id, favorite_counter, remark, cover_image, cover_image_id, slide_image, slide_image_id, recommended_age, status, del_flag, create_by, create_time, update_by, update_time from manga
+    </sql>
+
+    <select id="selectMangaList" parameterType="Manga" resultMap="MangaResult">
+        <include refid="selectMangaVo"/>
+        <where>  
+            <if test="mangaName != null  and mangaName != ''"> and manga_name like concat('%', #{mangaName}, '%')</if>
+            <if test="categories != null  and categories != ''"> and categories = #{categories}</if>
+            <if test="categoryIds != null  and categoryIds != ''"> and category_ids = #{categoryIds}</if>
+            <if test="author != null  and author != ''"> and author = #{author}</if>
+            <if test="authorId != null "> and author_id = #{authorId}</if>
+            <if test="favoriteCounter != null "> and favorite_counter = #{favoriteCounter}</if>
+            <if test="coverImage != null  and coverImage != ''"> and cover_image = #{coverImage}</if>
+            <if test="coverImageId != null "> and cover_image_id = #{coverImageId}</if>
+            <if test="slideImage != null  and slideImage != ''"> and slide_image = #{slideImage}</if>
+            <if test="slideImageId != null "> and slide_image_id = #{slideImageId}</if>
+            <if test="recommendedAge != null  and recommendedAge != ''"> and recommended_age = #{recommendedAge}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectMangaById" parameterType="Long" resultMap="MangaResult">
+        <include refid="selectMangaVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertManga" parameterType="Manga" useGeneratedKeys="true" keyProperty="id">
+        insert into manga
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mangaName != null and mangaName != ''">manga_name,</if>
+            <if test="categories != null and categories != ''">categories,</if>
+            <if test="categoryIds != null and categoryIds != ''">category_ids,</if>
+            <if test="author != null">author,</if>
+            <if test="authorId != null">author_id,</if>
+            <if test="favoriteCounter != null">favorite_counter,</if>
+            <if test="remark != null">remark,</if>
+            <if test="coverImage != null">cover_image,</if>
+            <if test="coverImageId != null">cover_image_id,</if>
+            <if test="slideImage != null">slide_image,</if>
+            <if test="slideImageId != null">slide_image_id,</if>
+            <if test="recommendedAge != null">recommended_age,</if>
+            <if test="status != null">status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mangaName != null and mangaName != ''">#{mangaName},</if>
+            <if test="categories != null and categories != ''">#{categories},</if>
+            <if test="categoryIds != null and categoryIds != ''">#{categoryIds},</if>
+            <if test="author != null">#{author},</if>
+            <if test="authorId != null">#{authorId},</if>
+            <if test="favoriteCounter != null">#{favoriteCounter},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="coverImage != null">#{coverImage},</if>
+            <if test="coverImageId != null">#{coverImageId},</if>
+            <if test="slideImage != null">#{slideImage},</if>
+            <if test="slideImageId != null">#{slideImageId},</if>
+            <if test="recommendedAge != null">#{recommendedAge},</if>
+            <if test="status != null">#{status},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateManga" parameterType="Manga">
+        update manga
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mangaName != null and mangaName != ''">manga_name = #{mangaName},</if>
+            <if test="categories != null and categories != ''">categories = #{categories},</if>
+            <if test="categoryIds != null and categoryIds != ''">category_ids = #{categoryIds},</if>
+            <if test="author != null">author = #{author},</if>
+            <if test="authorId != null">author_id = #{authorId},</if>
+            <if test="favoriteCounter != null">favorite_counter = #{favoriteCounter},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="coverImage != null">cover_image = #{coverImage},</if>
+            <if test="coverImageId != null">cover_image_id = #{coverImageId},</if>
+            <if test="slideImage != null">slide_image = #{slideImage},</if>
+            <if test="slideImageId != null">slide_image_id = #{slideImageId},</if>
+            <if test="recommendedAge != null">recommended_age = #{recommendedAge},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMangaById" parameterType="Long">
+        delete from manga where id = #{id}
+    </delete>
+
+    <delete id="deleteMangaByIds" parameterType="String">
+        delete from manga where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

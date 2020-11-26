@@ -12,4 +12,8 @@ public class SmangaConstants {
 	/** Whether the object is the only return result code */
 	public final static String UNIQUE = "0";
 	public final static String NOT_UNIQUE = "1";
+
+	/** Del flag deleted */
+	public final static String DEL_FLAG_DELETED = "1";
+	public final static String DEL_FLAG_NOT_DELETED = "0";
 }

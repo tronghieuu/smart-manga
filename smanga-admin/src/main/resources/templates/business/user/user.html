@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html lang="en-US" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 
 <head>
     <th:block th:include="include :: header('Business User Information Form List')" />
@@ -28,18 +28,16 @@
             </div>
 
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="business:user:add">
+                <a class="btn btn-success" onclick="$.operate.add()">
                     <i class="fa fa-plus"></i> Add
                 </a>
-                <a class="btn btn-primary single disabled" onclick="$.operate.edit()"
-                    shiro:hasPermission="business:user:edit">
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()">
                     <i class="fa fa-edit"></i> Modify
                 </a>
-                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()"
-                    shiro:hasPermission="business:user:remove">
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()">
                     <i class="fa fa-remove"></i> Delete
                 </a>
-                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="business:user:export">
+                <a class="btn btn-warning" onclick="$.table.exportExcel()">
                     <i class="fa fa-download"></i> Export
                 </a>
             </div>

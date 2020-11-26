@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smanga.business.mapper.ImageFileMapper">
+    
+    <resultMap type="ImageFile" id="ImageFileResult">
+        <result property="id"    column="id"    />
+        <result property="imageName"    column="image_name"    />
+        <result property="imagePath"    column="image_path"    />
+        <result property="usedStatus"    column="used_status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectImageFileVo">
+        select id, image_name, image_path, used_status, del_flag, create_by, create_time, update_by, update_time from image_file
+    </sql>
+
+    <select id="selectImageFileList" parameterType="ImageFile" resultMap="ImageFileResult">
+        <include refid="selectImageFileVo"/>
+        <where>  
+            <if test="imageName != null  and imageName != ''"> and image_name like concat('%', #{imageName}, '%')</if>
+            <if test="imagePath != null  and imagePath != ''"> and image_path = #{imagePath}</if>
+            <if test="usedStatus != null  and usedStatus != ''"> and used_status = #{usedStatus}</if>
+            <if test="params.ids != null">
+            	and id in
+            	<foreach item="id" collection="params.ids" open="(" separator="," close=")">
+		            #{id}
+		        </foreach>
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectImageFileById" parameterType="Long" resultMap="ImageFileResult">
+        <include refid="selectImageFileVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertImageFile" parameterType="ImageFile" useGeneratedKeys="true" keyProperty="id">
+        insert into image_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="imageName != null and imageName != ''">image_name,</if>
+            <if test="imagePath != null">image_path,</if>
+            <if test="usedStatus != null">used_status,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="imageName != null and imageName != ''">#{imageName},</if>
+            <if test="imagePath != null">#{imagePath},</if>
+            <if test="usedStatus != null">#{usedStatus},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateImageFile" parameterType="ImageFile">
+        update image_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="imageName != null and imageName != ''">image_name = #{imageName},</if>
+            <if test="imagePath != null">image_path = #{imagePath},</if>
+            <if test="usedStatus != null">used_status = #{usedStatus},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteImageFileById" parameterType="Long">
+        delete from image_file where id = #{id}
+    </delete>
+
+    <delete id="deleteImageFileByIds" parameterType="String">
+        delete from image_file where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
