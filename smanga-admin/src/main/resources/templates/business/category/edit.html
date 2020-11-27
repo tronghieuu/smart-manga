@@ -3,71 +3,187 @@
 
 <head>
     <th:block th:include="include :: header('modify Manga Category')" />
+    <th:block th:include="include :: bootstrap-fileinput-css" />
 </head>
 
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-category-edit" th:object="${mangaCategory}">
-            <input name="id" th:field="*{id}" type="hidden">
+            <input type="hidden" name="id" th:field="*{id}" id="id">
             <div class="form-group">
                 <label class="col-sm-3 control-label is-required">Category name：</label>
                 <div class="col-sm-8">
-                    <input name="categoryName" th:field="*{categoryName}" class="form-control" type="text" required>
+                    <input name="categoryName" id="categoryName" placeholder="Please enter the category name"
+                        class="form-control" type="text" th:field="*{categoryName}" maxlength="30" required>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Number of reader like this category：</label>
-                <div class="col-sm-8">
-                    <input name="favoriteCounter" th:field="*{favoriteCounter}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Category status (1 enabled 0 disabled)：</label>
+                <label class="col-sm-3 control-label">Category status：</label>
                 <div class="col-sm-8">
                     <div class="radio-box">
-                        <input type="radio" name="status" value="">
-                        <label th:for="status" th:text="unknown"></label>
+                        <input type="radio" name="status" value="1"
+                            th:checked="${mangaCategory.status == '1' ? true : false}">
+                        <label th:for="status" th:text="Enable"></label>
                     </div>
-                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> Please select dictionary
-                        attribute for code generation</span>
+                    <div class="radio-box">
+                        <input type="radio" name="status" value="0"
+                            th:checked="${mangaCategory.status == '0' ? true : false}">
+                        <label th:for="status" th:text="Disable"></label>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Remark：</label>
+                <label class="col-sm-3 control-label">Cover image：</label>
                 <div class="col-sm-8">
-                    <textarea name="remark" class="form-control">[[*{remark}]]</textarea>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Category cover image path：</label>
-                <div class="col-sm-8">
-                    <input name="coverImage" th:field="*{coverImage}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Id of cover image：</label>
-                <div class="col-sm-8">
-                    <input name="coverImageId" th:field="*{coverImageId}" class="form-control" type="text">
+                    <div class="file-loading">
+                        <input type="file" id="cover-image-upload" multiple>
+                    </div>
+                    <input type="hidden" name="coverImage" th:field="*{coverImage}" id="coverImage" />
+                    <input type="hidden" name="coverImageId" th:field="*{coverImageId}" id="coverImageId" />
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">Age recommend：</label>
                 <div class="col-sm-8">
-                    <input name="recommendedAge" th:field="*{recommendedAge}" class="form-control" type="text">
+                    <input name="recommendedAge" class="form-control" th:field="*{recommendedAge}" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Remark：</label>
+                <div class="col-sm-8">
+                    <textarea name="remark" class="form-control" th:field="*{remark}"></textarea>
                 </div>
             </div>
         </form>
     </div>
     <th:block th:include="include :: footer" />
+    <th:block th:include="include :: bootstrap-fileinput-js" />
     <script th:inline="javascript">
         var prefix = ctx + "business/category";
+
+        $(document).ready(function () {
+            if ($('#coverImage').val()) {
+                $("#cover-image-upload").fileinput({
+                    theme: 'explorer-fas',
+                    uploadUrl: ctx + "file/category/cover",
+                    maxFileCount: 1,
+                    validateInitialCount: true,
+                    overwriteInitial: false, // append files to initial preview
+                    browseOnZoneClick: true,
+                    initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
+                    initialPreview: [
+                        $('#coverImage').val()
+                    ],
+                    initialPreviewConfig: [
+                        { caption: "Category cover image", url: "#", key: $('#coverImageId').val() },
+                    ]
+                });
+            } else {
+                $("#cover-image-upload").fileinput({
+                    theme: 'explorer-fas',
+                    uploadUrl: ctx + "file/category/cover",
+                    maxFileCount: 1,
+                    validateInitialCount: true,
+                    overwriteInitial: false, // append files to initial preview
+                    browseOnZoneClick: true
+                });
+            }
+
+            $('#cover-image-upload').on('filebeforeload', function (event, file, index, reader) {
+                // perform your validations based on the 'file' or other parameters
+                if ($('#coverImageId').val()) {
+                    $.modal.alert("You can't upload more than 1 cover for a category!");
+                    return false; // will abort the file loading for the selected file
+                }
+            });
+
+            // Trigger before delete a file
+            $("#cover-image-upload").on("filepredelete", function (jqXHR) {
+                let abort = false;
+                deleteImage();
+                return abort; // you can also send any data/object that you can receive on `filecustomerror` event
+            });
+
+            // Trigger when upload a file to server
+            $("#cover-image-upload").on("fileuploaded", function (event, data, proviewId, index) {
+                if (data.response.code == 0) {
+                    let file = data.response.file;
+                    $('#coverImageId').val(file.id);
+                    $('#coverImage').val(file.imagePath);
+                }
+            });
+
+            // Trigger when remove a preview file
+            $('#cover-image-upload').on('fileremoved', function (event, id, index) {
+                deleteImage();
+            });
+
+            // Trigger when clear thumbnail
+            $('#cover-image-upload').on('filecleared', function (event) {
+                deleteImage();
+            });
+
+        });
+
         $("#form-category-edit").validate({
+            onkeyup: false,
+            rules: {
+                categoryName: {
+                    minlength: 1,
+                    maxlength: 30,
+                    remote: {
+                        url: prefix + "/name/unique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "id": $('#id').val(),
+                            "categoryName": function () {
+                                return $.common.trim($("#categoryName").val());
+                            }
+                        },
+                        dataFilter: function (data, type) {
+                            return $.validate.unique(data);
+                        }
+                    }
+                },
+            },
+            messages: {
+                "loginName": {
+                    remote: "Category name already exists"
+                }
+            },
             focusCleanup: true
         });
 
         function submitHandler() {
             if ($.validate.form()) {
                 $.operate.save(prefix + "/edit", $('#form-category-edit').serialize());
+            }
+        }
+
+        function deleteImage() {
+            let id = $('#coverImageId').val();
+            $('#coverImageId').val('');
+            $('#coverImage').val('');
+            if (id) {
+                $.ajax({
+                    url: ctx + 'file/category/cover',
+                    method: 'DELETE',
+                    data: {
+                        ids: id,
+                        coverId: $('#id').val()
+                    },
+                    success: function (res) {
+                        if (res.code != 0) {
+                            console.log('Error when delete image: ' + res.msg);
+                        } else {
+                            $('#cover-image-upload').fileinput('refresh');
+                        }
+                    },
+                    error: function (err) {
+                        console.log('System error!');
+                    }
+                });
             }
         }
     </script>

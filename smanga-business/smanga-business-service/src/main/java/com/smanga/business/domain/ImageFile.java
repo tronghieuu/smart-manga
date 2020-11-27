@@ -33,6 +33,9 @@ public class ImageFile extends BaseEntity {
 	/** Delete flag (0 means existence 1 means deletion) */
 	private String delFlag;
 
+	/** Absolute path */
+	private String absolutePath;
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -73,12 +76,21 @@ public class ImageFile extends BaseEntity {
 		return delFlag;
 	}
 
+	public String getAbsolutePath() {
+		return absolutePath;
+	}
+
+	public void setAbsolutePath(String absolutePath) {
+		this.absolutePath = absolutePath;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).append("id", getId())
 				.append("imageName", getImageName()).append("imagePath", getImagePath())
 				.append("usedStatus", getUsedStatus()).append("delFlag", getDelFlag()).append("createBy", getCreateBy())
 				.append("createTime", getCreateTime()).append("updateBy", getUpdateBy())
-				.append("updateTime", getUpdateTime()).append("params", getParams()).toString();
+				.append("updateTime", getUpdateTime()).append("params", getParams())
+				.append("absolutePath", getAbsolutePath()).toString();
 	}
 }

@@ -9,8 +9,6 @@
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-category-add">
-            <input type="hidden" name="coverImage" id="coverImage" />
-            <input type="hidden" name="coverImageId" id="coverImageId" />
             <div class="form-group">
                 <label class="col-sm-3 control-label is-required">Category name：</label>
                 <div class="col-sm-8">
@@ -37,6 +35,8 @@
                     <div class="file-loading">
                         <input type="file" id="cover-image-upload" multiple>
                     </div>
+                    <input type="hidden" name="coverImage" id="coverImage" />
+                    <input type="hidden" name="coverImageId" id="coverImageId" />
                 </div>
             </div>
             <div class="form-group">
@@ -60,22 +60,37 @@
 
         $(document).ready(function () {
             $("#cover-image-upload").fileinput({
-                'theme': 'explorer-fas',
-                'uploadUrl': ctx + "file/category/cover",
-                'maxFileCount': 1
+                theme: 'explorer-fas',
+                uploadUrl: ctx + "file/category/cover",
+                maxFileCount: 1,
+                validateInitialCount: true,
+                overwriteInitial: false, // append files to initial preview
+                browseOnZoneClick: true
             });
 
             $("#cover-image-upload").on("fileuploaded", function (event, data, proviewId, index) {
                 if (data.response.code == 0) {
-                    $('#coverImageId').val(data.response.id);
-                    $('#coverImage').val(data.response.image_path);
+                    let file = data.response.file;
+                    $('#coverImageId').val(file.id);
+                    $('#coverImage').val(file.imagePath);
+
                 }
             });
 
+            $('#cover-image-upload').on('filebeforeload', function (event, file, index, reader) {
+                // perform your validations based on the 'file' or other parameters
+                if ($('#coverImageId').val()) {
+                    $.modal.alert("You can't upload more than 1 cover for a category!");
+                    return false; // will abort the file loading for the selected file
+                }
+            });
+
+            // Trigger to delete file when remove preview
             $('#cover-image-upload').on('fileremoved', function (event, id, index) {
                 deleteImage();
             });
 
+            // Trigger to delete file when clear preview
             $('#cover-image-upload').on('filecleared', function (event) {
                 deleteImage();
             });
@@ -124,7 +139,7 @@
             $('#coverImage').val('');
             if (id) {
                 $.ajax({
-                    url: ctx + 'file/delete',
+                    url: ctx + 'file/category/cover',
                     method: 'DELETE',
                     data: {
                         ids: id

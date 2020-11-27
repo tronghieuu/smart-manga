@@ -17,53 +17,6 @@
                                 <input type="text" name="mangaName" />
                             </li>
                             <li>
-                                <label>Categories (each category seperated by comma)：</label>
-                                <input type="text" name="categories" />
-                            </li>
-                            <li>
-                                <label>Category ids (String with multiple category id seperated by comma：</label>
-                                <input type="text" name="categoryIds" />
-                            </li>
-                            <li>
-                                <label>Author name of manga：</label>
-                                <input type="text" name="author" />
-                            </li>
-                            <li>
-                                <label>Id of author：</label>
-                                <input type="text" name="authorId" />
-                            </li>
-                            <li>
-                                <label>Number of reader like this manga：</label>
-                                <input type="text" name="favoriteCounter" />
-                            </li>
-                            <li>
-                                <label>Manga cover image path：</label>
-                                <input type="text" name="coverImage" />
-                            </li>
-                            <li>
-                                <label>Id of cover image：</label>
-                                <input type="text" name="coverImageId" />
-                            </li>
-                            <li>
-                                <label>Manga slide image path：</label>
-                                <input type="text" name="slideImage" />
-                            </li>
-                            <li>
-                                <label>Id of slide image：</label>
-                                <input type="text" name="slideImageId" />
-                            </li>
-                            <li>
-                                <label>Age recommend：</label>
-                                <input type="text" name="recommendedAge" />
-                            </li>
-                            <li>
-                                <label>Category status (1 enabled 0 disabled)：</label>
-                                <select name="status">
-                                    <option value="">all</option>
-                                    <option value="-1">Please select dictionary attribute for code generation</option>
-                                </select>
-                            </li>
-                            <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
                                         class="fa fa-search"></i>&nbsp;Search</a>
                                 <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
@@ -75,18 +28,16 @@
             </div>
 
             <div class="btn-group-sm" id="toolbar" role="group">
-                <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="business:manga:add">
+                <a class="btn btn-success" onclick="$.operate.add()">
                     <i class="fa fa-plus"></i> Add
                 </a>
-                <a class="btn btn-primary single disabled" onclick="$.operate.edit()"
-                    shiro:hasPermission="business:manga:edit">
+                <a class="btn btn-primary single disabled" onclick="$.operate.edit()">
                     <i class="fa fa-edit"></i> Modify
                 </a>
-                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()"
-                    shiro:hasPermission="business:manga:remove">
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()">
                     <i class="fa fa-remove"></i> Delete
                 </a>
-                <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="business:manga:export">
+                <a class="btn btn-warning" onclick="$.table.exportExcel()">
                     <i class="fa fa-download"></i> Export
                 </a>
             </div>
@@ -97,8 +48,6 @@
     </div>
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
-        var editFlag = [[${@permission.hasPermi('business:manga:edit') }]];
-        var removeFlag = [[${@permission.hasPermi('business:manga:remove') }]];
         var prefix = ctx + "business/manga";
 
         $(function () {
@@ -119,69 +68,64 @@
                 },
                 {
                     field: 'mangaName',
-                    title: 'Manga name'
+                    title: 'Manga name',
+                    formatter: function (value, row, index) {
+                        return '<a href="javascript:void(0)" onclick="detail(\'' + row.id + '\')">' + value + '</a>';
+                    }
                 },
                 {
                     field: 'categories',
-                    title: 'Categories (each category seperated by comma)'
-                },
-                {
-                    field: 'categoryIds',
-                    title: 'Category ids (String with multiple category id seperated by comma'
+                    title: 'Category',
+                    formatter: function (value, row, index) {
+                        if (value) {
+                            let result = '';
+                            let arr = value.split(',');
+                            arr.forEach(element => {
+                                result += '<span class="badge badge-primary">' + element + '</span>';
+                            });
+                            return result;
+                        }
+                        return '';
+                    }
                 },
                 {
                     field: 'author',
-                    title: 'Author name of manga'
-                },
-                {
-                    field: 'authorId',
-                    title: 'Id of author'
+                    title: 'Author'
                 },
                 {
                     field: 'favoriteCounter',
-                    title: 'Number of reader like this manga'
-                },
-                {
-                    field: 'remark',
-                    title: 'Remark'
-                },
-                {
-                    field: 'coverImage',
-                    title: 'Manga cover image path'
-                },
-                {
-                    field: 'coverImageId',
-                    title: 'Id of cover image'
-                },
-                {
-                    field: 'slideImage',
-                    title: 'Manga slide image path'
-                },
-                {
-                    field: 'slideImageId',
-                    title: 'Id of slide image'
-                },
-                {
-                    field: 'recommendedAge',
-                    title: 'Age recommend'
+                    title: 'Favorite number'
                 },
                 {
                     field: 'status',
-                    title: 'Category status (1 enabled 0 disabled)'
+                    title: 'Status',
+                    formatter: function (value, row, index) {
+                        if (value == '1') {
+                            return '<span class="badge badge-primary">Enabled</span>';
+                        } else if (value == '0') {
+                            return '<span class="badge badge-danger">Disabled</span>';
+                        }
+                    }
                 },
                 {
-                    title: 'Operating',
+                    title: 'Action',
                     align: 'center',
                     formatter: function (value, row, index) {
                         var actions = [];
-                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>Edit</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>Delete</a>');
+                        actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>Edit</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>Delete</a>');
                         return actions.join('');
                     }
                 }]
             };
             $.table.init(options);
         });
+
+        /* Manga List-Detailed*/
+        function detail(id) {
+            let url = prefix + '/chapters/' + id;
+            $.modal.openTab("Chapter list", url);
+        }
     </script>
 </body>
 

@@ -1,7 +1,11 @@
 package com.smanga.web.controller.business;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,13 +15,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
+import com.smanga.business.domain.ImageFile;
 import com.smanga.business.domain.MangaCategory;
+import com.smanga.business.service.IImageFileService;
 import com.smanga.business.service.IMangaCategoryService;
 import com.smanga.common.annotation.Log;
+import com.smanga.common.constant.SmangaConstants;
 import com.smanga.common.core.controller.BaseController;
 import com.smanga.common.core.domain.AjaxResult;
 import com.smanga.common.core.page.TableDataInfo;
+import com.smanga.common.core.text.Convert;
 import com.smanga.common.enums.BusinessType;
+import com.smanga.common.utils.StringUtils;
 import com.smanga.common.utils.poi.ExcelUtil;
 
 /**
@@ -30,6 +40,9 @@ import com.smanga.common.utils.poi.ExcelUtil;
 @RequestMapping("/business/category")
 public class BusinessMangaCategoryController extends BaseController {
 	private String prefix = "business/category";
+
+	@Autowired
+	private IImageFileService imageFileService;
 
 	@Autowired
 	private IMangaCategoryService mangaCategoryService;
@@ -77,6 +90,16 @@ public class BusinessMangaCategoryController extends BaseController {
 	@PostMapping("/add")
 	@ResponseBody
 	public AjaxResult addSave(MangaCategory mangaCategory) {
+		// Id image upload
+		Long coverImageId = mangaCategory.getCoverImageId();
+		if (coverImageId != null) {
+			// Update used status
+			ImageFile imageFileUpdate = new ImageFile();
+			imageFileUpdate.setId(coverImageId);
+			imageFileUpdate.setUsedStatus(SmangaConstants.FILE_USED);
+			imageFileService.updateImageFile(imageFileUpdate);
+		}
+
 		return toAjax(mangaCategoryService.insertMangaCategory(mangaCategory));
 	}
 
@@ -97,6 +120,21 @@ public class BusinessMangaCategoryController extends BaseController {
 	@PostMapping("/edit")
 	@ResponseBody
 	public AjaxResult editSave(MangaCategory mangaCategory) {
+		MangaCategory mangaCategoryRef = mangaCategoryService.selectMangaCategoryById(mangaCategory.getId());
+		if (mangaCategory.getCoverImageId() != null && mangaCategoryRef.getCoverImageId() != null
+				&& mangaCategory.getCoverImageId() != mangaCategoryRef.getCoverImageId()) {
+			imageFileService.deleteImageFileById(mangaCategoryRef.getCoverImageId());
+		}
+
+		Long coverImageId = mangaCategory.getCoverImageId();
+		if (coverImageId != null) {
+			// Update used status
+			ImageFile imageFileUpdate = new ImageFile();
+			imageFileUpdate.setId(coverImageId);
+			imageFileUpdate.setUsedStatus(SmangaConstants.FILE_USED);
+			imageFileService.updateImageFile(imageFileUpdate);
+		}
+
 		return toAjax(mangaCategoryService.updateMangaCategory(mangaCategory));
 	}
 
@@ -107,6 +145,23 @@ public class BusinessMangaCategoryController extends BaseController {
 	@PostMapping("/remove")
 	@ResponseBody
 	public AjaxResult remove(String ids) {
+		// Get list manga category
+		MangaCategory mangaCategoryParam = new MangaCategory();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("ids", Convert.toStrArray(ids));
+		mangaCategoryParam.setParams(params);
+		List<MangaCategory> mangaCategories = mangaCategoryService.selectMangaCategoryList(mangaCategoryParam);
+		if (CollectionUtils.isNotEmpty(mangaCategories)) {
+			String imageIds = "";
+			for (MangaCategory mangaCategory : mangaCategories) {
+				if (mangaCategory.getCoverImageId() != null) {
+					imageIds += mangaCategory.getCoverImageId() + ",";
+				}
+			}
+			if (StringUtils.isNotEmpty(imageIds)) {
+				imageFileService.deleteImageFileByIds(imageIds.substring(0, imageIds.length() - 1));
+			}
+		}
 		return toAjax(mangaCategoryService.deleteMangaCategoryByIds(ids));
 	}
 
@@ -120,5 +175,31 @@ public class BusinessMangaCategoryController extends BaseController {
 	@ResponseBody
 	public String checkNameUnique(MangaCategory mangaCategory) {
 		return mangaCategoryService.checkCategoryNameUnique(mangaCategory);
+	}
+
+	/**
+	 * Search Category with keyword
+	 */
+	@PostMapping("/list/keyword")
+	@ResponseBody
+	public List<JSONObject> getCategoryListWithKeyword(String keyword, String categoryIds) {
+		MangaCategory mangaCategoryParam = new MangaCategory();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("limit", 10);
+		params.put("notInIdsArray", Convert.toStrArray(categoryIds));
+		params.put("keyword", keyword);
+		mangaCategoryParam.setParams(params);
+		List<MangaCategory> mangaCategories = mangaCategoryService.selectMangaCategoryList(mangaCategoryParam);
+
+		List<JSONObject> result = new ArrayList<>();
+		if (CollectionUtils.isNotEmpty(mangaCategories)) {
+			for (MangaCategory mangaCategory : mangaCategories) {
+				JSONObject json = new JSONObject();
+				json.put("id", mangaCategory.getId());
+				json.put("text", mangaCategory.getCategoryName());
+				result.add(json);
+			}
+		}
+		return result;
 	}
 }

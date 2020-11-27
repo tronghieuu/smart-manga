@@ -14,10 +14,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
+        <result property="absolutePath"    column="absolute_path"    />
     </resultMap>
 
     <sql id="selectImageFileVo">
-        select id, image_name, image_path, used_status, del_flag, create_by, create_time, update_by, update_time from image_file
+        select id, image_name, image_path, used_status, del_flag, create_by, create_time, update_by, update_time, absolute_path from image_file
     </sql>
 
     <select id="selectImageFileList" parameterType="ImageFile" resultMap="ImageFileResult">
@@ -26,6 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="imageName != null  and imageName != ''"> and image_name like concat('%', #{imageName}, '%')</if>
             <if test="imagePath != null  and imagePath != ''"> and image_path = #{imagePath}</if>
             <if test="usedStatus != null  and usedStatus != ''"> and used_status = #{usedStatus}</if>
+            <if test="absolutePath != null  and absolutePath != ''"> and absolute_path = #{absolutePath}</if>
             <if test="params.ids != null">
             	and id in
             	<foreach item="id" collection="params.ids" open="(" separator="," close=")">
@@ -48,9 +50,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="usedStatus != null">used_status,</if>
             <if test="delFlag != null">del_flag,</if>
             <if test="createBy != null">create_by,</if>
-            <if test="createTime != null">create_time,</if>
-            <if test="updateBy != null">update_by,</if>
-            <if test="updateTime != null">update_time,</if>
+            <if test="absolutePath != null  and absolutePath != ''">absolute_path,</if>
+            create_time
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="imageName != null and imageName != ''">#{imageName},</if>
@@ -58,9 +59,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="usedStatus != null">#{usedStatus},</if>
             <if test="delFlag != null">#{delFlag},</if>
             <if test="createBy != null">#{createBy},</if>
-            <if test="createTime != null">#{createTime},</if>
-            <if test="updateBy != null">#{updateBy},</if>
-            <if test="updateTime != null">#{updateTime},</if>
+            <if test="absolutePath != null  and absolutePath != ''">#{absolutePath},</if>
+            sysdate()
          </trim>
     </insert>
 
@@ -71,10 +71,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="imagePath != null">image_path = #{imagePath},</if>
             <if test="usedStatus != null">used_status = #{usedStatus},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>
-            <if test="createBy != null">create_by = #{createBy},</if>
-            <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
-            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="absolutePath != null  and absolutePath != ''">absolute_path = #{absolutePath},</if>
+            update_time = sysdate()
         </trim>
         where id = #{id}
     </update>
