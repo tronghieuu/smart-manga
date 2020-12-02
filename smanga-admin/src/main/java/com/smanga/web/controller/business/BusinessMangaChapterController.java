@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.smanga.business.domain.MangaChapter;
 import com.smanga.business.service.IMangaChapterService;
 import com.smanga.common.annotation.Log;
+import com.smanga.common.config.ServerConfig;
 import com.smanga.common.core.controller.BaseController;
 import com.smanga.common.core.domain.AjaxResult;
 import com.smanga.common.core.page.TableDataInfo;
@@ -36,6 +37,9 @@ public class BusinessMangaChapterController extends BaseController {
 	@Autowired
 	private IMangaChapterService mangaChapterService;
 
+	@Autowired
+	private ServerConfig serverConfig;
+
 	@GetMapping()
 	public String chapter() {
 		return prefix + "/chapter";
@@ -45,6 +49,14 @@ public class BusinessMangaChapterController extends BaseController {
 	public String formUploadContent(@PathVariable("id") Long id, ModelMap mmap) {
 		mmap.put("chapterId", id);
 		return prefix + "/upload";
+	}
+
+	@GetMapping("/{chapterId}/image/{imageId}")
+	public String formEditImage(@PathVariable("chapterId") Long chapterId, @PathVariable("imageId") Long imageId,
+			ModelMap mmap) {
+		mmap.put("imageId", imageId);
+		mmap.put("chapterId", chapterId);
+		return prefix + "/edit-image";
 	}
 
 	/**
@@ -120,5 +132,14 @@ public class BusinessMangaChapterController extends BaseController {
 	@ResponseBody
 	public AjaxResult remove(String ids) {
 		return toAjax(mangaChapterService.deleteMangaChapterByIds(ids));
+	}
+
+	@GetMapping("/{id}")
+	@ResponseBody
+	public AjaxResult getChapterImage(@PathVariable("id") Long id) {
+		MangaChapter mangaChapter = mangaChapterService.selectMangaChapterById(id);
+		AjaxResult ajaxResult = AjaxResult.success();
+		ajaxResult.put("chapter", mangaChapter);
+		return ajaxResult;
 	}
 }

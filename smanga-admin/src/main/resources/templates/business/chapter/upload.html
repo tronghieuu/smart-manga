@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en-US" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <th:block th:include="include :: header('File Upload')" />
@@ -15,17 +15,18 @@
                         <h5>Upload image content for chapter</h5>
                     </div>
                     <div class="ibox-content">
+                        <input type=hidden id="chapterId" th:value="${chapterId}" />
                         <div class="form-group">
                             <label class="font-noraml">Put list images in here to upload: </label>
                             <div class="file-loading">
-                                <input class="file" type="file" multiple data-min-file-count="1" data-theme="fas">
+                                <input type="file" id="chapter-image-upload" multiple>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="font-noraml">List images has already been uploaded: </label>
                             <div class="file-loading">
-                                <input id="fileinput-demo-1" type="file" multiple>
+                                <input type="file" id="chapter-image-preview">
                             </div>
                         </div>
                         <hr>
@@ -36,26 +37,214 @@
     </div>
     <th:block th:include="include :: footer" />
     <th:block th:include="include :: bootstrap-fileinput-js" />
-    <script type="text/javascript">
+    <script type="text/javascript" th:inline="javascript">
+
+        var fileImageIds = [];
+        var fileImageIndexs = [];
+        var imageIdArr = [];
+        var imageArr = [];
+
         $(document).ready(function () {
-            $("#fileinput-demo-1").fileinput({
-                'theme': 'explorer-fas',
-                'uploadUrl': '#',
-                overwriteInitial: false,
-                initialPreviewAsData: true,
-                initialPreview: [
-                    "/img/profile.jpg"
-                ]
+            //----------chapter image config for upload image----------//
+            $("#chapter-image-upload").fileinput({
+                theme: 'explorer-fas',
+                uploadUrl: ctx + "file/chapter/" + $('#chapterId').val(),
+                maxFileCount: 100,
+                validateInitialCount: true,
+                overwriteInitial: false, // append files to initial preview
+                browseOnZoneClick: true,
+                uploadAsync: false,
+                sortable: true,
+                enableResumableUpload: true,
+                resumableUploadOptions: {
+                    chunkSize: 20 * 1024, // in KB
+                }
+            });
+            // Trigger when filebatch upload complete
+            $("#chapter-image-upload").on('filebatchuploadcomplete', function () {
+                loadUploadedFile();
+            });
+            // Trigger when all file is uploaded
+            $("#chapter-image-upload").on('filechunksuccess', function (event, previewId, index, retry, fm, rm, data) {
+                if (data.response.code == 0) {
+                    let file = data.response.file;
+                    fileImageIds.push(file.id);
+                    fileImageIndexs.push(handleFileId(file.imageName, data.response.size));
+                }
+            });
+            // Trigger to delete file when remove preview
+            $('#chapter-image-upload').on('fileremoved', function (event, id, index) {
+                deleteChapterImage(id);
+            });
+            // Trigger to delete file when clear preview
+            $('#chapter-image-upload').on('filecleared', function (event) {
+                deleteChapterImageAll();
             });
 
-            $("#fileinput-demo-1").on("fileuploaded", function (event, data, proviewId, index) {
-                console.info(event);
-                console.info(data);
-                console.info(proviewId);
-                console.info(index);
-            });
-
+            loadUploadedFile();
         });
+
+        // Delete chapter by index
+        function deleteChapterImage(index) {
+            if (index) {
+                $.ajax({
+                    url: ctx + 'file/chapter/' + $('#chapterId').val(),
+                    method: 'DELETE',
+                    data: {
+                        ids: getImageIdByIndex(index)
+                    },
+                    success: function (res) {
+                        if (res.code != 0) {
+                            console.log('Error when delete image: ' + res.msg);
+                        }
+                        loadUploadedFile();
+                    },
+                    error: function (err) {
+                        console.log('System error!');
+                    }
+                });
+            }
+        }
+
+        // Delete all chapter update recently
+        function deleteChapterImageAll() {
+            $.ajax({
+                url: ctx + 'file/chapter/' + $('#chapterId').val(),
+                method: 'DELETE',
+                data: {
+                    ids: fileImageIds.join(',')
+                },
+                success: function (res) {
+                    if (res.code != 0) {
+                        console.log('Error when delete image: ' + res.msg);
+                    } else {
+                        fileImageIds = [];
+                        fileImageIndexs = [];
+                        loadUploadedFile();
+                    }
+                },
+                error: function (err) {
+                    console.log('System error!');
+                }
+            });
+        }
+
+        // Get id of image save on database by index preview image
+        function getImageIdByIndex(index) {
+            for (let i = 0; i < fileImageIndexs.length; i++) {
+                if (fileImageIndexs[i] == index) {
+                    let id = fileImageIds[i];
+                    fileImageIds.splice(i, 1);
+                    fileImageIndexs.splice(i, 1);
+                    return id;
+                }
+            }
+        }
+
+        // Handling file id from file name to get index of image
+        function handleFileId(fileName, fileSize) {
+            fileName = fileSize + fileName.substring(19, fileName.length);
+            fileName = fileName.replace(/ /g, "_");
+            return 'thumb-chapter-image-upload-' + fileName;
+        }
+
+        // Reload preview file uploaded
+        function loadUploadedFile() {
+            //----------chapter image config for preview image uploaded----------//
+            $("#chapter-image-preview").fileinput('destroy');
+            $.ajax({
+                url: ctx + "business/chapter/" + $('#chapterId').val(),
+                method: 'GET',
+                success: function (res) {
+                    if (res.code == 0) {
+                        // Success
+                        let imageIds = res.chapter.chapterImageIds;
+                        let images = res.chapter.chapterImages;
+                        let preview = [];
+                        let previewConfig = [];
+                        if (imageIds) {
+                            imageIdArr = imageIds.split(',');
+                            imageArr = images.split(',');
+                            for (let i = 0; i < imageIdArr.length; i++) {
+                                let caption = imageArr[i].substring(57, imageArr[i].length)
+                                preview.push(imageArr[i]);
+                                previewConfig.push({
+                                    caption: caption,
+                                    url: ctx + "file/chapter/" + $('#chapterId').val(),
+                                    key: imageIdArr[i],
+                                    // frameAttr: {
+                                    //     onclick: 'editChapterImage(\'' + imageIdArr[i] + '\', \'' + caption + '\')'
+                                    // }
+                                });
+                            }
+                        }
+                        $("#chapter-image-preview").fileinput({
+                            theme: 'explorer-fas',
+                            maxFileCount: 100,
+                            validateInitialCount: true,
+                            overwriteInitial: false, // append files to initial preview
+                            browseOnZoneClick: false,
+                            showClose: false,
+                            showBrowse: false,
+                            showUpload: false,
+                            dropZoneTitle: "No image to display",
+                            initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
+                            initialPreview: preview,
+                            initialPreviewConfig: previewConfig
+                        }).on('filesorted', function (e, params) {
+                            console.log('File sorted params', params);
+                        });
+                        // Trigger to delete file when clear preview
+                        $('#chapter-image-preview').on('filecleared', function (event) {
+                            deleteChapterImagePreviewAll();
+                        });
+                        // Trigger when file deleted
+                        $('#chapter-image-preview').on('filedeleted', function (event, key, jqXHR, data) {
+                            for (let i = 0; i < imageIdArr.length; i++) {
+                                if (key == imageIdArr[i]) {
+                                    imageIdArr.splice(i, 1);
+                                    imageArr.splice(i, 1);
+                                    break;
+                                }
+                            }
+                        });
+                    }
+                },
+                error: function (err) {
+                    console.log("System error, please contact admin!");
+                }
+            });
+        }
+
+        // Delete all chapter update recently
+        function deleteChapterImagePreviewAll() {
+            $.ajax({
+                url: ctx + 'file/chapter/' + $('#chapterId').val(),
+                method: 'DELETE',
+                data: {
+                    ids: imageIdArr.join(',')
+                },
+                success: function (res) {
+                    if (res.code != 0) {
+                        console.log('Error when delete image: ' + res.msg);
+                    } else {
+                        imageIdArr = [];
+                        imageArr = [];
+                        loadUploadedFile();
+                    }
+                },
+                error: function (err) {
+                    console.log('System error!');
+                }
+            });
+        }
+
+        function editChapterImage(id, fileName) {
+            let url = ctx + 'business/chapter/' + $('#chapterId').val() + '/image/' + id;
+            $.modal.openTab("Edit image " + fileName, url);
+        }
+
+
     </script>
 </body>
 
