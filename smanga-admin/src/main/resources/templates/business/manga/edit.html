@@ -3,6 +3,9 @@
 
 <head>
     <th:block th:include="include :: header('modify Manga')" />
+    <th:block th:include="include :: summernote-css" />
+    <th:block th:include="include :: bootstrap-fileinput-css" />
+    <th:block th:include="include :: select2-css" />
 </head>
 
 <body class="white-bg">
@@ -12,98 +15,402 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label is-required">Manga name：</label>
                 <div class="col-sm-8">
-                    <input name="mangaName" th:field="*{mangaName}" class="form-control" type="text" required>
+                    <input name="mangaName" class="form-control" placeholder="Please enter the manga name" type="text"
+                        th:field="*{mangaName}" maxlength="100" required>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label is-required">Categories (each category seperated by comma)：</label>
+                <label class="col-sm-3 control-label is-required">Category：</label>
                 <div class="col-sm-8">
-                    <input name="categories" th:field="*{categories}" class="form-control" type="text" required>
+                    <input name="categories" id="categories" th:field="*{categories}" type=hidden>
+                    <input name="categoryIds" id="categoryIds" th:field="*{categoryIds}" type="hidden">
+                    <select class="category-select"></select>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label is-required">Category ids (String with multiple category id
-                    seperated by comma：</label>
+                <label class="col-sm-3 control-label">Author：</label>
                 <div class="col-sm-8">
-                    <input name="categoryIds" th:field="*{categoryIds}" class="form-control" type="text" required>
+                    <input name="author" id="author" th:field="*{author}" type="hidden">
+                    <input name="authorId" id="authorId" th:field="*{authorId}" type="hidden">
+                    <select class="author-select"></select>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Author name of manga：</label>
+                <label class="col-sm-3 control-label">Artist：</label>
                 <div class="col-sm-8">
-                    <input name="author" th:field="*{author}" class="form-control" type="text">
+                    <input name="artist" id="artist" th:field="*{artist}" type="hidden">
+                    <input name="artistId" id="artistId" th:field="*{artistId}" type="hidden">
+                    <select class="artist-select"></select>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Id of author：</label>
+                <label class="col-sm-3 control-label">Description：</label>
                 <div class="col-sm-8">
-                    <input name="authorId" th:field="*{authorId}" class="form-control" type="text">
+                    <input name="remark" id="remark" th:field="*{remark}" type="hidden">
+                    <div class="summernote"></div>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Number of reader like this manga：</label>
+                <label class="col-sm-3 control-label">Cover image：</label>
                 <div class="col-sm-8">
-                    <input name="favoriteCounter" th:field="*{favoriteCounter}" class="form-control" type="text">
+                    <div class="file-loading">
+                        <input type="file" id="cover-image-upload">
+                    </div>
+                    <input type="hidden" name="coverImage" id="coverImage" th:field="*{coverImage}" />
+                    <input type="hidden" name="coverImageId" id="coverImageId" th:field="*{coverImageId}" />
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Remark：</label>
+                <label class="col-sm-3 control-label">Slide image：</label>
                 <div class="col-sm-8">
-                    <input name="remark" th:field="*{remark}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Manga cover image path：</label>
-                <div class="col-sm-8">
-                    <input name="coverImage" th:field="*{coverImage}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Id of cover image：</label>
-                <div class="col-sm-8">
-                    <input name="coverImageId" th:field="*{coverImageId}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Manga slide image path：</label>
-                <div class="col-sm-8">
-                    <input name="slideImage" th:field="*{slideImage}" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Id of slide image：</label>
-                <div class="col-sm-8">
-                    <input name="slideImageId" th:field="*{slideImageId}" class="form-control" type="text">
+                    <div class="file-loading">
+                        <input type="file" id="slide-image-upload">
+                    </div>
+                    <input type="hidden" name="slideImage" id="slideImage" th:field="*{slideImage}" />
+                    <input type="hidden" name="slideImageId" id="slideImageId" th:field="*{slideImageId}" />
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-3 control-label">Age recommend：</label>
                 <div class="col-sm-8">
-                    <input name="recommendedAge" th:field="*{recommendedAge}" class="form-control" type="text">
+                    <input name="recommendedAge" class="form-control" type="text" th:field="*{recommendedAge}">
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Category status (1 enabled 0 disabled)：</label>
+                <label class="col-sm-3 control-label">Manga status：</label>
                 <div class="col-sm-8">
                     <div class="radio-box">
-                        <input type="radio" name="status" value="">
-                        <label th:for="status" th:text="unknown"></label>
+                        <input type="radio" name="status" value="1" th:checked="${manga.status == '1' ? true : false}">
+                        <label th:for="status" th:text="Enable"></label>
                     </div>
-                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> Please select dictionary
-                        attribute for code generation</span>
+                    <div class="radio-box">
+                        <input type="radio" name="status" value="0" th:checked="${manga.status == '0' ? true : false}">
+                        <label th:for="status" th:text="Disable"></label>
+                    </div>
                 </div>
             </div>
         </form>
     </div>
     <th:block th:include="include :: footer" />
+    <th:block th:include="include :: summernote-js" />
+    <th:block th:include="include :: bootstrap-fileinput-js" />
+    <th:block th:include="include :: select2-js" />
     <script th:inline="javascript">
         var prefix = ctx + "business/manga";
+        $(document).ready(function () {
+            // Description
+            $('.summernote').summernote({
+                lang: 'en-US'
+            });
+            $('.summernote').summernote('code', $('#remark').val());
+
+            //----------Image cover config for upload image----------//
+            if ($('#coverImage').val()) {
+                $("#cover-image-upload").fileinput({
+                    theme: 'explorer-fas',
+                    uploadUrl: ctx + "file/manga/cover",
+                    maxFileCount: 1,
+                    validateInitialCount: true,
+                    overwriteInitial: false, // append files to initial preview
+                    browseOnZoneClick: true,
+                    initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
+                    initialPreview: [
+                        $('#coverImage').val()
+                    ],
+                    initialPreviewConfig: [
+                        { caption: "Manga cover image", url: "#", key: $('#coverImageId').val() },
+                    ]
+                });
+            } else {
+                $("#cover-image-upload").fileinput({
+                    theme: 'explorer-fas',
+                    uploadUrl: ctx + "file/manga/cover",
+                    maxFileCount: 1,
+                    validateInitialCount: true,
+                    overwriteInitial: false, // append files to initial preview
+                    browseOnZoneClick: true
+                });
+            }
+            $('#cover-image-upload').on('filebeforeload', function (event, file, index, reader) {
+                // perform your validations based on the 'file' or other parameters
+                if ($('#coverImageId').val()) {
+                    $.modal.alert("You can't upload more than 1 cover for a manga!");
+                    return false; // will abort the file loading for the selected file
+                }
+            });
+            // Trigger before delete a file
+            $("#cover-image-upload").on("filepredelete", function (jqXHR) {
+                let abort = false;
+                deleteCoverImage();
+                return abort; // you can also send any data/object that you can receive on `filecustomerror` event
+            });
+            // Trigger when upload a file to server
+            $("#cover-image-upload").on("fileuploaded", function (event, data, proviewId, index) {
+                if (data.response.code == 0) {
+                    let file = data.response.file;
+                    $('#coverImageId').val(file.id);
+                    $('#coverImage').val(file.imagePath);
+                }
+            });
+            // Trigger when remove a preview file
+            $('#cover-image-upload').on('fileremoved', function (event, id, index) {
+                deleteCoverImage();
+            });
+            // Trigger when clear thumbnail
+            $('#cover-image-upload').on('filecleared', function (event) {
+                deleteCoverImage();
+            });
+
+            //----------Image slide config for upload image----------//
+            if ($('#slideImage').val()) {
+                $("#slide-image-upload").fileinput({
+                    theme: 'explorer-fas',
+                    uploadUrl: ctx + "file/manga/slide",
+                    maxFileCount: 1,
+                    validateInitialCount: true,
+                    overwriteInitial: false, // append files to initial preview
+                    browseOnZoneClick: true,
+                    initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
+                    initialPreview: [
+                        $('#slideImage').val()
+                    ],
+                    initialPreviewConfig: [
+                        { caption: "Manga slide image", url: "#", key: $('#slideImageId').val() },
+                    ]
+                });
+            } else {
+                $("#slide-image-upload").fileinput({
+                    theme: 'explorer-fas',
+                    uploadUrl: ctx + "file/manga/slide",
+                    maxFileCount: 1,
+                    validateInitialCount: true,
+                    overwriteInitial: false, // append files to initial preview
+                    browseOnZoneClick: true
+                });
+            }
+            $('#slide-image-upload').on('filebeforeload', function (event, file, index, reader) {
+                // perform your validations based on the 'file' or other parameters
+                if ($('#slideImageId').val()) {
+                    $.modal.alert("You can't upload more than 1 slide for a manga!");
+                    return false; // will abort the file loading for the selected file
+                }
+            });
+            // Trigger before delete a file
+            $("#slide-image-upload").on("filepredelete", function (jqXHR) {
+                let abort = false;
+                deleteSlideImage();
+                return abort; // you can also send any data/object that you can receive on `filecustomerror` event
+            });
+            // Trigger when upload a file to server
+            $("#slide-image-upload").on("fileuploaded", function (event, data, proviewId, index) {
+                if (data.response.code == 0) {
+                    let file = data.response.file;
+                    $('#slideImageId').val(file.id);
+                    $('#slideImage').val(file.imagePath);
+                }
+            });
+            // Trigger when remove a preview file
+            $('#slide-image-upload').on('fileremoved', function (event, id, index) {
+                deleteSlideImage();
+            });
+            // Trigger when clear thumbnail
+            $('#slide-image-upload').on('filecleared', function (event) {
+                deleteSlideImage();
+            });
+
+            //-------------select 2 for category--------------//
+            $('.category-select').select2({
+                language: "en-US",
+                ajax: {
+                    url: ctx + 'business/category/list/keyword',
+                    method: 'POST',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            keyword: params.term == null ? "" : params.term,
+                            categoryIds: $('#categoryIds').val() == null ? "" : $('#categoryIds').val()
+                        }
+                    },
+                    processResults: function (data, params) {
+                        return {
+                            results: data
+                        }
+                    }
+                },
+                placeholder: 'Category',
+                minimumInputLength: 0,
+                multiple: true
+            });
+            // when select option group
+            $('.category-select').change(function () {
+                let data = $('.category-select').select2('data');
+                let categories = '';
+                let categoryIds = '';
+                if (data != null && data.length > 0) {
+                    data.forEach(element => {
+                        categoryIds += element.id + ",";
+                        categories += element.text + ",";
+                    });
+                    categoryIds = categoryIds.substring(0, categoryIds.length - 1);
+                    categories = categories.substring(0, categories.length - 1);
+                }
+                $('#categoryIds').val(categoryIds);
+                $('#categories').val(categories);
+            });
+            // Set current data to display on select2
+            if ($('#categoryIds').val()) {
+                let categoryIdArr = $('#categoryIds').val().split(',');
+                let categoryArr = $('#categories').val().split(',');
+                for (let i = 0; i < categoryIdArr.length; i++) {
+                    let $option = $("<option selected></option>").val(categoryIdArr[i]).text(categoryArr[i]);
+                    $('.category-select').append($option).trigger('change');
+                }
+            }
+
+            //-------------select 2 for author--------------//
+            $('.author-select').select2({
+                language: "en-US",
+                ajax: {
+                    url: ctx + 'business/author/list/keyword',
+                    method: 'POST',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            keyword: params.term == null ? "" : params.term,
+                            authorIds: $('#authorId').val() == null ? "" : $('#authorId').val()
+                        }
+                    },
+                    processResults: function (data, params) {
+                        return {
+                            results: data
+                        }
+                    }
+                },
+                placeholder: 'Author',
+                minimumInputLength: 0
+            });
+            // when select option group
+            $('.author-select').change(function () {
+                let data = $('.author-select').select2('data');
+                if (data != null && data.length > 0) {
+                    $('#authorId').val(data[0].id);
+                    $('#author').val(data[0].text);
+                }
+
+            });
+            // Set current data to display on select2
+            let authorId = $('#authorId').val();
+            let author = $('#author').val();
+            if (authorId) {
+                let newOption = new Option(author, authorId, false, false);
+                $('.author-select').append(newOption).trigger('change');
+            }
+
+            //-------------select 2 for artist--------------//
+            $('.artist-select').select2({
+                language: "en-US",
+                ajax: {
+                    url: ctx + 'business/artist/list/keyword',
+                    method: 'POST',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            keyword: params.term == null ? "" : params.term,
+                            artistIds: $('#artistId').val() == null ? "" : $('#artistId').val()
+                        }
+                    },
+                    processResults: function (data, params) {
+                        return {
+                            results: data
+                        }
+                    }
+                },
+                placeholder: 'Artist',
+                minimumInputLength: 0
+            });
+            // when select option group
+            $('.artist-select').change(function () {
+                let data = $('.artist-select').select2('data');
+                if (data != null && data.length > 0) {
+                    $('#artistId').val(data[0].id);
+                    $('#artist').val(data[0].text);
+                } else {
+                    $('#artistId').val('');
+                    $('#artist').val('');
+                }
+            });
+            // Set current data to display on select2
+            let artistId = $('#artistId').val();
+            let artist = $('#artist').val();
+            if (artistId) {
+                let newOption = new Option(artist, artistId, false, false);
+                $('.artist-select').append(newOption).trigger('change');
+            }
+        });
+
+        function deleteCoverImage() {
+            let id = $('#coverImageId').val();
+            $('#coverImageId').val('');
+            $('#coverImage').val('');
+            if (id) {
+                $.ajax({
+                    url: ctx + 'file/manga/cover',
+                    method: 'DELETE',
+                    data: {
+                        ids: id,
+                        coverId: $('#id').val()
+                    },
+                    success: function (res) {
+                        if (res.code != 0) {
+                            console.log('Error when delete image: ' + res.msg);
+                        } else {
+                            $('#cover-image-upload').fileinput('refresh');
+                        }
+                    },
+                    error: function (err) {
+                        console.log('System error!');
+                    }
+                });
+            }
+        }
+
+        function deleteSlideImage() {
+            let id = $('#slideImageId').val();
+            $('#slideImageId').val('');
+            $('#slideImage').val('');
+            if (id) {
+                $.ajax({
+                    url: ctx + 'file/manga/slide',
+                    method: 'DELETE',
+                    data: {
+                        ids: id,
+                        slideId: $('#id').val()
+                    },
+                    success: function (res) {
+                        if (res.code != 0) {
+                            console.log('Error when delete image: ' + res.msg);
+                        } else {
+                            $('#slide-image-upload').fileinput('refresh');
+                        }
+                    },
+                    error: function (err) {
+                        console.log('System error!');
+                    }
+                });
+            }
+        }
+
         $("#form-manga-edit").validate({
             focusCleanup: true
         });
 
         function submitHandler() {
             if ($.validate.form()) {
+                if (!$('#categoryIds').val()) {
+                    $.modal.alertWarning('Please choose the category before save.');
+                    return;
+                }
+                $('#remark').val($('.summernote').summernote('code'));
                 $.operate.save(prefix + "/edit", $('#form-manga-edit').serialize());
             }
         }

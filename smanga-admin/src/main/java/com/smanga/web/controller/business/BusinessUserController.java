@@ -87,7 +87,7 @@ public class BusinessUserController extends BaseController {
 		businessUser.setSalt(ShiroUtils.randomSalt());
 		businessUser.setPassword(passwordService.encryptPassword(businessUser.getLoginName(),
 				businessUser.getPassword(), businessUser.getSalt()));
-		businessUser.setCreateBy(ShiroUtils.getSysUser().getUserName());
+		businessUser.setCreateBy(ShiroUtils.getLoginName());
 		return toAjax(businessUserService.insertBusinessUser(businessUser));
 	}
 

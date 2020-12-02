@@ -8,16 +8,18 @@
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
         <form class="form-horizontal m" id="form-chapter-add">
+            <input name="mangaId" type="hidden" th:value="${mangaId}">
             <div class="form-group">
                 <label class="col-sm-3 control-label">Chapter name：</label>
                 <div class="col-sm-8">
-                    <input name="chapterName" class="form-control" type="text">
+                    <input name="chapterName" class="form-control" type="text" maxlength="100"
+                        placeholder="Enter the chapter name">
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label is-required">Chapter number：</label>
+                <label class="col-sm-3 control-label is-required">Chapter index：</label>
                 <div class="col-sm-8">
-                    <input name="chapterIndex" class="form-control" type="text" required>
+                    <input name="chapterIndex" class="form-control" type="number" required>
                 </div>
             </div>
             <div class="form-group">
@@ -31,56 +33,22 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Image paths with multipe image seperated by comma：</label>
-                <div class="col-sm-8">
-                    <textarea name="chapterImages" class="form-control"></textarea>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Image ids with multipe image seperated by comma：</label>
-                <div class="col-sm-8">
-                    <input name="chapterImageIds" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label is-required">Author name of manga：</label>
-                <div class="col-sm-8">
-                    <input name="mangaId" class="form-control" type="text" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Number of reader read this chapter：</label>
-                <div class="col-sm-8">
-                    <input name="viewCounter" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Number of reader like this chapter：</label>
-                <div class="col-sm-8">
-                    <input name="favoriteCounter" class="form-control" type="text">
-                </div>
-            </div>
-            <div class="form-group">
                 <label class="col-sm-3 control-label">Remark：</label>
                 <div class="col-sm-8">
                     <textarea name="remark" class="form-control"></textarea>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Chapter status (1 enabled 0 disabled)：</label>
+                <label class="col-sm-3 control-label">Chapter status：</label>
                 <div class="col-sm-8">
                     <div class="radio-box">
-                        <input type="radio" name="status" value="">
-                        <label th:for="status" th:text="未知"></label>
+                        <input type="radio" name="status" value="1" checked>
+                        <label th:for="status" th:text="Enable"></label>
                     </div>
-                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> Please select dictionary
-                        attribute for code generation</span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">Delete flag (0 means existence 1 means deletion)：</label>
-                <div class="col-sm-8">
-                    <input name="delFlag" class="form-control" type="text">
+                    <div class="radio-box">
+                        <input type="radio" name="status" value="0">
+                        <label th:for="status" th:text="Disable"></label>
+                    </div>
                 </div>
             </div>
         </form>

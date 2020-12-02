@@ -258,7 +258,7 @@ public class ShiroConfig {
 		LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
 		// Set up anonymous access to static resources
 		filterChainDefinitionMap.put("/favicon.ico**", "anon");
-		filterChainDefinitionMap.put("/ruoyi.png**", "anon");
+		filterChainDefinitionMap.put("/smanga.png**", "anon");
 		filterChainDefinitionMap.put("/css/**", "anon");
 		filterChainDefinitionMap.put("/docs/**", "anon");
 		filterChainDefinitionMap.put("/fonts/**", "anon");

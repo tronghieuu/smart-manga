@@ -29,6 +29,7 @@ import com.smanga.common.core.text.Convert;
 import com.smanga.common.enums.BusinessType;
 import com.smanga.common.utils.StringUtils;
 import com.smanga.common.utils.poi.ExcelUtil;
+import com.smanga.framework.shiro.util.ShiroUtils;
 
 /**
  * Manga CategoryController
@@ -97,8 +98,10 @@ public class BusinessMangaCategoryController extends BaseController {
 			ImageFile imageFileUpdate = new ImageFile();
 			imageFileUpdate.setId(coverImageId);
 			imageFileUpdate.setUsedStatus(SmangaConstants.FILE_USED);
+			imageFileUpdate.setUpdateBy(ShiroUtils.getLoginName());
 			imageFileService.updateImageFile(imageFileUpdate);
 		}
+		mangaCategory.setCreateBy(ShiroUtils.getLoginName());
 
 		return toAjax(mangaCategoryService.insertMangaCategory(mangaCategory));
 	}

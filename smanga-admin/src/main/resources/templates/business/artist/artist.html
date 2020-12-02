@@ -2,7 +2,7 @@
 <html lang="en-US" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 
 <head>
-    <th:block th:include="include :: header('Manga List')" />
+    <th:block th:include="include :: header('artist List')" />
 </head>
 
 <body class="gray-bg">
@@ -13,8 +13,8 @@
                     <div class="select-list">
                         <ul>
                             <li>
-                                <label>Manga name：</label>
-                                <input type="text" name="mangaName" />
+                                <label>Artist name：</label>
+                                <input type="text" name="artistName" />
                             </li>
                             <li>
                                 <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
@@ -48,7 +48,7 @@
     </div>
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
-        var prefix = ctx + "business/manga";
+        var prefix = ctx + "business/artist";
 
         $(function () {
             var options = {
@@ -57,59 +57,22 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
-                modalName: "Manga",
+                modalName: "artist",
                 columns: [{
                     checkbox: true
                 },
                 {
                     field: 'id',
-                    title: 'Serial ID',
+                    title: 'ID',
                     visible: false
                 },
                 {
-                    field: 'mangaName',
-                    title: 'Manga name',
-                    formatter: function (value, row, index) {
-                        return '<a href="javascript:void(0)" onclick="detail(\'' + row.id + '\',\'' + row.mangaName + '\')">' + value + '</a>';
-                    }
-                },
-                {
-                    field: 'categories',
-                    title: 'Category',
-                    formatter: function (value, row, index) {
-                        if (value) {
-                            let result = '';
-                            let arr = value.split(',');
-                            arr.forEach(element => {
-                                result += '<span class="badge badge-primary">' + element + '</span>';
-                            });
-                            return result;
-                        }
-                        return '';
-                    }
-                },
-                {
-                    field: 'author',
-                    title: 'Author'
-                },
-                {
-                    field: 'artist',
-                    title: 'Artist'
+                    field: 'artistName',
+                    title: 'Artist name'
                 },
                 {
                     field: 'favoriteCounter',
                     title: 'Favorite number'
-                },
-                {
-                    field: 'status',
-                    title: 'Status',
-                    formatter: function (value, row, index) {
-                        if (value == '1') {
-                            return '<span class="badge badge-primary">Enabled</span>';
-                        } else if (value == '0') {
-                            return '<span class="badge badge-danger">Disabled</span>';
-                        }
-                    }
                 },
                 {
                     field: 'createTime',
@@ -132,12 +95,6 @@
             };
             $.table.init(options);
         });
-
-        /* Manga List-Detailed*/
-        function detail(id, mangaName) {
-            let url = prefix + '/chapters/' + id;
-            $.modal.openTab(mangaName + " chapter list", url);
-        }
     </script>
 </body>
 

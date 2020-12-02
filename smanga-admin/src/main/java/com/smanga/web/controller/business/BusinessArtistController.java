@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
-import com.smanga.business.domain.Author;
-import com.smanga.business.service.IAuthorService;
+import com.smanga.business.domain.Artist;
+import com.smanga.business.service.IArtistService;
 import com.smanga.common.annotation.Log;
 import com.smanga.common.core.controller.BaseController;
 import com.smanga.common.core.domain.AjaxResult;
@@ -28,49 +28,49 @@ import com.smanga.common.utils.poi.ExcelUtil;
 import com.smanga.framework.shiro.util.ShiroUtils;
 
 /**
- * AuthorController
+ * artistController
  * 
  * @author Trong Hieu
- * @date 2020-11-26
+ * @date 2020-11-29
  */
 @Controller
-@RequestMapping("/business/author")
-public class BusinessAuthorController extends BaseController {
-	private String prefix = "business/author";
+@RequestMapping("/business/artist")
+public class BusinessArtistController extends BaseController {
+	private String prefix = "business/artist";
 
 	@Autowired
-	private IAuthorService authorService;
+	private IArtistService artistService;
 
 	@GetMapping()
-	public String author() {
-		return prefix + "/author";
+	public String artist() {
+		return prefix + "/artist";
 	}
 
 	/**
-	 * Query the list of Author
+	 * Query the list of artist
 	 */
 	@PostMapping("/list")
 	@ResponseBody
-	public TableDataInfo list(Author author) {
+	public TableDataInfo list(Artist artist) {
 		startPage();
-		List<Author> list = authorService.selectAuthorList(author);
+		List<Artist> list = artistService.selectArtistList(artist);
 		return getDataTable(list);
 	}
 
 	/**
-	 * Export Author list
+	 * Export artist list
 	 */
-	@Log(title = "Author", businessType = BusinessType.EXPORT)
+	@Log(title = "artist", businessType = BusinessType.EXPORT)
 	@PostMapping("/export")
 	@ResponseBody
-	public AjaxResult export(Author author) {
-		List<Author> list = authorService.selectAuthorList(author);
-		ExcelUtil<Author> util = new ExcelUtil<Author>(Author.class);
-		return util.exportExcel(list, "author");
+	public AjaxResult export(Artist artist) {
+		List<Artist> list = artistService.selectArtistList(artist);
+		ExcelUtil<Artist> util = new ExcelUtil<Artist>(Artist.class);
+		return util.exportExcel(list, "artist");
 	}
 
 	/**
-	 * Add Author
+	 * Add artist
 	 */
 	@GetMapping("/add")
 	public String add() {
@@ -78,66 +78,66 @@ public class BusinessAuthorController extends BaseController {
 	}
 
 	/**
-	 * Add save Author
+	 * Add save artist
 	 */
-	@Log(title = "Author", businessType = BusinessType.INSERT)
+	@Log(title = "artist", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(Author author) {
-		author.setCreateBy(ShiroUtils.getLoginName());
-		return toAjax(authorService.insertAuthor(author));
+	public AjaxResult addSave(Artist artist) {
+		artist.setCreateBy(ShiroUtils.getLoginName());
+		return toAjax(artistService.insertArtist(artist));
 	}
 
 	/**
-	 * Modify Author
+	 * Modify artist
 	 */
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable("id") Long id, ModelMap mmap) {
-		Author author = authorService.selectAuthorById(id);
-		mmap.put("author", author);
+		Artist artist = artistService.selectArtistById(id);
+		mmap.put("artist", artist);
 		return prefix + "/edit";
 	}
 
 	/**
-	 * Modify and save Author
+	 * Modify and save artist
 	 */
-	@Log(title = "Author", businessType = BusinessType.UPDATE)
+	@Log(title = "artist", businessType = BusinessType.UPDATE)
 	@PostMapping("/edit")
 	@ResponseBody
-	public AjaxResult editSave(Author author) {
-		return toAjax(authorService.updateAuthor(author));
+	public AjaxResult editSave(Artist artist) {
+		return toAjax(artistService.updateArtist(artist));
 	}
 
 	/**
-	 * Delete Author
+	 * Delete artist
 	 */
-	@Log(title = "Author", businessType = BusinessType.DELETE)
+	@Log(title = "artist", businessType = BusinessType.DELETE)
 	@PostMapping("/remove")
 	@ResponseBody
 	public AjaxResult remove(String ids) {
-		return toAjax(authorService.deleteAuthorByIds(ids));
+		return toAjax(artistService.deleteArtistByIds(ids));
 	}
 
 	/**
-	 * Search author with keyword
+	 * Search artist with keyword
 	 */
 	@PostMapping("/list/keyword")
 	@ResponseBody
-	public List<JSONObject> getAuthorListWithKeyword(String keyword, String authorIds) {
-		Author authorParam = new Author();
+	public List<JSONObject> getArtistListWithKeyword(String keyword, String artistIds) {
+		Artist artistParam = new Artist();
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("limit", 10);
-		params.put("notInIdsArray", Convert.toStrArray(authorIds));
+		params.put("notInIdsArray", Convert.toStrArray(artistIds));
 		params.put("keyword", keyword);
-		authorParam.setParams(params);
-		List<Author> authors = authorService.selectAuthorList(authorParam);
+		artistParam.setParams(params);
+		List<Artist> artists = artistService.selectArtistList(artistParam);
 
 		List<JSONObject> result = new ArrayList<>();
-		if (CollectionUtils.isNotEmpty(authors)) {
-			for (Author author : authors) {
+		if (CollectionUtils.isNotEmpty(artists)) {
+			for (Artist artist : artists) {
 				JSONObject json = new JSONObject();
-				json.put("id", author.getId());
-				json.put("text", author.getAuthorName());
+				json.put("id", artist.getId());
+				json.put("text", artist.getArtistName());
 				result.add(json);
 			}
 		}

@@ -2,24 +2,24 @@
 <html lang="en-US" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <th:block th:include="include :: header('Add Author')" />
+    <th:block th:include="include :: header('Addartist')" />
     <th:block th:include="include :: summernote-css" />
 </head>
 
 <body class="white-bg">
     <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-        <form class="form-horizontal m" id="form-author-add">
+        <form class="form-horizontal m" id="form-artist-add">
             <div class="form-group">
-                <label class="col-sm-3 control-label is-required">Author name：</label>
+                <label class="col-sm-3 control-label is-required">Artist name：</label>
                 <div class="col-sm-8">
-                    <input name="authorName" class="form-control" type="text" placeholder="Please enter the artist name"
+                    <input name="artistName" class="form-control" type="text" placeholder="Please enter the artist name"
                         maxlength="100" required>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Author information：</label>
+                <label class="col-sm-3 control-label">Artist information：</label>
                 <div class="col-sm-8">
-                    <input name="authorInfo" id="authorInfo" type="hidden">
+                    <input name="artistInfo" id="artistInfo" type="hidden">
                     <div class="summernote"></div>
                 </div>
             </div>
@@ -34,23 +34,23 @@
     <th:block th:include="include :: footer" />
     <th:block th:include="include :: summernote-js" />
     <script th:inline="javascript">
-        var prefix = ctx + "business/author"
+        var prefix = ctx + "business/artist"
 
         $(document).ready(function () {
-            // Author infor
+            // Artist infor
             $('.summernote').summernote({
                 lang: 'en-US'
             });
         });
 
-        $("#form-author-add").validate({
+        $("#form-artist-add").validate({
             focusCleanup: true
         });
 
         function submitHandler() {
             if ($.validate.form()) {
-                $('#authorInfo').val($('.summernote').summernote('code'));
-                $.operate.save(prefix + "/add", $('#form-author-add').serialize());
+                $('#artistInfo').val($('.summernote').summernote('code'));
+                $.operate.save(prefix + "/add", $('#form-artist-add').serialize());
             }
         }
     </script>

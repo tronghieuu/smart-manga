@@ -14,7 +14,8 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label is-required">Manga name：</label>
                 <div class="col-sm-8">
-                    <input name="mangaName" class="form-control" type="text" required>
+                    <input name="mangaName" class="form-control" type="text" placeholder="Please enter the manga name"
+                        maxlength="100" required>
                 </div>
             </div>
             <div class="form-group">
@@ -28,8 +29,17 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label">Author：</label>
                 <div class="col-sm-8">
-                    <input name="author" class="form-control" type="text">
-                    <input name="authorId" type="hidden">
+                    <input name="author" id="author" type="hidden">
+                    <input name="authorId" id="authorId" type="hidden">
+                    <select class="author-select"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Artist：</label>
+                <div class="col-sm-8">
+                    <input name="artist" id="artist" type="hidden">
+                    <input name="artistId" id="artist" type="hidden">
+                    <select class="artist-select"></select>
                 </div>
             </div>
             <div class="form-group">
@@ -43,7 +53,7 @@
                 <label class="col-sm-3 control-label">Cover image：</label>
                 <div class="col-sm-8">
                     <div class="file-loading">
-                        <input type="file" id="cover-image-upload" multiple>
+                        <input type="file" id="cover-image-upload">
                     </div>
                     <input type="hidden" name="coverImage" id="coverImage" />
                     <input type="hidden" name="coverImageId" id="coverImageId" />
@@ -53,7 +63,7 @@
                 <label class="col-sm-3 control-label">Slide image：</label>
                 <div class="col-sm-8">
                     <div class="file-loading">
-                        <input type="file" id="slide-image-upload" multiple>
+                        <input type="file" id="slide-image-upload">
                     </div>
                     <input type="hidden" name="slideImage" id="slideImage" />
                     <input type="hidden" name="slideImageId" id="slideImageId" />
@@ -121,7 +131,7 @@
             });
             // Trigger to delete file when remove preview
             $('#cover-image-upload').on('fileremoved', function (event, id, index) {
-                deletecoverImage();
+                deleteCoverImage();
             });
             // Trigger to delete file when clear preview
             $('#cover-image-upload').on('filecleared', function (event) {
@@ -201,6 +211,72 @@
                 $('#categoryIds').val(categoryIds);
                 $('#categories').val(categories);
             });
+
+            //-------------select 2 for author--------------//
+            $('.author-select').select2({
+                language: "en-US",
+                ajax: {
+                    url: ctx + 'business/author/list/keyword',
+                    method: 'POST',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            keyword: params.term == null ? "" : params.term,
+                            authorIds: $('#authorId').val() == null ? "" : $('#authorId').val()
+                        }
+                    },
+                    processResults: function (data, params) {
+                        return {
+                            results: data
+                        }
+                    }
+                },
+                placeholder: 'Author',
+                minimumInputLength: 0
+            });
+            // when select option group
+            $('.author-select').change(function () {
+                let data = $('.author-select').select2('data');
+                if (data != null && data.length > 0) {
+                    $('#authorId').val(data[0].id);
+                    $('#author').val(data[0].text);
+                }
+
+            });
+
+            //-------------select 2 for artist--------------//
+            $('.artist-select').select2({
+                language: "en-US",
+                ajax: {
+                    url: ctx + 'business/artist/list/keyword',
+                    method: 'POST',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            keyword: params.term == null ? "" : params.term,
+                            artistIds: $('#artistId').val() == null ? "" : $('#artistId').val()
+                        }
+                    },
+                    processResults: function (data, params) {
+                        return {
+                            results: data
+                        }
+                    }
+                },
+                placeholder: 'Artist',
+                minimumInputLength: 0
+            });
+            // when select option group
+            $('.artist-select').change(function () {
+                let data = $('.artist-select').select2('data');
+                if (data != null && data.length > 0) {
+                    $('#artistId').val(data[0].id);
+                    $('#artist').val(data[0].text);
+                } else {
+                    $('#artistId').val('');
+                    $('#artist').val('');
+                }
+            });
         });
 
         function deleteCoverImage() {
@@ -255,6 +331,10 @@
 
         function submitHandler() {
             if ($.validate.form()) {
+                if (!$('#categoryIds').val()) {
+                    $.modal.alertWarning('Please choose the category before save.');
+                    return;
+                }
                 $('#remark').val($('.summernote').summernote('code'));
                 $.operate.save(prefix + "/add", $('#form-manga-add').serialize());
             }

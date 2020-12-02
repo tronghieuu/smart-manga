@@ -11,14 +11,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.smanga.business.domain.ImageFile;
 import com.smanga.business.domain.Manga;
+import com.smanga.business.service.IImageFileService;
 import com.smanga.business.service.IMangaService;
 import com.smanga.common.annotation.Log;
+import com.smanga.common.constant.SmangaConstants;
 import com.smanga.common.core.controller.BaseController;
 import com.smanga.common.core.domain.AjaxResult;
 import com.smanga.common.core.page.TableDataInfo;
 import com.smanga.common.enums.BusinessType;
 import com.smanga.common.utils.poi.ExcelUtil;
+import com.smanga.framework.shiro.util.ShiroUtils;
 
 /**
  * MangaController
@@ -33,6 +37,9 @@ public class BusinessMangaController extends BaseController {
 
 	@Autowired
 	private IMangaService mangaService;
+
+	@Autowired
+	private IImageFileService imageFileService;
 
 	@GetMapping()
 	public String manga() {
@@ -77,6 +84,28 @@ public class BusinessMangaController extends BaseController {
 	@PostMapping("/add")
 	@ResponseBody
 	public AjaxResult addSave(Manga manga) {
+		// Id cover image upload
+		Long coverImageId = manga.getCoverImageId();
+		if (coverImageId != null) {
+			// Update used status
+			ImageFile imageFileUpdate = new ImageFile();
+			imageFileUpdate.setId(coverImageId);
+			imageFileUpdate.setUsedStatus(SmangaConstants.FILE_USED);
+			imageFileUpdate.setUpdateBy(ShiroUtils.getLoginName());
+			imageFileService.updateImageFile(imageFileUpdate);
+		}
+
+		// Id slide image upload
+		Long slideImageId = manga.getSlideImageId();
+		if (coverImageId != null) {
+			// Update used status
+			ImageFile imageFileUpdate = new ImageFile();
+			imageFileUpdate.setId(slideImageId);
+			imageFileUpdate.setUsedStatus(SmangaConstants.FILE_USED);
+			imageFileUpdate.setUpdateBy(ShiroUtils.getLoginName());
+			imageFileService.updateImageFile(imageFileUpdate);
+		}
+		manga.setCreateBy(ShiroUtils.getLoginName());
 		return toAjax(mangaService.insertManga(manga));
 	}
 
@@ -97,6 +126,39 @@ public class BusinessMangaController extends BaseController {
 	@PostMapping("/edit")
 	@ResponseBody
 	public AjaxResult editSave(Manga manga) {
+		Manga mangaRef = mangaService.selectMangaById(manga.getId());
+		if (manga.getCoverImageId() != null && mangaRef.getCoverImageId() != null
+				&& manga.getCoverImageId() != mangaRef.getCoverImageId()) {
+			imageFileService.deleteImageFileById(mangaRef.getCoverImageId());
+		}
+
+		if (manga.getSlideImageId() != null && mangaRef.getSlideImageId() != null
+				&& manga.getSlideImageId() != mangaRef.getSlideImageId()) {
+			imageFileService.deleteImageFileById(mangaRef.getSlideImageId());
+		}
+
+		// Id cover image upload
+		Long coverImageId = manga.getCoverImageId();
+		if (coverImageId != null) {
+			// Update used status
+			ImageFile imageFileUpdate = new ImageFile();
+			imageFileUpdate.setId(coverImageId);
+			imageFileUpdate.setUsedStatus(SmangaConstants.FILE_USED);
+			imageFileUpdate.setUpdateBy(ShiroUtils.getLoginName());
+			imageFileService.updateImageFile(imageFileUpdate);
+		}
+
+		// Id slide image upload
+		Long slideImageId = manga.getSlideImageId();
+		if (coverImageId != null) {
+			// Update used status
+			ImageFile imageFileUpdate = new ImageFile();
+			imageFileUpdate.setId(slideImageId);
+			imageFileUpdate.setUsedStatus(SmangaConstants.FILE_USED);
+			imageFileUpdate.setUpdateBy(ShiroUtils.getLoginName());
+			imageFileService.updateImageFile(imageFileUpdate);
+		}
+		manga.setUpdateBy(ShiroUtils.getLoginName());
 		return toAjax(mangaService.updateManga(manga));
 	}
 

@@ -63,13 +63,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null">status,</if>
             <if test="delFlag != null">del_flag,</if>
             <if test="createBy != null">create_by,</if>
-            <if test="createTime != null">create_time,</if>
-            <if test="updateBy != null">update_by,</if>
-            <if test="updateTime != null">update_time,</if>
             <if test="remark != null">remark,</if>
             <if test="coverImage != null">cover_image,</if>
             <if test="coverImageId != null">cover_image_id,</if>
             <if test="recommendedAge != null">recommended_age,</if>
+            create_time
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="categoryName != null and categoryName != ''">#{categoryName},</if>
@@ -77,13 +75,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null">#{status},</if>
             <if test="delFlag != null">#{delFlag},</if>
             <if test="createBy != null">#{createBy},</if>
-            <if test="createTime != null">#{createTime},</if>
-            <if test="updateBy != null">#{updateBy},</if>
-            <if test="updateTime != null">#{updateTime},</if>
             <if test="remark != null">#{remark},</if>
             <if test="coverImage != null">#{coverImage},</if>
             <if test="coverImageId != null">#{coverImageId},</if>
             <if test="recommendedAge != null">#{recommendedAge},</if>
+            sysdate()
          </trim>
     </insert>
 
@@ -94,10 +90,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="favoriteCounter != null">favorite_counter = #{favoriteCounter},</if>
             <if test="status != null">status = #{status},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>
-            <if test="createBy != null">create_by = #{createBy},</if>
-            <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
-            <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="remark != null">remark = #{remark},</if>
             <if test="coverImage != null">cover_image = #{coverImage},</if>
             <if test="coverImageId != null">cover_image_id = #{coverImageId},</if>
@@ -106,6 +99,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             	cover_image_id = null,
             	cover_image = '',
             </if>
+            update_time = sysdate()
         </trim>
         where id = #{id}
     </update>

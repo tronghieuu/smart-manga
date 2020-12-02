@@ -20,6 +20,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="recommendedAge"    column="recommended_age"    />
         <result property="status"    column="status"    />
         <result property="delFlag"    column="del_flag"    />
+        <result property="artist"    column="artist"    />
+        <result property="artistId"    column="artist_id"    />
         <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateBy"    column="update_by"    />
@@ -27,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectMangaVo">
-        select id, manga_name, categories, category_ids, author, author_id, favorite_counter, remark, cover_image, cover_image_id, slide_image, slide_image_id, recommended_age, status, del_flag, create_by, create_time, update_by, update_time from manga
+        select id, manga_name, categories, category_ids, author, author_id, favorite_counter, remark, cover_image, cover_image_id, slide_image, slide_image_id, recommended_age, status, del_flag, artist, artist_id, create_by, create_time, update_by, update_time from manga
     </sql>
 
     <select id="selectMangaList" parameterType="Manga" resultMap="MangaResult">
@@ -45,6 +47,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="slideImageId != null "> and slide_image_id = #{slideImageId}</if>
             <if test="recommendedAge != null  and recommendedAge != ''"> and recommended_age = #{recommendedAge}</if>
             <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="artist != null  and artist != ''"> and artist = #{artist}</if>
+            <if test="artistId != null "> and artist_id = #{artistId}</if>
         </where>
     </select>
     
@@ -70,10 +74,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="recommendedAge != null">recommended_age,</if>
             <if test="status != null">status,</if>
             <if test="delFlag != null">del_flag,</if>
+            <if test="artist != null">artist,</if>
+            <if test="artistId != null">artist_id,</if>
             <if test="createBy != null">create_by,</if>
-            <if test="createTime != null">create_time,</if>
-            <if test="updateBy != null">update_by,</if>
-            <if test="updateTime != null">update_time,</if>
+           	create_time
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="mangaName != null and mangaName != ''">#{mangaName},</if>
@@ -90,10 +94,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="recommendedAge != null">#{recommendedAge},</if>
             <if test="status != null">#{status},</if>
             <if test="delFlag != null">#{delFlag},</if>
+            <if test="artist != null">#{artist},</if>
+            <if test="artistId != null">#{artistId},</if>
             <if test="createBy != null">#{createBy},</if>
-            <if test="createTime != null">#{createTime},</if>
-            <if test="updateBy != null">#{updateBy},</if>
-            <if test="updateTime != null">#{updateTime},</if>
+            sysdate()
          </trim>
     </insert>
 
@@ -114,10 +118,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="recommendedAge != null">recommended_age = #{recommendedAge},</if>
             <if test="status != null">status = #{status},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>
-            <if test="createBy != null">create_by = #{createBy},</if>
-            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="artist != null">artist = #{artist},</if>
+            <if test="artistId != null">artist_id = #{artistId},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
-            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="params.nullCoverImage != null">
+            	cover_image_id = null,
+            	cover_image = '',
+            </if>
+            <if test="params.nullSlideImage != null">
+            	slide_image_id = null,
+            	slide_image = '',
+            </if>
+            update_time = sysdate()
         </trim>
         where id = #{id}
     </update>

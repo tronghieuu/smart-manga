@@ -2,12 +2,12 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.smanga.business.mapper.AuthorMapper">
+<mapper namespace="com.smanga.business.mapper.ArtistMapper">
     
-    <resultMap type="Author" id="AuthorResult">
+    <resultMap type="Artist" id="ArtistResult">
         <result property="id"    column="id"    />
-        <result property="authorName"    column="author_name"    />
-        <result property="authorInfo"    column="author_info"    />
+        <result property="artistName"    column="artist_name"    />
+        <result property="artistInfo"    column="artist_info"    />
         <result property="favoriteCounter"    column="favorite_counter"    />
         <result property="remark"    column="remark"    />
         <result property="delFlag"    column="del_flag"    />
@@ -17,15 +17,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
     </resultMap>
 
-    <sql id="selectAuthorVo">
-        select id, author_name, author_info, favorite_counter, remark, del_flag, create_by, create_time, update_by, update_time from author
+    <sql id="selectArtistVo">
+        select id, artist_name, artist_info, favorite_counter, remark, del_flag, create_by, create_time, update_by, update_time from artist
     </sql>
 
-    <select id="selectAuthorList" parameterType="Author" resultMap="AuthorResult">
-        <include refid="selectAuthorVo"/>
+    <select id="selectArtistList" parameterType="Artist" resultMap="ArtistResult">
+        <include refid="selectArtistVo"/>
         <where>  
-            <if test="authorName != null  and authorName != ''"> and author_name like concat('%', #{authorName}, '%')</if>
-            <if test="authorInfo != null  and authorInfo != ''"> and author_info = #{authorInfo}</if>
+            <if test="artistName != null  and artistName != ''"> and artist_name like concat('%', #{artistName}, '%')</if>
+            <if test="artistInfo != null  and artistInfo != ''"> and artist_info = #{artistInfo}</if>
             <if test="favoriteCounter != null "> and favorite_counter = #{favoriteCounter}</if>
             <if test="params.notInIdsArray != null">
             	and id not in
@@ -33,47 +33,43 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		            #{id}
 		        </foreach>
             </if>
-            <if test="params.keyword != null and params.keyword != ''"> and author_name like concat('%', concat(#{params.keyword}, '%'))</if>
+            <if test="params.keyword != null and params.keyword != ''"> and artist_name like concat('%', concat(#{params.keyword}, '%'))</if>
         </where>
         <if test="params.limit != null">limit #{params.limit}</if>
     </select>
     
-    <select id="selectAuthorById" parameterType="Long" resultMap="AuthorResult">
-        <include refid="selectAuthorVo"/>
+    <select id="selectArtistById" parameterType="Long" resultMap="ArtistResult">
+        <include refid="selectArtistVo"/>
         where id = #{id}
     </select>
         
-    <insert id="insertAuthor" parameterType="Author" useGeneratedKeys="true" keyProperty="id">
-        insert into author
+    <insert id="insertArtist" parameterType="Artist" useGeneratedKeys="true" keyProperty="id">
+        insert into artist
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="authorName != null and authorName != ''">author_name,</if>
-            <if test="authorInfo != null">author_info,</if>
+            <if test="artistName != null and artistName != ''">artist_name,</if>
+            <if test="artistInfo != null">artist_info,</if>
             <if test="favoriteCounter != null">favorite_counter,</if>
             <if test="remark != null">remark,</if>
             <if test="delFlag != null">del_flag,</if>
             <if test="createBy != null">create_by,</if>
-            <if test="createTime != null">create_time,</if>
-            <if test="updateBy != null">update_by,</if>
-            <if test="updateTime != null">update_time,</if>
+            create_time
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="authorName != null and authorName != ''">#{authorName},</if>
-            <if test="authorInfo != null">#{authorInfo},</if>
+            <if test="artistName != null and artistName != ''">#{artistName},</if>
+            <if test="artistInfo != null">#{artistInfo},</if>
             <if test="favoriteCounter != null">#{favoriteCounter},</if>
             <if test="remark != null">#{remark},</if>
             <if test="delFlag != null">#{delFlag},</if>
             <if test="createBy != null">#{createBy},</if>
-            <if test="createTime != null">#{createTime},</if>
-            <if test="updateBy != null">#{updateBy},</if>
-            <if test="updateTime != null">#{updateTime},</if>
+            sysdate()
          </trim>
     </insert>
 
-    <update id="updateAuthor" parameterType="Author">
-        update author
+    <update id="updateArtist" parameterType="Artist">
+        update artist
         <trim prefix="SET" suffixOverrides=",">
-            <if test="authorName != null and authorName != ''">author_name = #{authorName},</if>
-            <if test="authorInfo != null">author_info = #{authorInfo},</if>
+            <if test="artistName != null and artistName != ''">artist_name = #{artistName},</if>
+            <if test="artistInfo != null">artist_info = #{artistInfo},</if>
             <if test="favoriteCounter != null">favorite_counter = #{favoriteCounter},</if>
             <if test="remark != null">remark = #{remark},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>
@@ -83,12 +79,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteAuthorById" parameterType="Long">
-        delete from author where id = #{id}
+    <delete id="deleteArtistById" parameterType="Long">
+        delete from artist where id = #{id}
     </delete>
 
-    <delete id="deleteAuthorByIds" parameterType="String">
-        delete from author where id in 
+    <delete id="deleteArtistByIds" parameterType="String">
+        delete from artist where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

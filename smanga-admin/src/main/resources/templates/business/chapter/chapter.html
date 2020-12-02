@@ -17,7 +17,7 @@
                                 <input type="text" name="chapterName" />
                             </li>
                             <li>
-                                <label>Index：</label>
+                                <label>Chapter index: </label>
                                 <input type="text" name="chapterIndex" />
                             </li>
                             <li>
@@ -53,11 +53,12 @@
     <th:block th:include="include :: footer" />
     <script th:inline="javascript">
         var prefix = ctx + "business/chapter";
+        var mangaId = /*[[${mangaId}]]*/;
 
         $(function () {
             var options = {
-                url: prefix + "/list",
-                createUrl: prefix + "/add",
+                url: prefix + "/manga/" + mangaId + "/list",
+                createUrl: prefix + "/manga/" + mangaId + "/add",
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
@@ -67,54 +68,62 @@
                 },
                 {
                     field: 'id',
-                    title: 'Serial ID',
+                    title: 'ID',
                     visible: false
                 },
                 {
                     field: 'chapterName',
-                    title: 'Manga name'
+                    title: 'Chapter name'
                 },
                 {
                     field: 'chapterIndex',
-                    title: 'Index of chapter in manga'
+                    title: 'Chapter index',
+                    sortable: true,
+                    sortOrder: "desc"
                 },
                 {
                     field: 'chapterLang',
-                    title: 'Language of chapter'
+                    title: 'Language',
+                    formatter: function (value, row, index) {
+                        return '<span class="badge badge-success">' + value + '</span>';
+                    }
                 },
                 {
-                    field: 'chapterImages',
-                    title: 'Image paths with multipe image seperated by comma'
-                },
-                {
-                    field: 'chapterImageIds',
-                    title: 'Image ids with multipe image seperated by comma'
-                },
-                {
-                    field: 'mangaId',
-                    title: 'Author name of manga'
+                    field: "totalPage",
+                    title: 'Total page',
+                    formatter: function (value, row, index) {
+                        let total = 0;
+                        if (row.chapterImageIds) {
+                            total = row.chapterImageIds.split(',').length;
+                        }
+                        return total;
+                    }
                 },
                 {
                     field: 'viewCounter',
-                    title: 'Number of reader read this chapter'
+                    title: 'View number'
                 },
                 {
                     field: 'favoriteCounter',
-                    title: 'Number of reader like this chapter'
-                },
-                {
-                    field: 'remark',
-                    title: 'Remark'
+                    title: 'Favorite number'
                 },
                 {
                     field: 'status',
-                    title: 'Chapter status (1 enabled 0 disabled)'
+                    title: 'Status',
+                    formatter: function (value, row, index) {
+                        if (value == '1') {
+                            return '<span class="badge badge-primary">Enabled</span>';
+                        } else if (value == '0') {
+                            return '<span class="badge badge-danger">Disabled</span>';
+                        }
+                    }
                 },
                 {
-                    title: 'Operating',
+                    title: 'Action',
                     align: 'center',
                     formatter: function (value, row, index) {
                         var actions = [];
+                        actions.push('<a class="btn btn-info btn-xs" href="javascript:void(0)" onclick="uploadContent(\'' + row.id + '\',\'' + row.chapterIndex + '\')"><i class="fa fa-upload"></i>Upload content</a> ');
                         actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>Edit</a> ');
                         actions.push('<a class="btn btn-danger btn-xs" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>Delete</a>');
                         return actions.join('');
@@ -123,6 +132,12 @@
             };
             $.table.init(options);
         });
+
+        // Upload image for chapter, list image content
+        function uploadContent(id, chapterIndex) {
+            let url = prefix + '/' + id + '/content';
+            $.modal.openTab("Upload chapter" + chapterIndex, url);
+        }
     </script>
 </body>
 

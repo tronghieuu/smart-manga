@@ -111,8 +111,8 @@ shiro:
     # Set the key, be sure to maintain uniqueness (generate method, just copy to main to run) KeyGenerator keygen = KeyGenerator.getInstance("AES"); SecretKey deskey = keygen.generateKey(); System.out.println(Base64.encodeToString) (deskey.getEncoded()));
     cipherKey: zSyK5Kp6PZAAjlT+eeNMlg==
   session:
-    # Session timeout, -1 means never expire (default 30 minutes)
-    expireTime: 30
+    # Session timeout, -1 means never expire (default 240 minutes)
+    expireTime: 240
     # Period for synchronizing session to database (default 1 minute)
     dbSyncPeriod: 1
     # How often to check the validity of the session, the default is 10 minutes
