@@ -74,7 +74,7 @@ public class SysConfig extends BaseEntity
     }
 
     @NotBlank(message = "The parameter key value cannot be empty")
-    @Size(min = 0, max = 500, message = "The length of the parameter key value cannot exceed 500 characters")
+    @Size(min = 0, max = 3000, message = "The length of the parameter key value cannot exceed 3000 characters")
     public String getConfigValue()
     {
         return configValue;

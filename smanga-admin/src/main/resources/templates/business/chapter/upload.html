@@ -49,7 +49,7 @@
             $("#chapter-image-upload").fileinput({
                 theme: 'explorer-fas',
                 uploadUrl: ctx + "file/chapter/" + $('#chapterId').val(),
-                maxFileCount: 100,
+                maxFileCount: 200,
                 validateInitialCount: true,
                 overwriteInitial: false, // append files to initial preview
                 browseOnZoneClick: true,
@@ -166,15 +166,15 @@
                             imageIdArr = imageIds.split(',');
                             imageArr = images.split(',');
                             for (let i = 0; i < imageIdArr.length; i++) {
-                                let caption = imageArr[i].substring(57, imageArr[i].length)
-                                preview.push(imageArr[i]);
+                                let caption = imageArr[i].substring(57, imageArr[i].length).replace(/ /g, "_");
+                                preview.push(`<span id="` + caption + `_` + imageIdArr[i] + `">
+                                    <img src="` + imageArr[i] + `" 
+                                    class="file-preview-image kv-preview-data"
+                                    style="width: auto; height: auto; max-width: 100%; max-height: 100%;"></span>`);
                                 previewConfig.push({
                                     caption: caption,
                                     url: ctx + "file/chapter/" + $('#chapterId').val(),
-                                    key: imageIdArr[i],
-                                    // frameAttr: {
-                                    //     onclick: 'editChapterImage(\'' + imageIdArr[i] + '\', \'' + caption + '\')'
-                                    // }
+                                    key: imageIdArr[i]
                                 });
                             }
                         }
@@ -188,7 +188,7 @@
                             showBrowse: false,
                             showUpload: false,
                             dropZoneTitle: "No image to display",
-                            initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
+                            initialPreviewAsData: false, // identify if you are sending preview data only and not the raw markup
                             initialPreview: preview,
                             initialPreviewConfig: previewConfig
                         }).on('filesorted', function (e, params) {
@@ -208,6 +208,15 @@
                                 }
                             }
                         });
+                        setTimeout(() => {
+                            for (let i = 0; i < imageIdArr.length; i++) {
+                                let caption = imageArr[i].substring(57, imageArr[i].length).replace(/ /g, "_");
+                                let spanTag = document.getElementById(caption + `_` + imageIdArr[i]);
+                                spanTag.addEventListener('click', function () {
+                                    editChapterImage(imageIdArr[i], caption);
+                                }, false)
+                            }
+                        }, 500);
                     }
                 },
                 error: function (err) {

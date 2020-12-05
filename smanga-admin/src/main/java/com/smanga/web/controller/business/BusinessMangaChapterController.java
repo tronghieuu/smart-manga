@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.smanga.business.domain.MangaChapter;
 import com.smanga.business.service.IMangaChapterService;
 import com.smanga.common.annotation.Log;
-import com.smanga.common.config.ServerConfig;
 import com.smanga.common.core.controller.BaseController;
 import com.smanga.common.core.domain.AjaxResult;
 import com.smanga.common.core.page.TableDataInfo;
@@ -36,9 +35,6 @@ public class BusinessMangaChapterController extends BaseController {
 
 	@Autowired
 	private IMangaChapterService mangaChapterService;
-
-	@Autowired
-	private ServerConfig serverConfig;
 
 	@GetMapping()
 	public String chapter() {

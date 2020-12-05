@@ -12,6 +12,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,6 +57,21 @@ public class BusinessFileController extends BaseController {
 
 	@Autowired
 	private IMangaChapterService chapterService;
+
+	/**
+	 * Get image information
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/{id}")
+	@ResponseBody
+	public AjaxResult getImageInfo(@PathVariable("id") Long id) {
+		ImageFile imageFile = imageFileService.selectImageFileById(id);
+		AjaxResult ajaxResult = AjaxResult.success();
+		ajaxResult.put("file", imageFile);
+		return ajaxResult;
+	}
 
 	/**
 	 * Upload image for category cover
@@ -239,7 +255,7 @@ public class BusinessFileController extends BaseController {
 		String basePath = String.format("%s/%s", SmartMangaConfig.getUploadPath() + "/chapter/" + chapterId,
 				DateUtils.getDate());
 		String now = DateUtils.dateTimeNow();
-		fileName = String.format("file%s.%s", now, "_" + fileName);
+		fileName = String.format("file%s.%s", now, "_" + fileName).replaceAll("[^a-zA-Z0-9.]", "");
 		String filePath = FileUploadUtils.upload(basePath, fileName, fileBlob, MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION);
 
 		String absolutePath = basePath + "/" + fileName;
@@ -274,6 +290,13 @@ public class BusinessFileController extends BaseController {
 		return ajaxResult;
 	}
 
+	/**
+	 * Delete image chapter
+	 * 
+	 * @param ids
+	 * @param chapterId
+	 * @return
+	 */
 	@DeleteMapping("/chapter/{id}")
 	@ResponseBody
 	public AjaxResult deleteImageChapter(String ids, @PathVariable("id") Long chapterId) {
@@ -299,5 +322,15 @@ public class BusinessFileController extends BaseController {
 		}
 		imageFileService.deleteImageFileByIds(ids);
 		return success();
+	}
+
+	@PostMapping("/scan")
+	@ResponseBody
+	public AjaxResult scanImage(Long id) throws IOException {
+		ImageFile imageFile = imageFileService.selectImageFileById(id);
+
+		AjaxResult ajaxResult = AjaxResult.success();
+		ajaxResult.put("file", imageFile);
+		return ajaxResult;
 	}
 }

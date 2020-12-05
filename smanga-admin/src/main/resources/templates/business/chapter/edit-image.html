@@ -7,11 +7,104 @@
 </head>
 
 <body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <input type="hidden" name="imageId" id="imageId" th:value="${imageId}" />
+            <input type="hidden" name="chapterId" id="chapterId" th:value="${chapterId}" />
+            <div class="col-sm-4">
+                <div class="ibox float-e-margins" id="left-panel">
+                    <div class="ibox-title">
+                        <h5>Old image</h5>
+                    </div>
+                    <div class="ibox-content" id="image-div">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="ibox float-e-margins" id="left-panel">
+                    <div class="ibox-title">
+                        <h5>Image after scan</h5>
+                    </div>
+                    <div class="ibox-content" id="scan-div">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="ibox float-e-margins" id="right-panel">
+                    <div class="ibox-title">
+                        <h5>Edit content</h5>
+                    </div>
+                    <div class="ibox-content" id="content-div">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-w-m btn-primary" onclick="scanImage()">Scan
+                                image</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <th:block th:include="include :: footer" />
     <th:block th:include="include :: bootstrap-fileinput-js" />
     <script type="text/javascript" th:inline="javascript">
 
+        const PREFIX = ctx + "file";
+
+        $(document).ready(function () {
+            let height = $(document).height() - 143;
+            $("#image-div").height(height);
+            $("#scan-div").height(height);
+            $("#content-div").height(height);
+
+            loadImage();
+        });
+
+        function loadImage() {
+            $.ajax({
+                url: PREFIX + "/" + $("#imageId").val(),
+                method: "GET",
+                success: function (res) {
+                    if (res.code == 0) {
+                        let file = res.file;
+                        let html = `<img src="` + file.imagePath + `" 
+                            style="width: auto; height: auto; max-width: 100%; max-height: 100%;">`;
+                        $("#image-div").html(html);
+                    }
+                },
+                error: function (err) {
+                    console.log("Sytem Error, please contact admin!");
+                }
+            });
+        }
+
+        function scanImage() {
+            $.ajax({
+                url: PREFIX + "/scan",
+                method: "POST",
+                data: {
+                    id: $("#imageId").val()
+                },
+                beforeSend: function () {
+                    $.modal.loading("Processing, please wait...");
+                },
+                success: function (res) {
+                    $.modal.closeLoading();
+                    if (res.code == 0) {
+                        let file = res.file;
+                        let html = `<img src="` + file.imagePath + `" 
+                            style="width: auto; height: auto; max-width: 100%; max-height: 100%;">`;
+                        $("#scan-div").html(html);
+                    }
+                },
+                error: function (err) {
+                    $.modal.closeLoading();
+                    console.log("Sytem Error, please contact admin!");
+                }
+            })
+        }
     </script>
 </body>
 
