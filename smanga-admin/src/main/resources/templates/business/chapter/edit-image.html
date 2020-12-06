@@ -11,7 +11,7 @@
         <div class="row">
             <input type="hidden" name="imageId" id="imageId" th:value="${imageId}" />
             <input type="hidden" name="chapterId" id="chapterId" th:value="${chapterId}" />
-            <div class="col-sm-4">
+            <!-- <div class="col-sm-4">
                 <div class="ibox float-e-margins" id="left-panel">
                     <div class="ibox-title">
                         <h5>Old image</h5>
@@ -43,24 +43,137 @@
                         </div>
                     </div>
                 </div>
+            </div> -->
+            <div class="col-sm-10">
+                <div class="ibox float-e-margins" id="left-panel">
+                    <div class="ibox-title">
+                        <h5>Editor</h5>
+                    </div>
+                    <div id="editor">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="ibox float-e-margins" id="right-panel">
+                    <div class="ibox-title">
+                        <h5>Action</h5>
+                    </div>
+                    <div class="ibox-content" id="content-div">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-w-m btn-primary" onclick="openEditor()">Open
+                                editor</button>
+                            <button type="button" class="btn btn-w-m btn-success" onclick="resetImage()">Reset
+                                original image</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <th:block th:include="include :: footer" />
     <th:block th:include="include :: bootstrap-fileinput-js" />
+    <th:block th:include="include :: photo-editor-sdk-js" />
     <script type="text/javascript" th:inline="javascript">
 
         const PREFIX = ctx + "file";
+        var domain = /*[[${domain}]]*/;
+        var photoEditorLicense = /*[[${photoEditorLicense}]]*/;
+        var file;
+
+        const initEditor = async () => {
+
+        };
 
         $(document).ready(function () {
             let height = $(document).height() - 143;
-            $("#image-div").height(height);
-            $("#scan-div").height(height);
-            $("#content-div").height(height);
 
-            loadImage();
+            // loadImage();
+
+            $("#editor").height(height);
+
+            $.ajax({
+                url: PREFIX + "/" + $("#imageId").val(),
+                method: "GET",
+                success: function (res) {
+                    if (res.code == 0) {
+                        file = res.file;
+                        initializePhotoEditor(file.imagePath);
+                    }
+                },
+                error: function (err) {
+                    console.log("Sytem Error, please contact admin!");
+                }
+            });
         });
+
+        async function initializePhotoEditor(fileUrl) {
+            let now = new Date();
+            const editor = await PhotoEditorSDK.PhotoEditorSDKUI.init({
+                container: "#editor",
+                license: photoEditorLicense,
+                layout: 'advanced',
+                image: domain + fileUrl + "?v=" + now.getTime(),
+                assetBaseUrl: "https://unpkg.com/photoeditorsdk/assets",
+                export: {
+                    image: {
+                        exportType: "blob", // `image`, `data-url` or `blob`
+                        enableDownload: false, // boolean, enable or disable the automatic file download
+                    }
+                }
+            });
+
+            // The export event will be called if the user clicks on the export button
+            editor.on(PhotoEditorSDK.UIEvent.EXPORT, async (blob) => {
+                let data = new FormData();
+                data.append('image', blob);
+                console.log(data);
+                $.ajax({
+                    url: PREFIX + "/" + file.id + "/image/editor",
+                    method: "POST",
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    success: function (res) {
+                        if (res.code == 0) {
+                            $.modal.alertSuccess(res.msg);
+                        } else {
+                            $.modal.alertError(res.msg);
+                        }
+                    },
+                    error: function (err) {
+                        console.log("System error!");
+                    }
+                });
+            });
+        }
+
+        function openEditor() {
+            if ($("#editor").html()) {
+                $.modal.alertWarning("The editor has already been opened!");
+            } else {
+                initializePhotoEditor(file.imagePath);
+            }
+        }
+
+        function resetImage() {
+            $.ajax({
+                url: PREFIX + "/" + file.id + "/reset",
+                method: "POST",
+                success: function (res) {
+                    if (res.code == 0) {
+                        $.modal.alertSuccess(res.msg);
+                        $(".roll-nav .roll-right .tabRight").click();
+                    } else {
+                        $.modal.alertError(res.msg);
+                    }
+                },
+                error: function (err) {
+                    console.log("System error!");
+                }
+            });
+        }
 
         function loadImage() {
             $.ajax({
@@ -80,31 +193,6 @@
             });
         }
 
-        function scanImage() {
-            $.ajax({
-                url: PREFIX + "/scan",
-                method: "POST",
-                data: {
-                    id: $("#imageId").val()
-                },
-                beforeSend: function () {
-                    $.modal.loading("Processing, please wait...");
-                },
-                success: function (res) {
-                    $.modal.closeLoading();
-                    if (res.code == 0) {
-                        let file = res.file;
-                        let html = `<img src="` + file.imagePath + `" 
-                            style="width: auto; height: auto; max-width: 100%; max-height: 100%;">`;
-                        $("#scan-div").html(html);
-                    }
-                },
-                error: function (err) {
-                    $.modal.closeLoading();
-                    console.log("Sytem Error, please contact admin!");
-                }
-            })
-        }
     </script>
 </body>
 

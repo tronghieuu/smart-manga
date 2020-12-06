@@ -1,5 +1,7 @@
 package com.smanga.business.domain;
 
+import java.util.Date;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -76,6 +78,15 @@ public class Manga extends BaseEntity {
 	/** Id of artist */
 	@Excel(name = "Id of artist")
 	private Long artistId;
+
+	/** Release time */
+	private Date releaseTime;
+
+	/** View counter */
+	private Integer viewCounter;
+
+	/** Status complete 0: ongoing, 1: completed */
+	private Integer statusComplete;
 
 	public void setId(Long id) {
 		this.id = id;
@@ -205,6 +216,30 @@ public class Manga extends BaseEntity {
 		this.artistId = artistId;
 	}
 
+	public Date getReleaseTime() {
+		return releaseTime;
+	}
+
+	public void setReleaseTime(Date releaseTime) {
+		this.releaseTime = releaseTime;
+	}
+
+	public Integer getViewCounter() {
+		return viewCounter;
+	}
+
+	public void setViewCounter(Integer viewCounter) {
+		this.viewCounter = viewCounter;
+	}
+
+	public Integer getStatusComplete() {
+		return statusComplete;
+	}
+
+	public void setStatusComplete(Integer statusComplete) {
+		this.statusComplete = statusComplete;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).append("id", getId())
@@ -216,6 +251,7 @@ public class Manga extends BaseEntity {
 				.append("recommendedAge", getRecommendedAge()).append("status", getStatus())
 				.append("delFlag", getDelFlag()).append("createBy", getCreateBy()).append("createTime", getCreateTime())
 				.append("updateBy", getUpdateBy()).append("updateTime", getUpdateTime()).append("artist", getArtist())
-				.append("artistId", getArtistId()).toString();
+				.append("artistId", getArtistId()).append("releaseTime", getReleaseTime())
+				.append("viewCounter", getViewCounter()).append("statusComplete", getStatusComplete()).toString();
 	}
 }

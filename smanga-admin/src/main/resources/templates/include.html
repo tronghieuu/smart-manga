@@ -85,6 +85,15 @@
 	<script th:src="@{/ajax/libs/dropzone/dropzone-amd-module.min.js}"></script>
 </div>
 
+<!-- photo editor sdk -->
+<div th:fragment="photo-editor-sdk-js">
+	<script th:src="@{/ajax/libs/photo-editor-sdk/react.production.min.js}"></script>
+	<script th:src="@{/ajax/libs/photo-editor-sdk/react-dom.production.min.js}"></script>
+	<script th:src="@{/ajax/libs/photo-editor-sdk/react-dom-server.browser.production.min.js}"></script>
+	<script th:src="@{/ajax/libs/photo-editor-sdk/styled-components.min.js}"></script>
+	<script th:src="@{/ajax/libs/photo-editor-sdk/no-polyfills.js}"></script>
+</div>
+
 <!-- ui layout plugin -->
 <div th:fragment="layout-latest-css">
 	<link th:href="@{/ajax/libs/jquery-layout/jquery.layout-latest.css}" rel="stylesheet" />

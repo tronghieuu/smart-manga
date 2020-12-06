@@ -205,4 +205,5 @@ public class BusinessMangaCategoryController extends BaseController {
 		}
 		return result;
 	}
+
 }

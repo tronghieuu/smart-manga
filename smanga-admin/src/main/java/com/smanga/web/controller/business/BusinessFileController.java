@@ -31,6 +31,8 @@ import com.smanga.common.config.SmartMangaConfig;
 import com.smanga.common.constant.SmangaConstants;
 import com.smanga.common.core.controller.BaseController;
 import com.smanga.common.core.domain.AjaxResult;
+import com.smanga.common.exception.file.FileNameLengthLimitExceededException;
+import com.smanga.common.exception.file.FileSizeLimitExceededException;
 import com.smanga.common.exception.file.InvalidExtensionException;
 import com.smanga.common.utils.DateUtils;
 import com.smanga.common.utils.StringUtils;
@@ -57,6 +59,9 @@ public class BusinessFileController extends BaseController {
 
 	@Autowired
 	private IMangaChapterService chapterService;
+
+//	@Autowired
+//	private GoogleCloudService googleCloudService;
 
 	/**
 	 * Get image information
@@ -324,13 +329,64 @@ public class BusinessFileController extends BaseController {
 		return success();
 	}
 
-	@PostMapping("/scan")
+	@PostMapping("/{fileId}/image/editor")
 	@ResponseBody
-	public AjaxResult scanImage(Long id) throws IOException {
-		ImageFile imageFile = imageFileService.selectImageFileById(id);
+	public AjaxResult updateNewFileEdited(MultipartFile image, @PathVariable("fileId") Long fileId) throws IOException,
+			FileSizeLimitExceededException, FileNameLengthLimitExceededException, InvalidExtensionException {
+		ImageFile imageFile = imageFileService.selectImageFileById(fileId);
+		// Rename original file for back up
+		if (imageFile != null) {
+			File originalFile = new File(imageFile.getAbsolutePath());
+			File backupFile = new File(imageFile.getAbsolutePath() + ".backup");
+			if (!backupFile.exists()) {
+				if (!originalFile.renameTo(backupFile)) {
+					return error("Can't rename original file to backup!");
+				}
+			}
 
-		AjaxResult ajaxResult = AjaxResult.success();
-		ajaxResult.put("file", imageFile);
-		return ajaxResult;
+			String[] pathArr = imageFile.getAbsolutePath().split("/");
+			String baseDir = "";
+			for (int i = 0; i < pathArr.length - 1; i++) {
+				baseDir += pathArr[i] + "/";
+			}
+			FileUploadUtils.upload(baseDir.substring(0, baseDir.length() - 1), pathArr[pathArr.length - 1], image,
+					MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION);
+		}
+		return success();
 	}
+
+	@PostMapping("/{fileId}/reset")
+	@ResponseBody
+	public AjaxResult resetOriginalImage(@PathVariable("fileId") Long fileId) throws IOException,
+			FileSizeLimitExceededException, FileNameLengthLimitExceededException, InvalidExtensionException {
+		ImageFile imageFile = imageFileService.selectImageFileById(fileId);
+		// Rename original file for back up
+		if (imageFile == null) {
+			return error("Cannot found image infor from id.");
+		}
+		File backupFile = new File(imageFile.getAbsolutePath() + ".backup");
+		File originalFile = new File(imageFile.getAbsolutePath());
+		if (!backupFile.exists()) {
+			return error("The backup file doesn't exist!");
+		}
+		if (originalFile.exists()) {
+			originalFile.delete();
+		}
+		if (!backupFile.renameTo(originalFile)) {
+			return error("Cannot reset, the file already original!");
+		}
+
+		return success();
+	}
+
+//	@PostMapping("/scan")
+//	@ResponseBody
+//	public AjaxResult scanImage(Long id) throws IOException {
+//		ImageFile imageFile = imageFileService.selectImageFileById(id);
+//		List<AnnotateImageResponse> annotations = googleCloudService.getTextFromImageApi(imageFile.getAbsolutePath());
+//		AjaxResult ajaxResult = AjaxResult.success();
+//		ajaxResult.put("annotations", annotations);
+//		ajaxResult.put("file", imageFile);
+//		return ajaxResult;
+//	}
 }

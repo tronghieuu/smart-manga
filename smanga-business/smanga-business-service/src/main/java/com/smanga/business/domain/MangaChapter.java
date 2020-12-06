@@ -1,5 +1,7 @@
 package com.smanga.business.domain;
 
+import java.util.Date;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -56,6 +58,12 @@ public class MangaChapter extends BaseEntity {
 
 	/** Delete flag (0 means existence 1 means deletion) */
 	private String delFlag;
+
+	/** Release date */
+	private Date releaseTime;
+
+	/** Manga */
+	private Manga manga;
 
 	public void setId(Long id) {
 		this.id = id;
@@ -145,6 +153,25 @@ public class MangaChapter extends BaseEntity {
 		return delFlag;
 	}
 
+	public Date getReleaseTime() {
+		return releaseTime;
+	}
+
+	public void setReleaseTime(Date releaseTime) {
+		this.releaseTime = releaseTime;
+	}
+
+	public Manga getManga() {
+		if (manga == null) {
+			manga = new Manga();
+		}
+		return manga;
+	}
+
+	public void setManga(Manga manga) {
+		this.manga = manga;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).append("id", getId())
@@ -154,6 +181,7 @@ public class MangaChapter extends BaseEntity {
 				.append("viewCounter", getViewCounter()).append("favoriteCounter", getFavoriteCounter())
 				.append("remark", getRemark()).append("status", getStatus()).append("delFlag", getDelFlag())
 				.append("createBy", getCreateBy()).append("createTime", getCreateTime())
-				.append("updateBy", getUpdateBy()).append("updateTime", getUpdateTime()).toString();
+				.append("updateBy", getUpdateBy()).append("updateTime", getUpdateTime())
+				.append("releaseTime", getReleaseTime()).append("manga", getManga()).toString();
 	}
 }

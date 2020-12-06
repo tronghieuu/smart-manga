@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.smanga.business.domain.MangaChapter;
 import com.smanga.business.service.IMangaChapterService;
 import com.smanga.common.annotation.Log;
+import com.smanga.common.config.ServerConfig;
 import com.smanga.common.core.controller.BaseController;
 import com.smanga.common.core.domain.AjaxResult;
 import com.smanga.common.core.page.TableDataInfo;
 import com.smanga.common.enums.BusinessType;
 import com.smanga.common.utils.poi.ExcelUtil;
 import com.smanga.framework.shiro.util.ShiroUtils;
+import com.smanga.framework.web.service.ConfigService;
 
 /**
  * Manga ChapterController
@@ -35,6 +37,12 @@ public class BusinessMangaChapterController extends BaseController {
 
 	@Autowired
 	private IMangaChapterService mangaChapterService;
+
+	@Autowired
+	private ServerConfig serverConfig;
+
+	@Autowired
+	private ConfigService configService;
 
 	@GetMapping()
 	public String chapter() {
@@ -52,6 +60,8 @@ public class BusinessMangaChapterController extends BaseController {
 			ModelMap mmap) {
 		mmap.put("imageId", imageId);
 		mmap.put("chapterId", chapterId);
+		mmap.put("domain", serverConfig.getUrl());
+		mmap.put("photoEditorLicense", configService.getKey("photo.editor.license"));
 		return prefix + "/edit-image";
 	}
 

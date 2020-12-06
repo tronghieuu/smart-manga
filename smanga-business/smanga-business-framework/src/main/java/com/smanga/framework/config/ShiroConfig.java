@@ -283,6 +283,8 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/index", "anon");
 		// All public api does not need to login
 		filterChainDefinitionMap.put("/public/**", "anon");
+		// public api get image
+		filterChainDefinitionMap.put("/profile/upload/**", "anon");
 
 		// resource
 		filterChainDefinitionMap.put("/wp-json/**", "anon");
