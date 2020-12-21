@@ -102,13 +102,6 @@
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.ejml/ejml-all -->
-		<dependency>
-		    <groupId>org.ejml</groupId>
-		    <artifactId>ejml-all</artifactId>
-		    <version>0.40</version>
-		</dependency>
-	
     </dependencies>
 
 </project>
