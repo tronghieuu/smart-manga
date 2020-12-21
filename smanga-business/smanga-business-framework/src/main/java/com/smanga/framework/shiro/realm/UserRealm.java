@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.smanga.business.domain.BusinessUser;
-import com.smanga.common.core.domain.entity.SysUser;
 import com.smanga.common.exception.user.CaptchaException;
 import com.smanga.common.exception.user.RoleBlockedException;
 import com.smanga.common.exception.user.UserBlockedException;
@@ -80,7 +79,7 @@ public class UserRealm extends AuthorizingRealm {
 			password = new String(upToken.getPassword());
 		}
 
-		SysUser user = null;
+		BusinessUser user = null;
 		try {
 			user = loginService.login(username, password);
 		} catch (CaptchaException e) {

@@ -66,4 +66,12 @@ public interface BusinessUserMapper {
 	 * @return result
 	 */
 	public int countBusinessUserAccount(BusinessUser user);
+
+	/**
+	 * Query users by username
+	 * 
+	 * @param userName username
+	 * @return User object information
+	 */
+	public BusinessUser selectUserByLoginName(String userName);
 }

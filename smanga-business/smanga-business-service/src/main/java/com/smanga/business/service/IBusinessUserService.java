@@ -82,4 +82,12 @@ public interface IBusinessUserService {
 	 * @return
 	 */
 	public String checkEmailUnique(BusinessUser user);
+
+	/**
+	 * Query users by username
+	 *
+	 * @param userName username
+	 * @return user object information
+	 */
+	public BusinessUser selectUserByLoginName(String userName);
 }

@@ -132,4 +132,15 @@ public class BusinessUserServiceImpl implements IBusinessUserService {
 		}
 		return SmangaConstants.NOT_UNIQUE;
 	}
+
+	/**
+	 * Query users by username
+	 *
+	 * @param userName username
+	 * @return user object information
+	 */
+	@Override
+	public BusinessUser selectUserByLoginName(String userName) {
+		return businessUserMapper.selectUserByLoginName(userName);
+	}
 }

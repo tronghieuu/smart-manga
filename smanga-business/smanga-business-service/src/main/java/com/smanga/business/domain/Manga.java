@@ -2,6 +2,8 @@ package com.smanga.business.domain;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -254,4 +256,29 @@ public class Manga extends BaseEntity {
 				.append("artistId", getArtistId()).append("releaseTime", getReleaseTime())
 				.append("viewCounter", getViewCounter()).append("statusComplete", getStatusComplete()).toString();
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		// If the object is compared with itself then return true
+		if (obj == this) {
+			return true;
+		}
+
+		/*
+		 * Check if o is an instance of Manga or not "null instanceof [type]" also
+		 * returns false
+		 */
+		if (!(obj instanceof Manga)) {
+			return false;
+		}
+
+		Manga compareManga = (Manga) obj;
+		return new EqualsBuilder().append(id, compareManga.id).isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(id).toHashCode();
+	}
+
 }

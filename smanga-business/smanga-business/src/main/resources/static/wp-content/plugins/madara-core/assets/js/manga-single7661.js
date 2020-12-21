@@ -36,41 +36,4 @@
 		})
 	});
 
-	$(document).on('click', '.ratings_stars', function (e) {
-
-		e.preventDefault();
-		var t = $(this);
-		var widget = $(this).parent();
-		var star = t.parent().find('.ion-ios-star').length;
-		var postID = $('.rating-post-id').val();
-
-		$('.post-rating').css('opacity', '0.2');
-		$('.post-rating .user-rating').css('display', 'block');
-		$('.post-rating .post-total-rating').css('display', 'none');
-		$('.post-content .loader-inner').fadeIn();
-
-		jQuery.ajax({
-			url: wpMangaSingle.ajax_url,
-			type: 'POST',
-			data: {
-				action: 'wp-manga-save-rating',
-				star: star,
-				postID: postID,
-			},
-			success: function (response) {
-				if (response.success) {
-					$('.summary-content.vote-details').text(response.data.text);
-					$('.post-rating').html(response.data.rating_html);
-				}
-
-			},
-			complete: function (xhr, textStatus) {
-				$('.post-rating .user-rating').removeAttr('style');
-				$('.post-rating .post-total-rating').removeAttr('style');
-				$('.post-content .loader-inner').fadeOut();
-				$('.post-rating').css('opacity', '1');
-			}
-		});
-	});
-
 })(jQuery);

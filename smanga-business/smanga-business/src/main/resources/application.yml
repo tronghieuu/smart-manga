@@ -16,7 +16,7 @@ smanga:
 # Development environment configuration
 server:
   # The HTTP port of the server, the default is 80
-  port: 6968
+  port: 6061
   servlet:
     # Application access path
     context-path: /

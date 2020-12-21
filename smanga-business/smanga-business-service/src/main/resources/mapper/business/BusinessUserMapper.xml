@@ -142,4 +142,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     	</where>
     </select>
 
+	<select id="selectUserByLoginName" parameterType="String" resultMap="BusinessUserResult">
+	    <include refid="selectBusinessUserVo"/>
+		where login_name = #{userName}
+	</select>
 </mapper>

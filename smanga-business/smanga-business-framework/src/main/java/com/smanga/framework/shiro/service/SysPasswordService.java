@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.smanga.business.domain.BusinessUser;
 import com.smanga.common.constant.Constants;
 import com.smanga.common.constant.ShiroConstants;
-import com.smanga.common.core.domain.entity.SysUser;
 import com.smanga.common.exception.user.UserPasswordNotMatchException;
 import com.smanga.common.exception.user.UserPasswordRetryLimitExceedException;
 import com.smanga.common.utils.MessageUtils;
@@ -40,7 +40,7 @@ public class SysPasswordService {
 		loginRecordCache = cacheManager.getCache(ShiroConstants.LOGINRECORDCACHE);
 	}
 
-	public void validate(SysUser user, String password) {
+	public void validate(BusinessUser user, String password) {
 		String loginName = user.getLoginName();
 
 		AtomicInteger retryCount = loginRecordCache.get(loginName);
@@ -65,7 +65,7 @@ public class SysPasswordService {
 		}
 	}
 
-	public boolean matches(SysUser user, String newPassword) {
+	public boolean matches(BusinessUser user, String newPassword) {
 		return user.getPassword().equals(encryptPassword(user.getLoginName(), newPassword, user.getSalt()));
 	}
 

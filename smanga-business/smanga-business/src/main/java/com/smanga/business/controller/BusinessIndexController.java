@@ -15,6 +15,7 @@ import com.smanga.business.domain.BusinessUser;
 import com.smanga.business.service.IBusinessUserService;
 import com.smanga.common.core.domain.AjaxResult;
 import com.smanga.common.utils.StringUtils;
+import com.smanga.framework.shiro.util.ShiroUtils;
 
 /**
  * @author Trong Hieu
@@ -69,5 +70,11 @@ public class BusinessIndexController extends BusinessBaseController {
 		BusinessUser user = getUserInfo();
 		mmap.put("user", user);
 		return prefix + "/profile";
+	}
+
+	@GetMapping("/logout")
+	public String logout() {
+		ShiroUtils.logout();
+		return "index";
 	}
 }

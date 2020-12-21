@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smanga.business.mapper.UserMangaMapper">
+    
+    <resultMap type="UserManga" id="UserMangaResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="mangaId"    column="manga_id"    />
+        <result property="bookmark"    column="bookmark"    />
+        <result property="rating"    column="rating"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userName"    column="user_name"    />
+        <result property="mangaName"    column="manga_name"    />
+    </resultMap>
+
+    <sql id="selectUserMangaVo">
+        select id, user_id, manga_id, bookmark, rating, create_by, create_time, update_by, update_time, user_name, manga_name from user_manga
+    </sql>
+
+    <select id="selectUserMangaList" parameterType="UserManga" resultMap="UserMangaResult">
+        <include refid="selectUserMangaVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="mangaId != null "> and manga_id = #{mangaId}</if>
+            <if test="bookmark != null "> and bookmark = #{bookmark}</if>
+            <if test="rating != null "> and rating = #{rating}</if>
+            <if test="params.notNullRating != null "> and rating is not null</if>
+            <if test="userName != null and userName != ''"> and user_name = #{userName}</if>
+            <if test="mangaName != null and mangaName != ''"> and manga_name = #{mangaName}</if>
+        </where>
+        order by user_id asc
+    </select>
+    
+    <select id="selectUserMangaById" parameterType="Long" resultMap="UserMangaResult">
+        <include refid="selectUserMangaVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertUserManga" parameterType="UserManga" useGeneratedKeys="true" keyProperty="id">
+        insert into user_manga
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="mangaId != null">manga_id,</if>
+            <if test="bookmark != null">bookmark,</if>
+            <if test="rating != null">rating,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="userName != null and userName != ''">user_name,</if>
+            <if test="mangaName != null and mangaName != ''">manga_name,</if>
+            create_time,
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="mangaId != null">#{mangaId},</if>
+            <if test="bookmark != null">#{bookmark},</if>
+            <if test="rating != null">#{rating},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="userName != null and userName != ''">#{userName},</if>
+            <if test="mangaName != null and mangaName != ''">#{mangaName},</if>
+            sysdate(),
+         </trim>
+    </insert>
+
+    <update id="updateUserManga" parameterType="UserManga">
+        update user_manga
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="mangaId != null">manga_id = #{mangaId},</if>
+            <if test="bookmark != null">bookmark = #{bookmark},</if>
+            <if test="rating != null">rating = #{rating},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="userName != null and userName != ''">user_name = #{userName},</if>
+            <if test="mangaName != null and mangaName != ''">manga_name = #{mangaName},</if>
+            update_time = sysdate(),
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUserMangaById" parameterType="Long">
+        delete from user_manga where id = #{id}
+    </delete>
+
+    <delete id="deleteUserMangaByIds" parameterType="String">
+        delete from user_manga where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

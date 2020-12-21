@@ -1632,7 +1632,8 @@
 									<ul class="list-inline font-nav">
 										<li id="menu-item-76"
 											class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-76">
-											<a href="/index" aria-current="page">HOME</a></li>
+											<a href="/index" aria-current="page">HOME</a>
+										</li>
 									</ul>
 								</div>
 								<div class="copyright">
@@ -1933,9 +1934,13 @@
 
 			// User logged in
 			if (user) {
-				console.log(user);
-				let html = `<a href="user/profile">` + user.userName + `</a>`;
-				jQuery("#profile").html(html);
+				if (user) {
+					let html = `<div class="main-menu"><ul class="nav navbar-nav main-navbar"><li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-has-children"><a href="/user/profile" aria-current="page">` + user.userName + `</a>
+                    <ul class="sub-menu">
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a style="color: black;" href="/logout">SIgn out</a></li>
+                    </ul></li></ul></div>`;
+					jQuery("#profile").html(html);
+				}
 			}
 		});
 

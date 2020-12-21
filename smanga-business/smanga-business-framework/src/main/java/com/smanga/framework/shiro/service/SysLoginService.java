@@ -4,10 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import com.smanga.business.domain.BusinessUser;
+import com.smanga.business.service.IBusinessUserService;
 import com.smanga.common.constant.Constants;
 import com.smanga.common.constant.ShiroConstants;
 import com.smanga.common.constant.UserConstants;
-import com.smanga.common.core.domain.entity.SysUser;
 import com.smanga.common.enums.UserStatus;
 import com.smanga.common.exception.user.CaptchaException;
 import com.smanga.common.exception.user.UserBlockedException;
@@ -20,7 +21,6 @@ import com.smanga.common.utils.ServletUtils;
 import com.smanga.common.utils.ShiroUtils;
 import com.smanga.framework.manager.AsyncManager;
 import com.smanga.framework.manager.factory.AsyncFactory;
-import com.smanga.system.service.ISysUserService;
 
 /**
  * Login verification method
@@ -32,13 +32,16 @@ public class SysLoginService {
 	@Autowired
 	private SysPasswordService passwordService;
 
+//	@Autowired
+//	private ISysUserService userService;
+
 	@Autowired
-	private ISysUserService userService;
+	private IBusinessUserService businessUserService;
 
 	/**
 	 * log in
 	 */
-	public SysUser login(String username, String password) {
+	public BusinessUser login(String username, String password) {
 		// Verification code verification
 		if (ShiroConstants.CAPTCHA_ERROR
 				.equals(ServletUtils.getRequest().getAttribute(ShiroConstants.CURRENT_CAPTCHA))) {
@@ -69,7 +72,8 @@ public class SysLoginService {
 		}
 
 		// Query user information
-		SysUser user = userService.selectUserByLoginName(username);
+//		SysUser user = userService.selectUserByLoginName(username);
+		BusinessUser user = businessUserService.selectUserByLoginName(username);
 
 		/**
 		 * if (user == null && maybeMobilePhoneNumber(username)) { user =
@@ -118,9 +122,9 @@ public class SysLoginService {
 	/**
 	 * Record login information
 	 */
-	public void recordLoginInfo(SysUser user) {
+	public void recordLoginInfo(BusinessUser user) {
 		user.setLoginIp(ShiroUtils.getIp());
 		user.setLoginDate(DateUtils.getNowDate());
-		userService.updateUserInfo(user);
+		businessUserService.updateBusinessUser(user);
 	}
 }
