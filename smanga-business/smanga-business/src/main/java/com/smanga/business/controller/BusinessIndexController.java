@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.smanga.business.domain.BusinessUser;
-import com.smanga.business.service.IBusinessUserService;
+import com.smanga.business.domain.Manga;
+import com.smanga.business.domain.MangaChapter;
+import com.smanga.business.service.IMangaChapterService;
+import com.smanga.business.service.IMangaService;
 import com.smanga.common.core.domain.AjaxResult;
 import com.smanga.common.utils.StringUtils;
 import com.smanga.framework.shiro.util.ShiroUtils;
@@ -27,11 +30,16 @@ public class BusinessIndexController extends BusinessBaseController {
 	private String prefix = "user";
 
 	@Autowired
-	private IBusinessUserService userService;
+	private IMangaService mangaService;
+
+	@Autowired
+	private IMangaChapterService mangaChapterService;
 
 	@GetMapping("/index")
 	public String getHomePage(ModelMap mmap) {
 		mmap.put("user", getUserInfo());
+		mmap.put("popularManga", mangaService.selectMostPopularMangaList(new Manga()));
+		mmap.put("popularChapter", mangaChapterService.selectMostPopularChapter(new MangaChapter()));
 		return "index";
 	}
 

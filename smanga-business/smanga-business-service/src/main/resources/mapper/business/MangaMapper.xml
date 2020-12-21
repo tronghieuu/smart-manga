@@ -160,4 +160,56 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
+	<select id="selectMostPopularMangaList" parameterType="Manga" resultMap="MangaResult">
+        <include refid="selectMangaVo"/>
+        <where>  
+        	and release_time is not null
+            <if test="mangaName != null  and mangaName != ''"> and manga_name like concat('%', #{mangaName}, '%')</if>
+            <if test="categories != null  and categories != ''"> and categories = #{categories}</if>
+            <if test="categoryIds != null  and categoryIds != ''"> and category_ids = #{categoryIds}</if>
+            <if test="author != null  and author != ''"> and author = #{author}</if>
+            <if test="authorId != null "> and author_id = #{authorId}</if>
+            <if test="favoriteCounter != null "> and favorite_counter = #{favoriteCounter}</if>
+            <if test="coverImage != null  and coverImage != ''"> and cover_image = #{coverImage}</if>
+            <if test="coverImageId != null "> and cover_image_id = #{coverImageId}</if>
+            <if test="slideImage != null  and slideImage != ''"> and slide_image = #{slideImage}</if>
+            <if test="slideImageId != null "> and slide_image_id = #{slideImageId}</if>
+            <if test="recommendedAge != null  and recommendedAge != ''"> and recommended_age = #{recommendedAge}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="artist != null  and artist != ''"> and artist = #{artist}</if>
+            <if test="artistId != null "> and artist_id = #{artistId}</if>
+            <if test="releaseTime != null "> and release_time = #{releaseTime}</if>
+            <if test="viewCounter != null"> and view_counter = #{viewCounter}</if>
+            <if test="statusComplete != null"> and status_complete = #{statusComplete}</if>
+        </where>
+        order by view_counter desc limit 6
+    </select>
+    
+    <select id="selectRecommendMangaList" parameterType="Manga" resultMap="MangaResult">
+        select m.id, m.manga_name, m.categories, m.category_ids, m.author, m.author_id, m.favorite_counter, m.remark, m.cover_image, m.cover_image_id, 
+        m.slide_image, m.slide_image_id, m.recommended_age, m.status, m.del_flag, m.artist, m.artist_id, m.release_time, m.view_counter, m.status_complete, 
+        m.create_by, m.create_time, m.update_by, m.update_time, r.rating, r.user_id from manga m right join recommend_manga r on m.id = r.manga_id
+        <where>  
+        	and r.is_recommend = 1 
+            <if test="mangaName != null  and mangaName != ''"> and m.manga_name like concat('%', #{mangaName}, '%')</if>
+            <if test="categories != null  and categories != ''"> and m.categories = #{categories}</if>
+            <if test="categoryIds != null  and categoryIds != ''"> and m.category_ids = #{categoryIds}</if>
+            <if test="author != null  and author != ''"> and m.author = #{author}</if>
+            <if test="authorId != null "> and m.author_id = #{authorId}</if>
+            <if test="favoriteCounter != null "> and m.favorite_counter = #{favoriteCounter}</if>
+            <if test="coverImage != null  and coverImage != ''"> and m.cover_image = #{coverImage}</if>
+            <if test="coverImageId != null "> and m.cover_image_id = #{coverImageId}</if>
+            <if test="slideImage != null  and slideImage != ''"> and m.slide_image = #{slideImage}</if>
+            <if test="slideImageId != null "> and m.slide_image_id = #{slideImageId}</if>
+            <if test="recommendedAge != null  and recommendedAge != ''"> and m.recommended_age = #{recommendedAge}</if>
+            <if test="status != null  and status != ''"> and m.status = #{status}</if>
+            <if test="artist != null  and artist != ''"> and m.artist = #{artist}</if>
+            <if test="artistId != null "> and m.artist_id = #{artistId}</if>
+            <if test="releaseTime != null "> and m.release_time = #{releaseTime}</if>
+            <if test="viewCounter != null"> and m.view_counter = #{viewCounter}</if>
+            <if test="statusComplete != null"> and m.status_complete = #{statusComplete}</if>
+            <if test="params.userId != null"> and r.user_id = #{params.userId}</if>
+        </where>
+        order by r.rating desc limit 5
+    </select>
 </mapper>

@@ -22,6 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
             <if test="expiredTime != null "> and expired_time = #{expiredTime}</if>
             <if test="chapterId != null "> and chapter_id = #{chapterId}</if>
+            <if test="params.expiredTime != null "> and expired_time > #{params.expiredTime}</if>
         </where>
     </select>
     

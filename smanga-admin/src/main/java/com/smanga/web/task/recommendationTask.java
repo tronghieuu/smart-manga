@@ -14,8 +14,10 @@ import org.springframework.stereotype.Component;
 
 import com.smanga.business.domain.BusinessUser;
 import com.smanga.business.domain.Manga;
+import com.smanga.business.domain.RecommendManga;
 import com.smanga.business.domain.UserManga;
 import com.smanga.business.service.IMangaService;
+import com.smanga.business.service.IRecommendMangaService;
 import com.smanga.business.service.IUserMangaService;
 
 /**
@@ -31,6 +33,9 @@ public class recommendationTask {
 
 	@Autowired
 	private IUserMangaService userMangaService;
+
+	@Autowired
+	private IRecommendMangaService recommendMangaService;
 
 	private static Map<Manga, Map<Manga, Double>> diff = new HashMap<>();
 	private static Map<Manga, Map<Manga, Integer>> freq = new HashMap<>();
@@ -52,7 +57,11 @@ public class recommendationTask {
 			tempManga.setMangaName(manga.getMangaName());
 			mangas.add(tempManga);
 		}
-		List<UserManga> userMangas = userMangaService.selectUserMangaList(new UserManga());
+		UserManga usermangaParam = new UserManga();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("notNullRating", true);
+		usermangaParam.setParams(params);
+		List<UserManga> userMangas = userMangaService.selectUserMangaList(usermangaParam);
 		List<UserManga> userMangasSeperated = new ArrayList<UserManga>();
 		if (CollectionUtils.isNotEmpty(userMangas)) {
 			UserManga tempUserManga = userMangas.get(0);
@@ -157,6 +166,7 @@ public class recommendationTask {
 			outputData.put(e.getKey(), clean);
 		}
 		printData(outputData);
+		savePredictData(outputData);
 	}
 
 	private void printData(Map<BusinessUser, HashMap<Manga, Double>> data) {
@@ -182,5 +192,23 @@ public class recommendationTask {
 			manga.put(item, userManga.getRating().doubleValue());
 		}
 		return manga;
+	}
+
+	private void savePredictData(Map<BusinessUser, HashMap<Manga, Double>> data) {
+		recommendMangaService.deleteAll();
+		for (BusinessUser user : data.keySet()) {
+			HashMap<Manga, Double> inputDataHashMap = inputData.get(user);
+			HashMap<Manga, Double> hashMap = data.get(user);
+			for (Manga j : hashMap.keySet()) {
+				if (!inputDataHashMap.containsKey(j) && hashMap.get(j).doubleValue() != -1) {
+					RecommendManga recommendManga = new RecommendManga();
+					recommendManga.setUserId(user.getUserId());
+					recommendManga.setMangaId(j.getId());
+					recommendManga.setRating(hashMap.get(j).floatValue());
+					recommendManga.setIsRecommend(1);
+					recommendMangaService.insertRecommendManga(recommendManga);
+				}
+			}
+		}
 	}
 }

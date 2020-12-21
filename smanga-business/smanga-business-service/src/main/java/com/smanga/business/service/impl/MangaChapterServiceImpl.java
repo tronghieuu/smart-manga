@@ -2,6 +2,7 @@ package com.smanga.business.service.impl;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -110,5 +111,62 @@ public class MangaChapterServiceImpl implements IMangaChapterService {
 	@Override
 	public List<MangaChapter> selectChapterListForManga(MangaChapter mangaChapter) {
 		return mangaChapterMapper.selectChapterListForManga(mangaChapter);
+	}
+
+	/**
+	 * Select most popular chapter
+	 * 
+	 * @param mangaChapter
+	 * @return
+	 */
+	@Override
+	public List<MangaChapter> selectMostPopularChapter(MangaChapter mangaChapter) {
+		return mangaChapterMapper.selectMostPopularChapter(mangaChapter);
+	}
+
+	/**
+	 * Get first chapter
+	 * 
+	 * @param mangaId
+	 * @return
+	 */
+	@Override
+	public MangaChapter getFirstChapter(Long mangaId) {
+		return mangaChapterMapper.getFirstChapter(mangaId);
+	}
+
+	/**
+	 * Get last chapter
+	 * 
+	 * @param mangaId
+	 * @return
+	 */
+	@Override
+	public MangaChapter getLastChapter(Long mangaId) {
+		return mangaChapterMapper.getLastChapter(mangaId);
+	}
+
+	/**
+	 * Get next chapter
+	 * 
+	 * @param mangaId
+	 * @param chapterIndex
+	 * @return
+	 */
+	@Override
+	public MangaChapter getNextChapter(@Param("mangaId") Long mangaId, @Param("chapterIndex") String chapterIndex) {
+		return mangaChapterMapper.getNextChapter(mangaId, chapterIndex);
+	}
+
+	/**
+	 * Get previous chapter
+	 * 
+	 * @param mangaId
+	 * @param chapterIndex
+	 * @return
+	 */
+	@Override
+	public MangaChapter getPreviousChapter(@Param("mangaId") Long mangaId, @Param("chapterIndex") String chapterIndex) {
+		return mangaChapterMapper.getPreviousChapter(mangaId, chapterIndex);
 	}
 }

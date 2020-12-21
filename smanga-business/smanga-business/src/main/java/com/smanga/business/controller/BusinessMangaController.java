@@ -1,6 +1,8 @@
 package com.smanga.business.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.smanga.business.domain.BusinessUser;
 import com.smanga.business.domain.Manga;
 import com.smanga.business.domain.MangaChapter;
+import com.smanga.business.domain.RecommendManga;
 import com.smanga.business.domain.UserManga;
 import com.smanga.business.service.IMangaChapterService;
 import com.smanga.business.service.IMangaService;
+import com.smanga.business.service.IRecommendMangaService;
 import com.smanga.business.service.IUserMangaService;
 import com.smanga.common.core.domain.AjaxResult;
 import com.smanga.common.core.page.TableDataInfo;
@@ -41,14 +45,42 @@ public class BusinessMangaController extends BusinessBaseController {
 	@Autowired
 	private IMangaService mangaService;
 
+	@Autowired
+	private IRecommendMangaService recommendMangaService;
+
 	@GetMapping("/{mangaId}")
 	public String getMangaInfo(@PathVariable("mangaId") Long mangaId, ModelMap mmap) {
 		Manga manga = mangaService.selectMangaById(mangaId);
 		mmap.put("manga", manga);
 		mmap.put("user", getUserInfo());
-
+		mmap.put("popularChapter", mangaChapterService.selectMostPopularChapter(new MangaChapter()));
 		// Get rating info
 		mmap.put("ratingInfo", userMangaService.getRatingInfo(mangaId));
+
+		// Save user history
+		BusinessUser user = getUserInfo();
+		if (user != null) {
+			UserManga userMangaParam = new UserManga();
+			userMangaParam.setUserId(user.getUserId());
+			userMangaParam.setMangaId(mangaId);
+			List<UserManga> userMangas = userMangaService.selectUserMangaList(userMangaParam);
+			if (CollectionUtils.isEmpty(userMangas)) {
+				userMangaParam.setCreateBy(user.getUserName());
+				userMangaService.insertUserManga(userMangaParam);
+			}
+
+			// Unlist the manga from recommend list for this user
+			RecommendManga recommendMangaParam = new RecommendManga();
+			recommendMangaParam.setUserId(user.getUserId());
+			recommendMangaParam.setMangaId(mangaId);
+			recommendMangaParam.setIsRecommend(1);
+			List<RecommendManga> recommendMangas = recommendMangaService.selectRecommendMangaList(recommendMangaParam);
+			if (CollectionUtils.isNotEmpty(recommendMangas)) {
+				recommendMangaParam = recommendMangas.get(0);
+				recommendMangaParam.setIsRecommend(0);
+				recommendMangaService.updateRecommendManga(recommendMangaParam);
+			}
+		}
 
 		return prefix + "/index";
 	}
@@ -96,6 +128,23 @@ public class BusinessMangaController extends BusinessBaseController {
 
 		// Get rating info
 		ajaxResult.put("ratingInfo", userMangaService.getRatingInfo(mangaId));
+		return ajaxResult;
+	}
+
+	@GetMapping("/recommend")
+	@ResponseBody
+	public AjaxResult getRecommendManga() {
+		BusinessUser user = getUserInfo();
+		if (user == null) {
+			return error();
+		}
+		Manga manga = new Manga();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userId", user.getUserId());
+		manga.setParams(params);
+		List<Manga> mangas = mangaService.selectRecommendMangaList(manga);
+		AjaxResult ajaxResult = AjaxResult.success();
+		ajaxResult.put("mangas", mangas);
 		return ajaxResult;
 	}
 }

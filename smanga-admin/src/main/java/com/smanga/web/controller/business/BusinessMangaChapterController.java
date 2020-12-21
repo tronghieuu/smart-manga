@@ -1,5 +1,6 @@
 package com.smanga.web.controller.business;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -147,5 +148,15 @@ public class BusinessMangaChapterController extends BaseController {
 		AjaxResult ajaxResult = AjaxResult.success();
 		ajaxResult.put("chapter", mangaChapter);
 		return ajaxResult;
+	}
+
+	@PostMapping("/{id}/release")
+	@ResponseBody
+	public AjaxResult release(@PathVariable("id") Long id) {
+		MangaChapter mangaChapter = new MangaChapter();
+		mangaChapter.setId(id);
+		mangaChapter.setReleaseTime(new Date());
+		mangaChapterService.updateMangaChapter(mangaChapter);
+		return success();
 	}
 }

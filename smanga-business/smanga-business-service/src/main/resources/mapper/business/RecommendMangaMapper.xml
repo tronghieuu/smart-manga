@@ -13,10 +13,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
+        <result property="rating"    column="rating"    />
     </resultMap>
 
     <sql id="selectRecommendMangaVo">
-        select id, user_id, manga_id, is_recommend, create_by, create_time, update_by, update_time from recommend_manga
+        select id, user_id, manga_id, is_recommend, create_by, create_time, update_by, update_time, rating from recommend_manga
     </sql>
 
     <select id="selectRecommendMangaList" parameterType="RecommendManga" resultMap="RecommendMangaResult">
@@ -25,6 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="userId != null "> and user_id = #{userId}</if>
             <if test="mangaId != null "> and manga_id = #{mangaId}</if>
             <if test="isRecommend != null "> and is_recommend = #{isRecommend}</if>
+            <if test="rating != null "> and rating = #{rating}</if>
         </where>
     </select>
     
@@ -40,18 +42,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="mangaId != null">manga_id,</if>
             <if test="isRecommend != null">is_recommend,</if>
             <if test="createBy != null">create_by,</if>
-            <if test="createTime != null">create_time,</if>
-            <if test="updateBy != null">update_by,</if>
-            <if test="updateTime != null">update_time,</if>
+            <if test="rating != null">rating,</if>
+            create_time,
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="userId != null">#{userId},</if>
             <if test="mangaId != null">#{mangaId},</if>
             <if test="isRecommend != null">#{isRecommend},</if>
             <if test="createBy != null">#{createBy},</if>
-            <if test="createTime != null">#{createTime},</if>
-            <if test="updateBy != null">#{updateBy},</if>
-            <if test="updateTime != null">#{updateTime},</if>
+            <if test="rating != null">#{rating},</if>
+            sysdate(),
          </trim>
     </insert>
 
@@ -61,10 +61,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="userId != null">user_id = #{userId},</if>
             <if test="mangaId != null">manga_id = #{mangaId},</if>
             <if test="isRecommend != null">is_recommend = #{isRecommend},</if>
-            <if test="createBy != null">create_by = #{createBy},</if>
-            <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
-            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="rating != null">rating = #{rating},</if>
+            update_time = sysdate(),
         </trim>
         where id = #{id}
     </update>
@@ -80,4 +79,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
+	<delete id="deleteAll">
+        TRUNCATE TABLE recommend_manga;
+    </delete>
+    
 </mapper>

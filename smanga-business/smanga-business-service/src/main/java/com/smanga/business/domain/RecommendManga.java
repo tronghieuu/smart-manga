@@ -2,6 +2,7 @@ package com.smanga.business.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
 import com.smanga.common.annotation.Excel;
 import com.smanga.common.core.domain.BaseEntity;
 
@@ -11,73 +12,74 @@ import com.smanga.common.core.domain.BaseEntity;
  * @author Trong Hieu
  * @date 2020-12-20
  */
-public class RecommendManga extends BaseEntity
-{
-    private static final long serialVersionUID = 1L;
+public class RecommendManga extends BaseEntity {
+	private static final long serialVersionUID = 1L;
 
-    /** Serial index */
-    private Long id;
+	/** Serial index */
+	private Long id;
 
-    /** User id */
-    @Excel(name = "User id")
-    private Long userId;
+	/** User id */
+	@Excel(name = "User id")
+	private Long userId;
 
-    /** Manga id */
-    @Excel(name = "Manga id")
-    private Long mangaId;
+	/** Manga id */
+	@Excel(name = "Manga id")
+	private Long mangaId;
 
-    /** 0: is not recommend, 1: is recommend */
-    @Excel(name = "0: is not recommend, 1: is recommend")
-    private Integer isRecommend;
+	/** 0: is not recommend, 1: is recommend */
+	@Excel(name = "0: is not recommend, 1: is recommend")
+	private Integer isRecommend;
 
-    public void setId(Long id) 
-    {
-        this.id = id;
-    }
+	/** rating predict */
+	@Excel(name = "Rating predict")
+	private Float rating;
 
-    public Long getId() 
-    {
-        return id;
-    }
-    public void setUserId(Long userId) 
-    {
-        this.userId = userId;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public Long getUserId() 
-    {
-        return userId;
-    }
-    public void setMangaId(Long mangaId) 
-    {
-        this.mangaId = mangaId;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public Long getMangaId() 
-    {
-        return mangaId;
-    }
-    public void setIsRecommend(Integer isRecommend) 
-    {
-        this.isRecommend = isRecommend;
-    }
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 
-    public Integer getIsRecommend() 
-    {
-        return isRecommend;
-    }
+	public Long getUserId() {
+		return userId;
+	}
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("userId", getUserId())
-            .append("mangaId", getMangaId())
-            .append("isRecommend", getIsRecommend())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .toString();
-    }
+	public void setMangaId(Long mangaId) {
+		this.mangaId = mangaId;
+	}
+
+	public Long getMangaId() {
+		return mangaId;
+	}
+
+	public void setIsRecommend(Integer isRecommend) {
+		this.isRecommend = isRecommend;
+	}
+
+	public Integer getIsRecommend() {
+		return isRecommend;
+	}
+
+	public Float getRating() {
+		return rating;
+	}
+
+	public void setRating(Float rating) {
+		this.rating = rating;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).append("id", getId())
+				.append("userId", getUserId()).append("mangaId", getMangaId()).append("isRecommend", getIsRecommend())
+				.append("createBy", getCreateBy()).append("createTime", getCreateTime())
+				.append("updateBy", getUpdateBy()).append("updateTime", getUpdateTime()).append("rating", getRating())
+				.append("params", getParams()).toString();
+	}
 }

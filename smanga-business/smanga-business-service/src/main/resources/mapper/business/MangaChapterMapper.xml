@@ -131,6 +131,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         	c.create_time, c.update_by, c.update_time, m.manga_name, m.cover_image, m.favorite_counter
         from manga_chapter c left join manga m on c.manga_id = m.id
         <where>  
+        	and c.release_time is not null
             <if test="chapterName != null  and chapterName != ''"> and c.chapter_name like concat('%', #{chapterName}, '%')</if>
             <if test="chapterIndex != null  and chapterIndex != ''"> and c.chapter_index = #{chapterIndex}</if>
             <if test="chapterLang != null  and chapterLang != ''"> and c.chapter_lang = #{chapterLang}</if>
@@ -146,7 +147,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="selectChapterListForManga" parameterType="MangaChapter" resultMap="MangaChapterResult">
-        select id, chapter_name, chapter_index, chapter_lang, release_time
+        select id, chapter_name, chapter_index, chapter_lang, release_time, view_counter
         from manga_chapter
         <where>  
             <if test="chapterName != null  and chapterName != ''"> and chapter_name like concat('%', #{chapterName}, '%')</if>
@@ -161,5 +162,64 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="releaseTime != null"> and release_time = #{releaseTime}</if>
         </where>
         order by chapter_index asc, release_time asc
+    </select>
+    
+    <select id="selectMostPopularChapter" parameterType="MangaChapter" resultMap="MangaChapterResult">
+    	select c.id, c.chapter_name, c.chapter_index, c.chapter_lang, c.manga_id, c.view_counter, 
+        	c.favorite_counter, c.remark, c.status, c.del_flag, c.release_time, c.create_by, 
+        	c.create_time, c.update_by, c.update_time, m.manga_name, m.cover_image, m.favorite_counter
+        from manga_chapter c left join manga m on c.manga_id = m.id
+        <where>  
+        	and c.release_time is not null
+            <if test="chapterName != null  and chapterName != ''"> and c.chapter_name like concat('%', #{chapterName}, '%')</if>
+            <if test="chapterIndex != null  and chapterIndex != ''"> and c.chapter_index = #{chapterIndex}</if>
+            <if test="chapterLang != null  and chapterLang != ''"> and c.chapter_lang = #{chapterLang}</if>
+            <if test="chapterImages != null  and chapterImages != ''"> and c.chapter_images = #{chapterImages}</if>
+            <if test="chapterImageIds != null "> and c.chapter_image_ids = #{chapterImageIds}</if>
+            <if test="mangaId != null "> and c.manga_id = #{mangaId}</if>
+            <if test="viewCounter != null "> and c.view_counter = #{viewCounter}</if>
+            <if test="favoriteCounter != null "> and c.favorite_counter = #{favoriteCounter}</if>
+            <if test="status != null  and status != ''"> and c.status = #{status}</if>
+            <if test="releaseTime != null"> and c.release_time = #{releaseTime}</if>
+        </where>
+        order by c.view_counter desc limit 6
+    </select>
+    
+    <select id="getFirstChapter" resultMap="MangaChapterResult">
+    	<include refid="selectMangaChapterVo"/>
+    	<where>
+    		and release_time is not null
+            <if test="mangaId != null "> and manga_id = #{mangaId}</if>
+        </where>
+        order by chapter_index asc, release_time asc limit 1
+    </select>
+    
+    <select id="getLastChapter" resultMap="MangaChapterResult">
+    	<include refid="selectMangaChapterVo"/>
+    	<where>
+    		and release_time is not null
+            <if test="mangaId != null "> and manga_id = #{mangaId}</if>
+        </where>
+        order by chapter_index desc, release_time desc limit 1
+    </select>
+    
+    <select id="getNextChapter" resultMap="MangaChapterResult">
+    	<include refid="selectMangaChapterVo"/>
+    	<where>
+    		and release_time is not null
+            <if test="mangaId != null "> and manga_id = #{mangaId}</if>
+            <if test="chapterIndex != null "> and chapter_index > #{chapterIndex}</if>
+        </where>
+        order by chapter_index asc, release_time asc limit 1
+    </select>
+    
+    <select id="getPreviousChapter" resultMap="MangaChapterResult">
+    	<include refid="selectMangaChapterVo"/>
+    	<where>
+    		and release_time is not null
+            <if test="mangaId != null "> and manga_id = #{mangaId}</if>
+            <if test="chapterIndex != null "><![CDATA[ and chapter_index < #{chapterIndex}]]></if>
+        </where>
+        order by chapter_index desc, release_time desc limit 1
     </select>
 </mapper>

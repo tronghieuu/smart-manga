@@ -2,6 +2,8 @@ package com.smanga.business.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.smanga.business.domain.MangaChapter;
 
 /**
@@ -74,4 +76,46 @@ public interface MangaChapterMapper {
 	 * @return
 	 */
 	public List<MangaChapter> selectChapterListForManga(MangaChapter mangaChapter);
+
+	/**
+	 * Select most popular chapter
+	 * 
+	 * @param mangaChapter
+	 * @return
+	 */
+	public List<MangaChapter> selectMostPopularChapter(MangaChapter mangaChapter);
+
+	/**
+	 * Get first chapter
+	 * 
+	 * @param mangaId
+	 * @return
+	 */
+	public MangaChapter getFirstChapter(Long mangaId);
+
+	/**
+	 * Get last chapter
+	 * 
+	 * @param mangaId
+	 * @return
+	 */
+	public MangaChapter getLastChapter(Long mangaId);
+
+	/**
+	 * Get next chapter
+	 * 
+	 * @param mangaId
+	 * @param chapterIndex
+	 * @return
+	 */
+	public MangaChapter getNextChapter(@Param("mangaId") Long mangaId, @Param("chapterIndex") String chapterIndex);
+
+	/**
+	 * Get previous chapter
+	 * 
+	 * @param mangaId
+	 * @param chapterIndex
+	 * @return
+	 */
+	public MangaChapter getPreviousChapter(@Param("mangaId") Long mangaId, @Param("chapterIndex") String chapterIndex);
 }

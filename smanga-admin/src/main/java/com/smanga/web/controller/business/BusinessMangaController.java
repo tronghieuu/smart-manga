@@ -1,5 +1,6 @@
 package com.smanga.web.controller.business;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -176,5 +177,15 @@ public class BusinessMangaController extends BaseController {
 	public String chapter(@PathVariable("id") Long id, ModelMap mmap) {
 		mmap.put("mangaId", id);
 		return "business/chapter/chapter";
+	}
+
+	@PostMapping("/{id}/release")
+	@ResponseBody
+	public AjaxResult release(@PathVariable("id") Long id) {
+		Manga manga = new Manga();
+		manga.setId(id);
+		manga.setReleaseTime(new Date());
+		mangaService.updateManga(manga);
+		return success();
 	}
 }
